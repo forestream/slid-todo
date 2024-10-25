@@ -2,7 +2,8 @@
 
 import Button from '@/components/common/ButtonSlid';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
-import Tiptap from '@/components/Tiptap';
+import TiptapEditor from '@/components/TiptapEditor';
+import TiptapEditorProvider from '@/components/TiptapEditorProvider';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import IconClose from '@/public/icons/IconClose';
@@ -19,6 +20,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import TiptapCharacterCount from './TiptapCharacterCount';
 
 type NoteFormProps = {
   title?: string;
@@ -182,47 +184,43 @@ const NoteForm = ({
       )}
       <hr />
       <form className='grow w-full h-fit relative flex flex-col' onSubmit={handleSubmit}>
-        <div className='w-full relative h-7 my-3'>
-          <input
-            className='w-full text-lg font-medium focus-visible:outline-none'
-            placeholder='노트의 제목을 입력해주세요'
-            value={title}
-            onChange={handleChangeTitle}
-            ref={titleRef}
-          />
-          <p className='absolute right-0 top-0 text-slate-800 font-medium text-xs'>
-            {title.length}/<span className='text-blue-500'>30</span>
-          </p>
-        </div>
-        <hr />
-        <div className='w-full my-3'>
-          <p className='text-slate-800 text-xs font-medium'>
-            공백포함 : 총 {content.length}자 | 공백제외 : 총 {content.replaceAll(/\s+/g, '').length}자
-          </p>
-        </div>
-        {linkUrl && (
-          <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
-            <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
-              <IconEmbed />
-            </div>
-            <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
-            <div className='w-6 h-6 rounded-full flex justify-center items-center'>
-              <IconClose />
-            </div>
+        <TiptapEditorProvider
+          className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
+          content={initContent}
+          slotBefore={
+            <>
+              <div className='w-full relative h-7 my-3'>
+                <input
+                  className='w-full text-lg font-medium focus-visible:outline-none'
+                  placeholder='노트의 제목을 입력해주세요'
+                  value={title}
+                  onChange={handleChangeTitle}
+                  ref={titleRef}
+                />
+                <p className='absolute right-0 top-0 text-slate-800 font-medium text-xs'>
+                  {title.length}/<span className='text-blue-500'>30</span>
+                </p>
+              </div>
+              <hr />
+              <TiptapCharacterCount />
+              {linkUrl && (
+                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
+                  <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
+                    <IconEmbed />
+                  </div>
+                  <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
+                  <div className='w-6 h-6 rounded-full flex justify-center items-center'>
+                    <IconClose />
+                  </div>
+                </div>
+              )}
+            </>
+          }
+        >
+          <div className='grow'>
+            <TiptapEditor />
           </div>
-        )}
-        <div className='grow'>
-          <Tiptap
-            className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
-            content={initContent}
-          />
-          {/* <div
-            contentEditable
-            className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
-            onInput={handleChangeContent}
-            dangerouslySetInnerHTML={{ __html: contentValueRef.current }}
-          /> */}
-        </div>
+        </TiptapEditorProvider>
       </form>
     </>
   );

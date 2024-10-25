@@ -1,8 +1,7 @@
 'use client';
 
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { ChangeEventHandler, PropsWithChildren, useEffect, useState } from 'react';
+import { EditorContent, useCurrentEditor } from '@tiptap/react';
+import { ChangeEventHandler, PropsWithChildren } from 'react';
 import IconTextAlignLeft from '@/public/icons/IconTextAlignLeft';
 import IconTextAlignMiddle from '@/public/icons/IconTextAlignMiddle';
 import IconTextAlignRight from '@/public/icons/IconTextAlignRight';
@@ -13,49 +12,13 @@ import IconTextItalics from '@/public/icons/IconTextItalics';
 import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
 import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import IconTextHighlight from '@/public/icons/IconTextHighlight';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
-import Highlight from '@tiptap/extension-highlight';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
 // import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from './common/Modal';
 // import IconAddLink from '@/public/icons/IconAddLink';
 // import InputSlid from './common/InputSlid';
 // import Button from './common/ButtonSlid';
 
-const Tiptap = ({ className, content, ...props }: PropsWithChildren<{ className: string; content: string }>) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: 'px-4 mb-5 mr-4 ml-2 list-disc',
-          },
-        },
-        orderedList: {
-          HTMLAttributes: {
-            class: 'px-4 mb-5 mr-4 ml-2 list-decimal',
-          },
-        },
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
-      Highlight.configure({
-        multicolor: true,
-      }),
-      Color,
-      TextStyle,
-      Underline,
-    ],
-    editorProps: {
-      attributes: {
-        class: className,
-      },
-    },
-    content,
-    immediatelyRender: false,
-  });
+const TiptapEditor = ({ ...props }: PropsWithChildren) => {
+  const { editor } = useCurrentEditor();
 
   if (!editor) return;
 
@@ -154,4 +117,4 @@ const Tiptap = ({ className, content, ...props }: PropsWithChildren<{ className:
   );
 };
 
-export default Tiptap;
+export default TiptapEditor;
