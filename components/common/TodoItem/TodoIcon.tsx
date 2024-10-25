@@ -6,6 +6,8 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { TodoItemData } from '.';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
+import { ModalContent, ModalProvider, ModalTrigger } from '../Modal';
+import { useEffect, useRef } from 'react';
 
 interface TodoIconProps {
   data: TodoItemData;
@@ -22,6 +24,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const handleDropdaownMenuClick = (item: string) => {
     if (item === '수정하기') {
       // 수정하기페이지로 이동
+      modalRef.current?.click();
     } else if (item === '삭제하기') {
       handleDelete();
     }
@@ -44,6 +47,12 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     if (!linkUrl) return;
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
+
+  useEffect(() => {
+    console.log(modalRef.current);
+  }, []);
+
+  const modalRef = useRef<HTMLButtonElement | null>(null);
   return (
     <div className='flex items-center gap-x-2'>
       {data.fileUrl && (
@@ -67,6 +76,10 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           onItemClick={handleDropdaownMenuClick}
           className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'
         />
+        <ModalProvider>
+          <ModalTrigger ref={modalRef}></ModalTrigger>
+          <ModalContent />
+        </ModalProvider>
       </div>
     </div>
   );
