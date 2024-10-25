@@ -12,10 +12,6 @@ import IconTextItalics from '@/public/icons/IconTextItalics';
 import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
 import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import IconTextHighlight from '@/public/icons/IconTextHighlight';
-// import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from './common/Modal';
-// import IconAddLink from '@/public/icons/IconAddLink';
-// import InputSlid from './common/InputSlid';
-// import Button from './common/ButtonSlid';
 
 const TiptapEditor = ({ ...props }: PropsWithChildren) => {
   const { editor } = useCurrentEditor();
@@ -78,40 +74,6 @@ const TiptapEditor = ({ ...props }: PropsWithChildren) => {
             <IconTextColor className='cursor-pointer hover:bg-slate-100' />
           </label>
         </div>
-        {/* <div className='grow flex justify-end'>
-          <ModalProvider>
-            <ModalTrigger type='button'>
-              <IconAddLink className='cursor-pointer hover:bg-slate-100' />
-            </ModalTrigger>
-            <ModalContent className='w-full max-w-[520px] flex flex-col'>
-              <div className='flex justify-between mb-6'>
-                <h1 className='text-lg font-bold'>링크 업로드</h1>
-                <ModalClose />
-              </div>
-              <InputSlid
-                label='링크'
-                type='text'
-                placeholder='영상이나 글, 파일의 링크를 넣어주세요'
-                className='mb-10'
-                value={linkUrlValue}
-                onChange={handleChangeLinkUrlValue}
-              />
-              <ModalClose asChild>
-                <Button className='w-full' onClick={handleSaveLinkUrl}>
-                  확인
-                </Button>
-              </ModalClose>
-            </ModalContent>
-          </ModalProvider>
-        </div>
-        {savedToast && (
-          <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
-            <IconCheck />
-            <p className='font-semibold text-sm'>
-              임시 저장이 완료되었습니다 <span className='text-xs pointerfont-medium'>ㆍ {}초전</span>
-            </p>
-          </div>
-        )} */}
       </div>
     </>
   );
