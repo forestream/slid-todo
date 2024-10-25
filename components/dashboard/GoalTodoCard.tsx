@@ -5,10 +5,16 @@ import { Goal } from '@/lib/types';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import Button from '../common/ButtonSlid';
 import { IconArrowDown2 } from '@/public/icons/IconArrowDown2';
+import ProgressBar from '../common/ProgressBar';
+import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 
 const GoalTodoCard = ({ goal }: { goal: Goal }) => {
+  // todo 요청
   const todos = useTodosQuery(`${goal.id}-todos`, { goalId: goal.id, done: false, size: 5 }).data;
   const dones = useTodosQuery(`${goal.id}-dones`, { goalId: goal.id, done: true, size: 5 }).data;
+
+  // 진행률 요청
+  const progress = useTodoProgressQuery(goal.id).data?.progress || 0;
 
   return (
     <div className='w-full flex-col justify-center'>
@@ -19,7 +25,9 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
           <span>할일추가</span>
         </button>
       </div>
-      <div className='my-2 w-full'>progress bar</div>
+      <div className='my-2 w-full'>
+        <ProgressBar percentage={progress} />
+      </div>
       <div className='flex gap-3'>
         <div className='w-full flex-col'>
           <p className='bold text-sm font-semibold'>To do</p>
