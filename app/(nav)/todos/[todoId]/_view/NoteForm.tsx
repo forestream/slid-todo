@@ -1,24 +1,13 @@
 'use client';
 
 import Button from '@/components/common/ButtonSlid';
-import InputSlid from '@/components/common/InputSlid';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
+import Tiptap from '@/components/Tiptap';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
-import IconAddLink from '@/public/icons/IconAddLink';
-import IconCheck from '@/public/icons/IconCheck';
 import IconClose from '@/public/icons/IconClose';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import IconTextAlignLeft from '@/public/icons/IconTextAlignLeft';
-import IconTextAlignMiddle from '@/public/icons/IconTextAlignMiddle';
-import IconTextAlignRight from '@/public/icons/IconTextAlignRight';
-import IconTextBold from '@/public/icons/IconTextBold';
-import IconTextBulletPoint from '@/public/icons/IconTextBulletPoint';
-import IconTextColor from '@/public/icons/IconTextColor';
-import IconTextItalics from '@/public/icons/IconTextItalics';
-import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
-import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import { useParams } from 'next/navigation';
 import {
   ChangeEventHandler,
@@ -55,17 +44,17 @@ const NoteForm = ({
   const [title, setTitle] = useState(initTitle);
   const [content, setContent] = useState(initContent);
   const [linkUrl, setLinkUrl] = useState(initLinkUrl);
-  const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
+  // const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
   };
-  const handleChangeContent: ChangeEventHandler<HTMLInputElement> = (e) => {
-    contentValueRef.current = e.target.innerHTML;
-  };
-  const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
-    setLinkUrlValue(e.target.value);
-  const handleSaveLinkUrl: MouseEventHandler<HTMLButtonElement> = () => setLinkUrl(linkUrlValue);
+  // const handleChangeContent: ChangeEventHandler<HTMLInputElement> = (e) => {
+  //   contentValueRef.current = e.target.innerHTML;
+  // };
+  // const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
+  //   setLinkUrlValue(e.target.value);
+  // const handleSaveLinkUrl: MouseEventHandler<HTMLButtonElement> = () => setLinkUrl(linkUrlValue);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const contentValueRef = useRef<string>(initContent);
@@ -95,7 +84,7 @@ const NoteForm = ({
     setTitle(savedNote.title.length ? savedNote.title : '제목없음');
     setContent(savedNote.content);
     setLinkUrl(savedNote.linkUrl);
-    setLinkUrlValue(savedNote.linkUrl);
+    // setLinkUrlValue(savedNote.linkUrl);
     setOpenSavedToast(false);
   };
 
@@ -223,63 +212,16 @@ const NoteForm = ({
           </div>
         )}
         <div className='grow'>
-          <div
+          <Tiptap
+            className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
+            content={initContent}
+          />
+          {/* <div
             contentEditable
             className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
             onInput={handleChangeContent}
             dangerouslySetInnerHTML={{ __html: contentValueRef.current }}
-          />
-        </div>
-        <div className='w-full border border-slate-200 rounded-full py-2.5 px-4 absolute bottom-0 bg-white flex gap-4'>
-          <div className='flex gap-1'>
-            <IconTextBold className='cursor-pointer hover:bg-slate-100' />
-            <IconTextItalics className='cursor-pointer hover:bg-slate-100' />
-            <IconTextUnderline className='cursor-pointer hover:bg-slate-100' />
-          </div>
-          <div className='flex gap-1'>
-            <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
-            <IconTextAlignMiddle className='cursor-pointer hover:bg-slate-100' />
-            <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
-          </div>
-          <div className='flex gap-1'>
-            <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
-            <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
-            <IconTextColor className='cursor-pointer hover:bg-slate-100' />
-          </div>
-          <div className='grow flex justify-end'>
-            <ModalProvider>
-              <ModalTrigger type='button'>
-                <IconAddLink className='cursor-pointer hover:bg-slate-100' />
-              </ModalTrigger>
-              <ModalContent className='w-full max-w-[520px] flex flex-col'>
-                <div className='flex justify-between mb-6'>
-                  <h1 className='text-lg font-bold'>링크 업로드</h1>
-                  <ModalClose />
-                </div>
-                <InputSlid
-                  label='링크'
-                  type='text'
-                  placeholder='영상이나 글, 파일의 링크를 넣어주세요'
-                  className='mb-10'
-                  value={linkUrlValue}
-                  onChange={handleChangeLinkUrlValue}
-                />
-                <ModalClose asChild>
-                  <Button className='w-full' onClick={handleSaveLinkUrl}>
-                    확인
-                  </Button>
-                </ModalClose>
-              </ModalContent>
-            </ModalProvider>
-          </div>
-          {savedToast && (
-            <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
-              <IconCheck />
-              <p className='font-semibold text-sm'>
-                임시 저장이 완료되었습니다 <span className='text-xs font-medium'>ㆍ {}초전</span>
-              </p>
-            </div>
-          )}
+          /> */}
         </div>
       </form>
     </>
