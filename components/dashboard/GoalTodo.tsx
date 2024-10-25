@@ -27,7 +27,7 @@ const GoalTodo = () => {
         </div>
         <div className='flex-col mt-6 space-y-4'>
           {data?.pages.map((page, idx) => (
-            <div key={page.nextCursor || idx}>
+            <div key={page.nextCursor || idx} className='flex-col mt-6 space-y-4'>
               {page.goals.map((goal: Goal) => (
                 <div key={goal.id} className='flex w-full h-[304px] p-6 bg-blue-50 rounded-[32px]'>
                   <GoalTodoCard goal={goal} />
