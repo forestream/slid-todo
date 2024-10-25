@@ -4,8 +4,10 @@ import PageContainer from '@/components/common/PageLayout/PageContainer';
 import PageHeader from '@/components/common/PageLayout/PageHeader';
 import NoteGoalTitle from '@/components/notes/NoteGoalTitle';
 import NotesList from '@/components/notes/NotesList';
+import baseFetch from '@/lib/api/baseFetch';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useNotesInfiniteQuery } from '@/lib/hooks/useNotesInfiniteQuery';
+import { useEffect, useState } from 'react';
 
 export interface Note {
   todo: {
@@ -32,9 +34,22 @@ export interface data {
 }
 
 export default function Notes({ params }: { params: { goalId: string } }) {
+  const [goalTitle, setGoalTitle] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useNotesInfiniteQuery({
     goalId: Number(params.goalId),
   });
+  useEffect(() => {
+    const getGoalTitle = async () => {
+      try {
+        const goalData = await baseFetch(`/4-4-dev/goals/${params.goalId}`);
+        setGoalTitle(goalData.title);
+      } catch (error) {
+        console.error('Error fetching goal title:', error);
+      }
+    };
+
+    getGoalTitle();
+  }, [params.goalId]);
 
   const loadMoreRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
@@ -46,13 +61,12 @@ export default function Notes({ params }: { params: { goalId: string } }) {
   if (isLoading) {
     return <div>불러오는 중...</div>;
   }
-
   const notes = data?.pages.flatMap((page) => page.notes) ?? [];
 
   return (
     <PageContainer>
       <PageHeader title='노트 모아보기' />
-      <NoteGoalTitle goal={notes[0].goal} />
+      <NoteGoalTitle goalTitle={goalTitle} />
       <NotesList notes={notes} />
       <div ref={loadMoreRef} className='h-10 flex items-center justify-center'>
         {isFetching && <div>불러오는 중...</div>}
