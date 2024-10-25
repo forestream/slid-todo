@@ -4,63 +4,9 @@ import PageContainer from '@/components/common/PageLayout/PageContainer';
 import PageHeader from '@/components/common/PageLayout/PageHeader';
 import NoteGoalTitle from '@/components/notes/NoteGoalTitle';
 import NotesList from '@/components/notes/NotesList';
+import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
+import { useNotesInfiniteQuery } from '@/lib/hooks/useNotesInfiniteQuery';
 
-const notes = [
-  {
-    todo: {
-      done: true,
-      title: 'Complete project documentationdddddddddddddㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 1,
-    },
-    updatedAt: '2024-10-23T05:06:11.986Z',
-    createdAt: '2024-10-21T12:45:30.123Z',
-    title:
-      'Finish the remaining taskㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴs',
-    id: 101,
-    goal: {
-      title: 'Project Completionㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 10,
-    },
-    userId: 42,
-    teamId: 'team_abc123',
-  },
-  {
-    todo: {
-      done: true,
-      title: 'Complete project documentationdddddddddddddㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 1,
-    },
-    updatedAt: '2024-10-23T05:06:11.986Z',
-    createdAt: '2024-10-21T12:45:30.123Z',
-    title:
-      'Finish the remaining taskㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴs',
-    id: 101,
-    goal: {
-      title: 'Project Completionㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 10,
-    },
-    userId: 42,
-    teamId: 'team_abc123',
-  },
-  {
-    todo: {
-      done: true,
-      title: 'Complete project documentationdddddddddddddㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 1,
-    },
-    updatedAt: '2024-10-23T05:06:11.986Z',
-    createdAt: '2024-10-21T12:45:30.123Z',
-    title:
-      'Finish the remaining taskㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴs',
-    id: 101,
-    goal: {
-      title: 'Project Completionㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-      id: 10,
-    },
-    userId: 42,
-    teamId: 'team_abc123',
-  },
-];
 export interface Note {
   todo: {
     done: boolean;
@@ -86,11 +32,31 @@ export interface data {
 }
 
 export default function Notes({ params }: { params: { goalId: string } }) {
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useNotesInfiniteQuery({
+    goalId: Number(params.goalId),
+  });
+
+  const loadMoreRef = useIntersectionObserver({
+    onIntersect: fetchNextPage,
+    enabled: !!hasNextPage && !isFetching,
+    threshold: 0.5,
+    rootMargin: '100px',
+  });
+
+  if (isLoading) {
+    return <div>불러오는 중...</div>;
+  }
+
+  const notes = data?.pages.flatMap((page) => page.notes) ?? [];
+
   return (
     <PageContainer>
       <PageHeader title='노트 모아보기' />
       <NoteGoalTitle goal={notes[0].goal} />
       <NotesList notes={notes} />
+      <div ref={loadMoreRef} className='h-10 flex items-center justify-center'>
+        {isFetching && <div>불러오는 중...</div>}
+      </div>
     </PageContainer>
   );
 }
