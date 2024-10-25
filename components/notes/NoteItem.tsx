@@ -2,12 +2,28 @@ import { IconRectangle } from '@/public/icons/IconRectangle';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { Note } from '@/app/(nav)/notes/[goalId]/page';
+import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 
 interface NoteItemProps {
   note: Note;
 }
 
 const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
+  const deleteNote = useDeleteNoteMutation();
+
+  const handleDelete = () => {
+    // 삭제할지 모달을 띄워주면 좋겠음
+    deleteNote.mutate({ noteId: note.id });
+  };
+
+  const handleDropdaownMenuClick = (item: string) => {
+    if (item === '수정하기') {
+      // 수정하기페이지로 이동
+    } else if (item === '삭제하기') {
+      handleDelete();
+    }
+  };
+
   return (
     <div className='p-6 bg-white flex flex-col space-y-4 rounded-xl group'>
       <div className='flex justify-between items-center'>
@@ -15,7 +31,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
         <DropdownMenu
           icon={IconKebabWithCircle}
           dropdownList={['수정하기', '삭제하기']}
-          onItemClick={(item) => console.log(item)}
+          onItemClick={handleDropdaownMenuClick}
           className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'
         />
       </div>
