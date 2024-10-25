@@ -1,6 +1,6 @@
-import { ImageProgress } from '@/public/Images/ImageProgess';
-import { ImageProgressMobile } from '@/public/Images/ImageProgessMobile';
-import { ImageProgressTablet } from '@/public/Images/ImageProgessTablet';
+import { ImageProgress } from '@/public/images/ImageProgress';
+import { ImageProgressMobile } from '@/public/images/ImageProgressMobile';
+import { ImageProgressTablet } from '@/public/images/ImageProgressTablet';
 import { IconProgress } from '@/public/icons/IconProgress';
 
 const Progress = () => {

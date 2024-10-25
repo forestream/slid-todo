@@ -6,6 +6,9 @@ interface NotesListProps {
 }
 
 const NotesList: React.FC<NotesListProps> = ({ notes }) => {
+  if (!notes.length) {
+    return <div className='flex justify-center items-center text-sm text-slate-500'>아직 등록된 노트가 없어요</div>;
+  }
   return (
     <div className='flex flex-col space-y-4'>
       {notes.map((note) => (
