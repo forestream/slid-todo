@@ -36,6 +36,8 @@ export const useUpdateTodoMutation = () => {
     // 낙관적 업데이트를 위해 사용된다
     onMutate: async ({ id, updates }) => {
       console.log('onMutate');
+      console.log('queryClient', queryClient);
+      console.dir(queryClient);
       await queryClient.cancelQueries({
         predicate: (query) => isTodosQueryKey(query.queryKey),
       });
