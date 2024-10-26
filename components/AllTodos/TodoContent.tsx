@@ -12,7 +12,7 @@ import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 const TodoContent = () => {
   const params = useSearchParams();
   const status = params.get('status');
-
+  console.log('랜더링됨 ');
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useTodosInfiniteQuery({
     size: 20,
     done: status === 'completed' ? true : status === 'in-progress' ? false : undefined,
