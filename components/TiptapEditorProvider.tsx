@@ -1,3 +1,5 @@
+'use client';
+
 import { EditorProvider } from '@tiptap/react';
 import { PropsWithChildren, ReactElement } from 'react';
 import Underline from '@tiptap/extension-underline';

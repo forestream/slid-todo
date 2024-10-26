@@ -3,7 +3,6 @@
 import Button from '@/components/common/ButtonSlid';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
 import TiptapEditor from '@/components/TiptapEditor';
-import TiptapEditorProvider from '@/components/TiptapEditorProvider';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import IconClose from '@/public/icons/IconClose';
@@ -21,9 +20,8 @@ import {
   useState,
 } from 'react';
 import TiptapCharacterCount from './TiptapCharacterCount';
-import IconAddLink from '@/public/icons/IconAddLink';
 import IconCheck from '@/public/icons/IconCheck';
-import InputSlid from '@/components/common/InputSlid';
+import { useCurrentEditor } from '@tiptap/react';
 
 type NoteFormProps = {
   title?: string;
@@ -33,50 +31,35 @@ type NoteFormProps = {
   noteId?: string;
 };
 
-const NoteForm = ({
-  title: initTitle = '',
-  content: initContent = '',
-  linkUrl: initLinkUrl = '',
-  method = 'POST',
-  noteId,
-}: NoteFormProps) => {
+const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = 'POST', noteId }: NoteFormProps) => {
+  const { editor } = useCurrentEditor();
   const { todoId } = useParams();
-
   const { data } = useTodosQuery(todoId as string);
   const todo = data?.todos.find((todo) => todo.id === Number(todoId));
   const { mutate } = useNoteMutation(todoId as string);
-
   const [title, setTitle] = useState(initTitle);
-  const [content, setContent] = useState(initContent);
   const [linkUrl, setLinkUrl] = useState(initLinkUrl);
-  const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
+  const [savedToast, setSavedToast] = useState(false);
+  const [openSavedToast, setOpenSavedToast] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  console.log('render');
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
   };
-  const handleChangeContent: ChangeEventHandler<HTMLInputElement> = (e) => {
-    contentValueRef.current = e.target.innerHTML;
-  };
-  const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
-    setLinkUrlValue(e.target.value);
-  const handleSaveLinkUrl: MouseEventHandler<HTMLButtonElement> = () => setLinkUrl(linkUrlValue);
-
-  const titleRef = useRef<HTMLInputElement>(null);
-  const contentValueRef = useRef<string>(initContent);
-
-  const [savedToast, setSavedToast] = useState(false);
-  const [openSavedToast, setOpenSavedToast] = useState(false);
+  const handleSaveLinkUrl = (linkUrlValue: string) => setLinkUrl(linkUrlValue);
 
   const handleSave = useCallback(() => {
     window.localStorage.setItem(
       'savedNote' + todoId,
-      JSON.stringify({ todoId, title: titleRef.current?.value, content: contentValueRef.current, linkUrl })
+      JSON.stringify({ todoId, title: titleRef.current?.value, content: editor?.getHTML(), linkUrl })
     );
     setSavedToast(true);
     setTimeout(() => {
       setSavedToast(false);
     }, 1000 * 5);
-  }, [todoId, linkUrl]);
+  }, [todoId, linkUrl, editor]);
 
   const savedNote = useMemo(() => {
     if (!globalThis.window) return;
@@ -87,9 +70,7 @@ const NoteForm = ({
 
   const handleOpenSaved = () => {
     setTitle(savedNote.title.length ? savedNote.title : '제목없음');
-    setContent(savedNote.content);
     setLinkUrl(savedNote.linkUrl);
-    // setLinkUrlValue(savedNote.linkUrl);
     setOpenSavedToast(false);
   };
 
@@ -105,6 +86,7 @@ const NoteForm = ({
 
   useEffect(() => {
     if (savedNote) setOpenSavedToast(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -114,12 +96,12 @@ const NoteForm = ({
   const handleClickSubmit: MouseEventHandler<HTMLButtonElement> = async () => {
     const note: {
       title: string;
-      content: string;
+      content: string | undefined;
       todoId: number;
       linkUrl?: string;
     } = {
       title,
-      content: contentValueRef.current,
+      content: editor?.getHTML(),
       todoId: +todoId,
       linkUrl,
     };
@@ -141,7 +123,7 @@ const NoteForm = ({
         <button className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' onClick={handleSave}>
           임시저장
         </button>
-        <Button disabled={!title.length || !content.length} onClick={handleClickSubmit}>
+        <Button disabled={!title.length || !editor?.getText().length} onClick={handleClickSubmit}>
           작성 완료
         </Button>
       </div>
@@ -187,68 +169,33 @@ const NoteForm = ({
       )}
       <hr />
       <form className='grow w-full h-fit relative flex flex-col' onSubmit={handleSubmit}>
-        <TiptapEditorProvider
-          className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
-          content={initContent}
-          slotBefore={
-            <>
-              <div className='w-full relative h-7 my-3'>
-                <input
-                  className='w-full text-lg font-medium focus-visible:outline-none'
-                  placeholder='노트의 제목을 입력해주세요'
-                  value={title}
-                  onChange={handleChangeTitle}
-                  ref={titleRef}
-                />
-                <p className='absolute right-0 top-0 text-slate-800 font-medium text-xs'>
-                  {title.length}/<span className='text-blue-500'>30</span>
-                </p>
-              </div>
-              <hr />
-              <TiptapCharacterCount />
-              {linkUrl && (
-                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
-                  <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
-                    <IconEmbed />
-                  </div>
-                  <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
-                  <div className='w-6 h-6 rounded-full flex justify-center items-center'>
-                    <IconClose />
-                  </div>
-                </div>
-              )}
-            </>
-          }
-        >
-          <div className='grow'>
-            <TiptapEditor />
+        <div className='w-full relative h-7 my-3'>
+          <input
+            className='w-full text-lg font-medium focus-visible:outline-none'
+            placeholder='노트의 제목을 입력해주세요'
+            value={title}
+            onChange={handleChangeTitle}
+            ref={titleRef}
+          />
+          <p className='absolute right-0 top-0 text-slate-800 font-medium text-xs'>
+            {title.length}/<span className='text-blue-500'>30</span>
+          </p>
+        </div>
+        <hr />
+        <TiptapCharacterCount />
+        {linkUrl && (
+          <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
+            <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
+              <IconEmbed />
+            </div>
+            <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
+            <div className='w-6 h-6 rounded-full flex justify-center items-center'>
+              <IconClose />
+            </div>
           </div>
-        </TiptapEditorProvider>
-        <div className='grow flex justify-end'>
-          <ModalProvider>
-            <ModalTrigger type='button'>
-              <IconAddLink className='cursor-pointer hover:bg-slate-100' />
-            </ModalTrigger>
-            <ModalContent className='w-full max-w-[520px] flex flex-col'>
-              <div className='flex justify-between mb-6'>
-                <h1 className='text-lg font-bold'>링크 업로드</h1>
-                <ModalClose />
-              </div>
-              <InputSlid
-                label='링크'
-                type='text'
-                placeholder='영상이나 글, 파일의 링크를 넣어주세요'
-                className='mb-10'
-                value={linkUrlValue}
-                onChange={handleChangeLinkUrlValue}
-              />
-              <ModalClose asChild>
-                <Button className='w-full' onClick={handleSaveLinkUrl}>
-                  확인
-                </Button>
-              </ModalClose>
-            </ModalContent>
-          </ModalProvider>
+        )}
+        <div className='grow'>
+          <TiptapEditor linkUrl={initLinkUrl} onSaveLinkUrl={handleSaveLinkUrl} />
         </div>
         {savedToast && (
           <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
