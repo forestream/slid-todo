@@ -8,16 +8,20 @@ import AllTodoList from './AllTodoList';
 import { useSearchParams } from 'next/navigation';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TodoContent = () => {
+  const client = useQueryClient();
+
   const params = useSearchParams();
   const status = params.get('status');
   console.log('랜더링됨 ');
-  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useTodosInfiniteQuery({
+  const { isSuccess, data, fetchNextPage, hasNextPage, isFetching, isLoading } = useTodosInfiniteQuery({
     size: 20,
     done: status === 'completed' ? true : status === 'in-progress' ? false : undefined,
   });
-
+  console.log('석세스', isSuccess);
+  console.log('클라이언트', client);
   const loadMoreRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: !!hasNextPage && !isFetching,
