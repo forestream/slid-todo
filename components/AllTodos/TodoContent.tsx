@@ -21,7 +21,7 @@ const TodoContent = () => {
     done: status === 'completed' ? true : status === 'in-progress' ? false : undefined,
   });
   console.log('석세스', isSuccess);
-  console.log('클라이언트', client);
+  console.log('클라이언트', client.getQueriesData({ predicate: (query) => query.queryKey[0] === 'todos' }));
   const loadMoreRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: !!hasNextPage && !isFetching,
