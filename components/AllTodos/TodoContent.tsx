@@ -31,7 +31,7 @@ const TodoContent = () => {
 
   const todos = data?.pages.flatMap((page) => page.todos) ?? [];
   const totalCount = data?.pages[0]?.totalCount ?? 0;
-
+  console.log('todos', todos);
   if (isLoading) {
     return <div>불러오는 중...</div>;
   }
