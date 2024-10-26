@@ -11,6 +11,7 @@ const CheckIcon: React.FC<CheckIconProps> = ({ done, id }) => {
   const updateTodo = useUpdateTodoMutation();
 
   const handleToggle = () => {
+    console.log('체크박스 클릭');
     updateTodo.mutate({
       id: id,
       updates: { done: !done },
