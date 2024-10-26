@@ -31,7 +31,6 @@ export interface TodoItemData {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
-  console.log('todoitem의 data', data);
   return (
     <div className='text-sm group'>
       <div className='flex justify-between items-center'>

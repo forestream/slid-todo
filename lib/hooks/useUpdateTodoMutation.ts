@@ -41,10 +41,11 @@ export const useUpdateTodoMutation = () => {
       });
 
       const previousTodos = findMatchingTodoQueries(queryClient);
-
+      console.log('previousTodos', previousTodos);
       previousTodos.forEach(([queryKey, oldData]) => {
         // setquerydata를 했을 때 해당 쿼리를 사용하고 있는 ui가 리랜터링 되는지 테스트 필요
-
+        console.log('queryKey', queryKey);
+        console.log('oldData', oldData);
         if (oldData) {
           queryClient.setQueryData<InfiniteData<TodosResponse>>(queryKey, () => {
             console.log('oldData', oldData);
