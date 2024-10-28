@@ -1,27 +1,4 @@
-export interface Goal {
-  id: number;
-  title: string;
-}
-
-export interface TodoItemData {
-  noteId: number;
-  done: boolean;
-  linkUrl: string;
-  fileUrl: string;
-  title: string;
-  id: number;
-  goal: Goal;
-  userId: number;
-  teamId: string;
-  updatedAt: string;
-  createdAt: string;
-}
-
-interface TodoResponse {
-  todos: TodoItemData[];
-  totalCount: number;
-  nextCursor: number;
-}
+import { GetTodosResponse } from '../types/todos';
 
 export const getTodos = async ({
   goalId,
@@ -33,7 +10,7 @@ export const getTodos = async ({
   done?: boolean;
   cursor?: number;
   size?: number;
-}): Promise<TodoResponse> => {
+}): Promise<GetTodosResponse> => {
   const params = new URLSearchParams();
   if (goalId) params.append('goalId', goalId.toString());
   if (done !== undefined) params.append('done', done.toString());
