@@ -5,29 +5,11 @@ import GoalTitle from './GoalTitle';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import CheckIcon from './CheckIcon';
+import { Todo } from '@/lib/types/todos';
 
 interface TodoItemProps {
-  data: TodoItemData;
+  data: Todo;
   viewGoal?: boolean;
-}
-
-export interface Goal {
-  id: number;
-  title: string;
-}
-
-export interface TodoItemData {
-  noteId: number | null;
-  done: boolean;
-  linkUrl: string | null;
-  fileUrl: string | null;
-  title: string;
-  id: number;
-  goal: Goal | null;
-  userId: number;
-  teamId: string;
-  updatedAt: string;
-  createdAt: string;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {

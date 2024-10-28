@@ -1,7 +1,7 @@
+import { GoalInTodo } from '@/lib/types/todos';
 import IconGoal from '@/public/icons/IconGoal';
-import { Goal } from '.';
 
-const GoalTitle = ({ goal }: { goal: Goal }) => {
+const GoalTitle = ({ goal }: { goal: GoalInTodo }) => {
   return (
     <div className='flex gap-x-1.5 ml-8 cursor-pointer hover:underline'>
       <IconGoal />
