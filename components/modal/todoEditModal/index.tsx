@@ -2,37 +2,13 @@ import { forwardRef } from 'react';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '../../common/Modal';
 import { Todo } from '@/lib/types/todos';
 import InputSlid from '../../common/InputSlid';
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileUpload from './ButtonUploadFile';
 import CheckboxToggle from './CheckboxToggle';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
-
-const todoEditSchema = z.object({
-  title: z.string().min(1, '제목을 입력해주세요'),
-  fileUrl: z.string().optional(),
-  linkUrl: z
-    .string()
-    .optional()
-    .transform((value) => (value === '' ? null : value))
-    .refine((value) => !value || /^(https?:\/\/)/.test(value), {
-      message: '유효한 URL을 입력해주세요',
-    }),
-  goalId: z
-    .preprocess((value) => {
-      if (typeof value === 'string') {
-        const parsed = Number(value);
-        return isNaN(parsed) ? null : parsed;
-      }
-      return value;
-    }, z.number().nullable().optional())
-    .transform((value) => (typeof value === 'number' ? value : null)),
-  done: z.boolean(),
-});
-
-export type TodoFormData = z.infer<typeof todoEditSchema>;
+import { todoEditSchema, TodoFormData } from '@/lib/schemas/todosSchemas';
 
 interface TodoModalProps {
   title: string;
