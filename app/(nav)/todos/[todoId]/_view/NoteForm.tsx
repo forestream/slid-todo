@@ -23,6 +23,19 @@ import TiptapCharacterCount from './TiptapCharacterCount';
 import IconCheck from '@/public/icons/IconCheck';
 import { useCurrentEditor } from '@tiptap/react';
 import LinkEmbed from './LinkEmbed';
+import IconModalClose from '@/public/icons/IconModalClose';
+import IconTextAlignLeft from '@/public/icons/IconTextAlignLeft';
+import IconTextAlignMiddle from '@/public/icons/IconTextAlignMiddle';
+import IconTextAlignRight from '@/public/icons/IconTextAlignRight';
+import IconTextBold from '@/public/icons/IconTextBold';
+import IconTextBulletPoint from '@/public/icons/IconTextBulletPoint';
+import IconTextColor from '@/public/icons/IconTextColor';
+import IconTextItalics from '@/public/icons/IconTextItalics';
+import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
+import IconTextUnderline from '@/public/icons/IconTextUnderline';
+import IconTextHighlight from '@/public/icons/IconTextHighlight';
+import IconAddLink from '@/public/icons/IconAddLink';
+import InputSlid from '@/components/common/InputSlid';
 
 type NoteFormProps = {
   title?: string;
@@ -43,11 +56,12 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
   const [savedToast, setSavedToast] = useState(false);
   const [openSavedToast, setOpenSavedToast] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
+  const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
   };
-  const handleSaveLinkUrl = (linkUrlValue: string) => setLinkUrl(linkUrlValue);
+  const handleSaveLinkUrl = () => setLinkUrl(linkUrlValue);
 
   const handleSave = useCallback(() => {
     window.localStorage.setItem(
@@ -74,6 +88,9 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
   };
 
   const handleCloseOpenSavedToast = () => setOpenSavedToast(false);
+
+  const handleOpenEmbed = () => setIsEmbedOpen(true);
+  const handleCloseEmbed = () => setIsEmbedOpen(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -115,18 +132,50 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
     });
   };
 
+  const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
+
+  const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
+    setLinkUrlValue(e.target.value);
+
+  const handleBold = () => editor?.chain().focus().toggleBold().run();
+  const handleItalics = () => editor?.chain().focus().toggleItalic().run();
+  const handleUnderline = () => editor?.chain().focus().toggleUnderline().run();
+  const handleAlignLeft = () => editor?.chain().focus().setTextAlign('left').run();
+  const handleAlignCenter = () => editor?.chain().focus().setTextAlign('center').run();
+  const handleAlignRight = () => editor?.chain().focus().setTextAlign('right').run();
+  const handleBulletList = () => editor?.chain().focus().toggleBulletList().run();
+  const handleOrderedList = () => editor?.chain().focus().toggleOrderedList().run();
+  const handleChangeHighlight: ChangeEventHandler<HTMLInputElement> = (e) =>
+    editor?.chain().focus().toggleHighlight({ color: e.target.value }).run();
+
+  const handleChangeColor: ChangeEventHandler<HTMLInputElement> = (e) =>
+    editor?.chain().focus().setColor(e.target.value).run();
+
   return (
     <>
-      <section className='lg:w-10 lg:h-screen'>
-        <LinkEmbed linkUrl={linkUrl} />
-      </section>
-      <section className='max-w-[800px] w-full py-6 px-10 flex flex-col grow'>
+      {linkUrl && isEmbedOpen && (
+        <section className='max-h-[385px] md:max-h-[522px] lg:max-h-none h-full w-full lg:w-[543px] overflow-auto relative'>
+          <div className='absolute top-0 w-full h-10 flex justify-end items-center bg-white'>
+            <button className='mr-3' onClick={handleCloseEmbed}>
+              <IconModalClose />
+            </button>
+          </div>
+          <div className='h-full pt-10 bg-blue-50'>
+            <LinkEmbed linkUrl={linkUrl} />
+          </div>
+        </section>
+      )}
+      <section className='lg:max-w-[800px] w-full p-4 md:p-6 lg:py-6 lg:px-10 flex flex-col grow '>
         <div className='flex w-full items-center mb-4'>
           <h1 className='grow text-slate-900 font-semibold text-lg'>노트 작성</h1>
           <button className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' onClick={handleSave}>
             임시저장
           </button>
-          <Button disabled={!title.length || !editor?.getText().length} onClick={handleClickSubmit}>
+          <Button
+            disabled={!title.length || !editor?.getText().length}
+            onClick={handleClickSubmit}
+            className='py-2 px-4 md:py-3 md:px-6'
+          >
             작성 완료
           </Button>
         </div>
@@ -148,7 +197,7 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
             </button>
             <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
             <ModalProvider>
-              <ModalTrigger className='rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
+              <ModalTrigger className='shrink-0 rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
                 불러오기
               </ModalTrigger>
               <ModalContent className='max-w-[450px] flex flex-col items-center w-full'>
@@ -171,7 +220,7 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
           </div>
         )}
         <hr />
-        <form className='grow w-full h-fit relative flex flex-col' onSubmit={handleSubmit}>
+        <form className='grow w-full relative flex flex-col' onSubmit={handleSubmit}>
           <div className='w-full relative h-7 my-3'>
             <input
               className='w-full text-lg font-medium focus-visible:outline-none'
@@ -191,17 +240,88 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
               <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                 <IconEmbed />
               </div>
-              <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
+              <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={handleOpenEmbed}>
+                {linkUrl}
+              </p>
               <div className='w-6 h-6 rounded-full flex justify-center items-center'>
                 <IconClose />
               </div>
             </div>
           )}
-          <div className='grow'>
-            <TiptapEditor linkUrl={initLinkUrl} onSaveLinkUrl={handleSaveLinkUrl} />
+          <div className='grow lg:relative'>
+            <div className='overflow-visible h-full'>
+              <TiptapEditor linkUrl={initLinkUrl} onSaveLinkUrl={handleSaveLinkUrl} />
+            </div>
           </div>
+          <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 fixed lg:sticky bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
+            <div className='flex md:gap-1'>
+              <button onClick={handleBold}>
+                <IconTextBold className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <button onClick={handleItalics}>
+                <IconTextItalics className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <button onClick={handleUnderline}>
+                <IconTextUnderline className='cursor- hover:bg-slate-100' />
+              </button>
+            </div>
+            <div className='flex md:gap-1'>
+              <button onClick={handleAlignLeft}>
+                <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <button onClick={handleAlignCenter}>
+                <IconTextAlignMiddle className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <button onClick={handleAlignRight}>
+                <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
+              </button>
+            </div>
+            <div className='flex md:gap-1'>
+              <button onClick={handleBulletList}>
+                <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <button onClick={handleOrderedList}>
+                <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
+              </button>
+              <label htmlFor='textHighlight' className='relative'>
+                <input id='textHighlight' type='color' className='w-0 h-0 absolute' onChange={handleChangeHighlight} />
+                <IconTextHighlight className='cursor-pointer hover:bg-slate-100' />
+              </label>
+              <label htmlFor='textColor' className='relative'>
+                <input id='textColor' type='color' className='w-0 h-0 absolute' onChange={handleChangeColor} />
+                <IconTextColor className='cursor-pointer hover:bg-slate-100' />
+              </label>
+            </div>
+            <div className='grow flex justify-end'>
+              <ModalProvider>
+                <ModalTrigger type='button'>
+                  <IconAddLink className='cursor-pointer hover:bg-slate-100' />
+                </ModalTrigger>
+                <ModalContent className='w-full max-w-[520px] flex flex-col'>
+                  <div className='flex justify-between mb-6'>
+                    <h1 className='text-lg font-bold'>링크 업로드</h1>
+                    <ModalClose />
+                  </div>
+                  <InputSlid
+                    label='링크'
+                    type='text'
+                    placeholder='영상이나 글, 파일의 링크를 넣어주세요'
+                    className='mb-10'
+                    value={linkUrlValue}
+                    onChange={handleChangeLinkUrlValue}
+                  />
+                  <ModalClose asChild>
+                    <Button className='w-full' onClick={handleSaveLinkUrl}>
+                      확인
+                    </Button>
+                  </ModalClose>
+                </ModalContent>
+              </ModalProvider>
+            </div>
+          </div>
+
           {savedToast && (
-            <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
+            <div className='max-w-[768px] fixed lg:sticky bottom-0 left-4 right-4 -translate-y-[155%] bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
               <IconCheck />
               <p className='font-semibold text-sm'>
                 임시 저장이 완료되었습니다 <span className='text-xs pointerfont-medium'>ㆍ {}초전</span>

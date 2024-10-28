@@ -3,7 +3,7 @@ type LinkEmbedProps = {
 };
 
 const LinkEmbed = ({ linkUrl }: LinkEmbedProps) => {
-  return <iframe src={linkUrl} className='min-h-[400px] w-full' />;
+  return <iframe src={linkUrl} className='h-full w-full' />;
 };
 
 export default LinkEmbed;
