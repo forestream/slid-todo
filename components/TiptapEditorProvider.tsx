@@ -11,7 +11,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 const TiptapEditorProvider = ({
   className = '',
-  content,
+  content = '',
   slotBefore,
   children,
 }: PropsWithChildren<{ className?: string; content?: string; slotBefore?: ReactElement }>) => {
