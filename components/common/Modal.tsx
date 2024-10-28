@@ -6,9 +6,11 @@ import {
   cloneElement,
   ComponentPropsWithoutRef,
   createContext,
+  forwardRef,
   isValidElement,
   MouseEventHandler,
   PropsWithChildren,
+  Ref,
   useContext,
   useRef,
   useState,
@@ -38,15 +40,19 @@ const useModalContext = () => {
   return context;
 };
 
-const ModalTrigger = ({ children, ...props }: ComponentPropsWithoutRef<'button'>) => {
-  const { handleOpen } = useModalContext();
+const ModalTrigger = forwardRef(
+  ({ children, ...props }: ComponentPropsWithoutRef<'button'>, ref: Ref<HTMLButtonElement>) => {
+    const { handleOpen } = useModalContext();
 
-  return (
-    <button onClick={handleOpen} {...props}>
-      {children}
-    </button>
-  );
-};
+    return (
+      <button onClick={handleOpen} ref={ref} {...props}>
+        {children}
+      </button>
+    );
+  }
+);
+
+ModalTrigger.displayName = 'ModalTrigger';
 
 const ModalContent = ({ className, children, ...props }: ComponentPropsWithoutRef<'div'>) => {
   const { isOpen, handleClose } = useModalContext();
