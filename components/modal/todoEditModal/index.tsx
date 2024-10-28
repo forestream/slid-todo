@@ -57,7 +57,7 @@ const TodoEditModal = forwardRef<HTMLButtonElement, TodoModalProps>(({ children,
       done: data.done,
     },
   });
-  console.log(data.goal?.id);
+
   const onSubmit = (data: TodoFormData) => {
     console.log('submit');
     console.log(data);
