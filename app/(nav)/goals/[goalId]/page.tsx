@@ -1,4 +1,4 @@
-import GoalDetail from '@/components/common/GoalItem/GoalDetail';
+import GoalTitleProgress from '@/components/common/GoalTitleWithProgress';
 import IconArrowRight from '@/public/icons/IconArrowRight';
 import IconNoteAll from '@/public/icons/IconNoteAll';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ export default function GoalDetailPage({ params }: { params: { goalId: string } 
       <div className='w-full h-full max-w-[1200px] flex-col space-y-6'>
         <div className='text-slate-900 text-lg font-semibold'>목표</div>
         <article className='flex-col mt-4'>
-          <GoalDetail goalId={+params.goalId} />
+          <GoalTitleProgress goalId={+params.goalId} />
         </article>
         <div className='bg-blue-100 rounded-xl'>
           <Link href={`/notes/${params.goalId}`} className='flex px-6 py-4 gap-2 items-center'>

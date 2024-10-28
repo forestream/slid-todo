@@ -1,12 +1,12 @@
 'use client';
 import IconFlag from '@/public/icons/IconFlag';
-import DropdownMenu from '../DropdownMenu';
-import ProgressBar from '../ProgressBar';
+import DropdownMenu from './DropdownMenu';
+import ProgressBar from './ProgressBar';
 import useGoalQuery from '@/lib/hooks/useGoalQuery';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 import { IconKebab } from '@/public/icons/IconKebab';
 
-const GoalDetail = ({ goalId }: { goalId: number }) => {
+const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
   const { data: goal } = useGoalQuery(goalId);
   const progress = useTodoProgressQuery(goalId).data?.progress || 0;
 
@@ -29,4 +29,4 @@ const GoalDetail = ({ goalId }: { goalId: number }) => {
   );
 };
 
-export default GoalDetail;
+export default GoalTitleWithProgress;
