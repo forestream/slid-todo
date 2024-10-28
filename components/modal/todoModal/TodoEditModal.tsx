@@ -8,22 +8,21 @@ import FileUpload from './ButtonUploadFile';
 import CheckboxToggle from './CheckboxToggle';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
-import { todoEditSchema, TodoFormData } from '@/lib/schemas/todosSchemas';
+import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
 
-interface TodoModalProps {
-  title: string;
+interface TodoEditModalProps {
   data: Todo;
   children?: React.ReactNode;
 }
 
-const TodoEditModal = forwardRef<HTMLButtonElement, TodoModalProps>(({ children, data, title }, ref) => {
+const TodoEditModal = forwardRef<HTMLButtonElement, TodoEditModalProps>(({ children, data }, ref) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm<TodoFormData>({
+  } = useForm<TodoEditFormData>({
     resolver: zodResolver(todoEditSchema),
     defaultValues: {
       title: data.title,
@@ -34,7 +33,7 @@ const TodoEditModal = forwardRef<HTMLButtonElement, TodoModalProps>(({ children,
     },
   });
 
-  const onSubmit = (data: TodoFormData) => {
+  const onSubmit = (data: TodoEditFormData) => {
     console.log('submit');
     console.log(data);
   };
@@ -49,7 +48,7 @@ const TodoEditModal = forwardRef<HTMLButtonElement, TodoModalProps>(({ children,
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
           <div className='flex gap-2 flex-col'>
             <div className='flex justify-between items-center'>
-              <h1 className='text-lg font-bold'>{title}</h1>
+              <h1 className='text-lg font-bold'>할 일 수정</h1>
               <ModalClose />
             </div>
             <CheckboxToggle

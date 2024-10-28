@@ -3,7 +3,7 @@ import IconStateActive from '@/public/icons/IconStateActive';
 import { useState } from 'react';
 
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { TodoFormData } from '.';
+import { TodoFormData } from './TodoEditModal';
 import IconClose from '@/public/icons/IconClose';
 
 interface FileUploadProps {

@@ -7,7 +7,7 @@ import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todos';
 import { useRef } from 'react';
-import TodoEditModal from '@/components/modal/todoEditModal';
+import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 
 interface TodoIconProps {
   data: Todo;
@@ -73,7 +73,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         </div>
       </div>
-      <TodoEditModal ref={modalRef} data={data} title='할 일 수정' />
+      <TodoEditModal ref={modalRef} data={data} />
     </>
   );
 };

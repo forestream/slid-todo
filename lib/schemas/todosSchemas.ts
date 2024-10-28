@@ -22,4 +22,4 @@ export const todoEditSchema = z.object({
   done: z.boolean(),
 });
 
-export type TodoFormData = z.infer<typeof todoEditSchema>;
+export type TodoEditFormData = z.infer<typeof todoEditSchema>;
