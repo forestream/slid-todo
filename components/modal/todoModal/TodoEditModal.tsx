@@ -9,6 +9,7 @@ import CheckboxToggle from './CheckboxToggle';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
 import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
+import { useUpdateTodoMutation } from '@/lib/hooks/useUpdateTodoMutation';
 
 interface TodoEditModalProps {
   data: Todo;
@@ -16,6 +17,7 @@ interface TodoEditModalProps {
 }
 
 const TodoEditModal = forwardRef<HTMLButtonElement, TodoEditModalProps>(({ children, data }, ref) => {
+  const editTodo = useUpdateTodoMutation();
   const {
     register,
     handleSubmit,
@@ -33,9 +35,10 @@ const TodoEditModal = forwardRef<HTMLButtonElement, TodoEditModalProps>(({ child
     },
   });
 
-  const onSubmit = (data: TodoEditFormData) => {
+  const onSubmit = (update: TodoEditFormData) => {
     console.log('submit');
-    console.log(data);
+    console.log(update);
+    editTodo.mutate({ id: Number(data.id), updates: update });
   };
 
   const { data: goalData } = useInfiniteGoalsQuery(1000);

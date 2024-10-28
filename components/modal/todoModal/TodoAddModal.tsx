@@ -7,12 +7,14 @@ import FileUpload from './ButtonUploadFile';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
 import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
+import { useAddTodoMutation } from '@/lib/hooks/useAddTodoMutation';
 
 interface TodoAddModalProps {
   children?: React.ReactNode;
 }
 
 const TodoAddModal = forwardRef<HTMLButtonElement, TodoAddModalProps>(({ children }, ref) => {
+  const addTodo = useAddTodoMutation();
   const {
     register,
     handleSubmit,
@@ -33,6 +35,15 @@ const TodoAddModal = forwardRef<HTMLButtonElement, TodoAddModalProps>(({ childre
   const onSubmit = (data: TodoEditFormData) => {
     console.log('submit');
     console.log(data);
+    const cleanedData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => {
+        // Boolean으로 변환했을 때 true인 값만 남김
+        // 즉, '', null, undefined, 0, false 등은 제거됨
+        return Boolean(value);
+      })
+    );
+
+    addTodo.mutate({ updates: cleanedData });
   };
 
   const { data: goalData } = useInfiniteGoalsQuery(1000);
