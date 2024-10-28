@@ -39,7 +39,7 @@ const DropdownMenu = ({ icon: Icon, dropdownList, onItemClick, className: iconBu
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
-          className='absolute right-0 mt-2 w-auto bg-white rounded-xl shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)] items-center'
+          className='z-10 absolute right-0 mt-2 w-auto bg-white rounded-xl shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)] items-center'
         >
           <ul className='flex flex-col text-nowrap text-sm sm:text-lg lg:text-lg text-slate-700 justify-center items-center text-center'>
             {dropdownList.map((listItem, idx) => (
