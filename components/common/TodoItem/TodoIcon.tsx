@@ -6,12 +6,15 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todos';
+import { useRef } from 'react';
+import TodoEditModal from '@/components/modal/todoEditModal';
 
 interface TodoIconProps {
   data: Todo;
 }
 
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
+  const modalRef = useRef<HTMLButtonElement>(null);
   const deleteTodo = useDeleteTodoMutation();
 
   const handleDelete = () => {
@@ -21,7 +24,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
 
   const handleDropdaownMenuClick = (item: string) => {
     if (item === '수정하기') {
-      // 수정하기페이지로 이동
+      modalRef.current?.click();
     } else if (item === '삭제하기') {
       handleDelete();
     }
@@ -45,30 +48,33 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
   return (
-    <div className='flex items-center gap-x-2'>
-      {data.fileUrl && (
-        <IconFile
-          className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
-          onClick={() => handleDownloadFile(data.fileUrl)}
-        />
-      )}
-      {data.linkUrl && (
-        <IconLink
-          className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
-          onClick={() => handleOpenLink(data?.linkUrl)}
-        />
-      )}
-      {data.noteId && <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />}
-      <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
-      <div className='flex justify-center items-center'>
-        <DropdownMenu
-          icon={IconKebabWithCircle}
-          dropdownList={['수정하기', '삭제하기']}
-          onItemClick={handleDropdaownMenuClick}
-          className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'
-        />
+    <>
+      <div className='flex items-center gap-x-2'>
+        {data.fileUrl && (
+          <IconFile
+            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
+            onClick={() => handleDownloadFile(data.fileUrl)}
+          />
+        )}
+        {data.linkUrl && (
+          <IconLink
+            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
+            onClick={() => handleOpenLink(data?.linkUrl)}
+          />
+        )}
+        {data.noteId && <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />}
+        <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+        <div className='flex justify-center items-center'>
+          <DropdownMenu
+            icon={IconKebabWithCircle}
+            dropdownList={['수정하기', '삭제하기']}
+            onItemClick={handleDropdaownMenuClick}
+            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'
+          />
+        </div>
       </div>
-    </div>
+      <TodoEditModal ref={modalRef} data={data} title='할 일 수정' />
+    </>
   );
 };
 

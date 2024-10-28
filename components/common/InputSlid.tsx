@@ -6,7 +6,7 @@ import IconVisibilityOn from '@/public/icons/IconVisibilityOn';
 import IconVisibilityOff from '@/public/icons/IconVisibilityOff';
 
 interface Option {
-  value: string;
+  value: number | string;
   label: string;
 }
 
@@ -71,12 +71,10 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
           {type === 'select' ? (
             <select
               ref={ref as React.Ref<HTMLSelectElement>}
-              className={`${baseInputClass} appearance-none pr-10`}
+              className={`${baseInputClass} appearance-none pr-10 `}
               {...props}
             >
-              <option disabled value=''>
-                {placeholder || '선택하세요'}
-              </option>
+              <option value=''>{placeholder || '선택하세요'}</option>
               {options.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}

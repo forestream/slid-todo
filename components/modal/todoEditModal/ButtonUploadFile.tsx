@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { TodoFormData } from '.';
+import IconClose from '@/public/icons/IconClose';
 
 interface FileUploadProps {
   register: UseFormRegister<TodoFormData>;
@@ -116,7 +117,7 @@ const FileUpload = ({
               onClick={removeFile}
               className='p-1 hover:bg-gray-100 rounded-full transition-colors duration-200'
             >
-              <div className='w-4 h-4 text-slate-400' />
+              <IconClose />
             </button>
           </div>
         )}
