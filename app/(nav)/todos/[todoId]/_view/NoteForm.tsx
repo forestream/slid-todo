@@ -1,24 +1,13 @@
 'use client';
 
 import Button from '@/components/common/ButtonSlid';
-import InputSlid from '@/components/common/InputSlid';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
+import TiptapEditor from '@/components/TiptapEditor';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
-import IconAddLink from '@/public/icons/IconAddLink';
-import IconCheck from '@/public/icons/IconCheck';
 import IconClose from '@/public/icons/IconClose';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import IconTextAlignLeft from '@/public/icons/IconTextAlignLeft';
-import IconTextAlignMiddle from '@/public/icons/IconTextAlignMiddle';
-import IconTextAlignRight from '@/public/icons/IconTextAlignRight';
-import IconTextBold from '@/public/icons/IconTextBold';
-import IconTextBulletPoint from '@/public/icons/IconTextBulletPoint';
-import IconTextColor from '@/public/icons/IconTextColor';
-import IconTextItalics from '@/public/icons/IconTextItalics';
-import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
-import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import { useParams } from 'next/navigation';
 import {
   ChangeEventHandler,
@@ -30,6 +19,9 @@ import {
   useRef,
   useState,
 } from 'react';
+import TiptapCharacterCount from './TiptapCharacterCount';
+import IconCheck from '@/public/icons/IconCheck';
+import { useCurrentEditor } from '@tiptap/react';
 
 type NoteFormProps = {
   title?: string;
@@ -39,48 +31,35 @@ type NoteFormProps = {
   noteId?: string;
 };
 
-const NoteForm = ({
-  title: initTitle = '',
-  content: initContent = '',
-  linkUrl: initLinkUrl = '',
-  method = 'POST',
-  noteId,
-}: NoteFormProps) => {
+const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = 'POST', noteId }: NoteFormProps) => {
+  const { editor } = useCurrentEditor();
   const { todoId } = useParams();
-
   const { data } = useTodosQuery(todoId as string);
   const todo = data?.todos.find((todo) => todo.id === Number(todoId));
   const { mutate } = useNoteMutation(todoId as string);
-
   const [title, setTitle] = useState(initTitle);
-  const [content, setContent] = useState(initContent);
   const [linkUrl, setLinkUrl] = useState(initLinkUrl);
-  const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
+  const [savedToast, setSavedToast] = useState(false);
+  const [openSavedToast, setOpenSavedToast] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  console.log('render');
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
   };
-  const handleChangeContent: ChangeEventHandler<HTMLTextAreaElement> = (e) => setContent(e.target.value);
-  const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
-    setLinkUrlValue(e.target.value);
-  const handleSaveLinkUrl: MouseEventHandler<HTMLButtonElement> = () => setLinkUrl(linkUrlValue);
-
-  const titleRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  const [savedToast, setSavedToast] = useState(false);
-  const [openSavedToast, setOpenSavedToast] = useState(false);
+  const handleSaveLinkUrl = (linkUrlValue: string) => setLinkUrl(linkUrlValue);
 
   const handleSave = useCallback(() => {
     window.localStorage.setItem(
       'savedNote' + todoId,
-      JSON.stringify({ todoId, title: titleRef.current?.value, content: contentRef.current?.value, linkUrl })
+      JSON.stringify({ todoId, title: titleRef.current?.value, content: editor?.getHTML(), linkUrl })
     );
     setSavedToast(true);
     setTimeout(() => {
       setSavedToast(false);
     }, 1000 * 5);
-  }, [todoId, linkUrl]);
+  }, [todoId, linkUrl, editor]);
 
   const savedNote = useMemo(() => {
     if (!globalThis.window) return;
@@ -91,9 +70,7 @@ const NoteForm = ({
 
   const handleOpenSaved = () => {
     setTitle(savedNote.title.length ? savedNote.title : '제목없음');
-    setContent(savedNote.content);
     setLinkUrl(savedNote.linkUrl);
-    setLinkUrlValue(savedNote.linkUrl);
     setOpenSavedToast(false);
   };
 
@@ -109,6 +86,7 @@ const NoteForm = ({
 
   useEffect(() => {
     if (savedNote) setOpenSavedToast(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -118,12 +96,12 @@ const NoteForm = ({
   const handleClickSubmit: MouseEventHandler<HTMLButtonElement> = async () => {
     const note: {
       title: string;
-      content: string;
+      content: string | undefined;
       todoId: number;
       linkUrl?: string;
     } = {
       title,
-      content,
+      content: editor?.getHTML(),
       todoId: +todoId,
       linkUrl,
     };
@@ -145,7 +123,7 @@ const NoteForm = ({
         <button className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' onClick={handleSave}>
           임시저장
         </button>
-        <Button disabled={!title.length || !content.length} onClick={handleClickSubmit}>
+        <Button disabled={!title.length || !editor?.getText().length} onClick={handleClickSubmit}>
           작성 완료
         </Button>
       </div>
@@ -204,11 +182,7 @@ const NoteForm = ({
           </p>
         </div>
         <hr />
-        <div className='w-full my-3'>
-          <p className='text-slate-800 text-xs font-medium'>
-            공백포함 : 총 {content.length}자 | 공백제외 : 총 {content.replaceAll(/\s+/g, '').length}자
-          </p>
-        </div>
+        <TiptapCharacterCount />
         {linkUrl && (
           <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
             <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
@@ -221,65 +195,16 @@ const NoteForm = ({
           </div>
         )}
         <div className='grow'>
-          <textarea
-            ref={contentRef}
-            placeholder='이 곳을 클릭해 노트 작성을 시작해주세요'
-            className='resize-none w-full h-full focus-visible:outline-none text-slate-700'
-            value={content}
-            onChange={handleChangeContent}
-          />
+          <TiptapEditor linkUrl={initLinkUrl} onSaveLinkUrl={handleSaveLinkUrl} />
         </div>
-        <div className='w-full border border-slate-200 rounded-full py-2.5 px-4 absolute bottom-0 bg-white flex gap-4'>
-          <div className='flex gap-1'>
-            <IconTextBold className='cursor-pointer hover:bg-slate-100' />
-            <IconTextItalics className='cursor-pointer hover:bg-slate-100' />
-            <IconTextUnderline className='cursor-pointer hover:bg-slate-100' />
+        {savedToast && (
+          <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
+            <IconCheck />
+            <p className='font-semibold text-sm'>
+              임시 저장이 완료되었습니다 <span className='text-xs pointerfont-medium'>ㆍ {}초전</span>
+            </p>
           </div>
-          <div className='flex gap-1'>
-            <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
-            <IconTextAlignMiddle className='cursor-pointer hover:bg-slate-100' />
-            <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
-          </div>
-          <div className='flex gap-1'>
-            <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
-            <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
-            <IconTextColor className='cursor-pointer hover:bg-slate-100' />
-          </div>
-          <div className='grow flex justify-end'>
-            <ModalProvider>
-              <ModalTrigger type='button'>
-                <IconAddLink className='cursor-pointer hover:bg-slate-100' />
-              </ModalTrigger>
-              <ModalContent className='w-full max-w-[520px] flex flex-col'>
-                <div className='flex justify-between mb-6'>
-                  <h1 className='text-lg font-bold'>링크 업로드</h1>
-                  <ModalClose />
-                </div>
-                <InputSlid
-                  label='링크'
-                  type='text'
-                  placeholder='영상이나 글, 파일의 링크를 넣어주세요'
-                  className='mb-10'
-                  value={linkUrlValue}
-                  onChange={handleChangeLinkUrlValue}
-                />
-                <ModalClose asChild>
-                  <Button className='w-full' onClick={handleSaveLinkUrl}>
-                    확인
-                  </Button>
-                </ModalClose>
-              </ModalContent>
-            </ModalProvider>
-          </div>
-          {savedToast && (
-            <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
-              <IconCheck />
-              <p className='font-semibold text-sm'>
-                임시 저장이 완료되었습니다 <span className='text-xs font-medium'>ㆍ {}초전</span>
-              </p>
-            </div>
-          )}
-        </div>
+        )}
       </form>
     </>
   );

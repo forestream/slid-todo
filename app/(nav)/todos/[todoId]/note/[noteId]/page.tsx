@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import NoteForm from '../../_view/NoteForm';
+import TiptapEditorProvider from '@/components/TiptapEditorProvider';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
   const { noteId } = params;
@@ -16,7 +17,11 @@ export default async function Page({ params }: { params: { noteId: string } }) {
     <main className='flex w-full'>
       <section className='w-10 h-screen'></section> {/* 링크 임베드 */}
       <section className='max-w-[800px] w-full py-6 px-10 flex flex-col'>
-        <NoteForm title={title} content={content} linkUrl={linkUrl} method='PATCH' noteId={noteId} />
+        <TiptapEditorProvider
+          className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces'
+          content={content}
+          slotBefore={<NoteForm title={title} content={content} linkUrl={linkUrl} method='PATCH' noteId={noteId} />}
+        />
       </section>
     </main>
   );
