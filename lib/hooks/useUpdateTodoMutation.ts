@@ -1,13 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
-import { TodoItemData } from '@/components/common/TodoItem';
 import { findMatchingTodoQueries, isTodosQueryKey } from '../utils/findMatchingTodoQueries';
-
-export interface TodosResponse {
-  todos: TodoItemData[];
-  totalCount: number;
-  nextCursor?: number;
-}
+import { GetTodosResponse } from '../types/todos';
 
 export interface UpdateTodoInput {
   id: number;
@@ -51,7 +45,7 @@ export const useUpdateTodoMutation = () => {
         console.log('queryKey', queryKey);
         console.log('oldData', oldData);
         if (oldData) {
-          queryClient.setQueryData<InfiniteData<TodosResponse>>(queryKey, () => {
+          queryClient.setQueryData<InfiniteData<GetTodosResponse>>(queryKey, () => {
             console.log('oldData', oldData);
             return {
               ...oldData,

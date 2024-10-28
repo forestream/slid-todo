@@ -1,8 +1,8 @@
-import { TodoItemData } from '@/lib/api/getTodos';
+import { Todo } from '@/lib/types/todos';
 import TodoItem from '../common/TodoItem';
 
 interface AllTodoListProps {
-  todos: TodoItemData[];
+  todos: Todo[];
 }
 
 const AllTodoList: React.FC<AllTodoListProps> = ({ todos }) => {

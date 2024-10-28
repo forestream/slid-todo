@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
+import { GetTodosResponse } from '../types/todos';
 
 interface TodosSearchParams {
   goalId?: number;
@@ -8,7 +9,7 @@ interface TodosSearchParams {
 }
 
 export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}) => {
-  return useInfiniteQuery({
+  return useInfiniteQuery<GetTodosResponse>({
     queryKey: ['todos', searchParams],
     queryFn: ({ pageParam }) => {
       // 기본 파라미터 설정
@@ -17,7 +18,7 @@ export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}) => {
         ...(searchParams.goalId !== undefined && { goalId: String(searchParams.goalId) }),
         ...(searchParams.done !== undefined && { done: String(searchParams.done) }),
       };
-
+      console.log('pageParam', pageParam);
       // pageParam이 초기값(1)이 아닐 때만 cursor 추가
       if (pageParam !== 1) {
         stringifiedParams.cursor = String(pageParam);
