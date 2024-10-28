@@ -33,7 +33,7 @@ const NavGoal = () => {
         {data?.pages.map((page, idx) => (
           <div key={page.nextCursor || idx} className='flex-col'>
             {page.goals.map((goal: Goal) => (
-              <Link href={`/goals/${goal.title}`} key={goal.id} className='flex p-2 text-slate-700 text-sm font-medium'>
+              <Link href={`/goals/${goal.id}`} key={goal.id} className='flex p-2 text-slate-700 text-sm font-medium'>
                 {`· ${goal.title}`}
               </Link>
             ))}
