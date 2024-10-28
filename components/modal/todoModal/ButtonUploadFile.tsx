@@ -1,15 +1,15 @@
 import IconInactive from '@/public/icons/IconInactive';
-import IconStateActive from '@/public/icons/IconStateActive';
 import { useState } from 'react';
 
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { TodoFormData } from './TodoEditModal';
 import IconClose from '@/public/icons/IconClose';
+import { TodoEditFormData } from '@/lib/schemas/todosSchemas';
+import { IconStateActiveWhite } from '@/public/icons/IconStateActiveWhite';
 
 interface FileUploadProps {
-  register: UseFormRegister<TodoFormData>;
-  setValue: UseFormSetValue<TodoFormData>;
-  watch: UseFormWatch<TodoFormData>;
+  register: UseFormRegister<TodoEditFormData>;
+  setValue: UseFormSetValue<TodoEditFormData>;
+  watch: UseFormWatch<TodoEditFormData>;
   maxSize?: number;
   className?: string;
   label?: string;
@@ -103,7 +103,7 @@ const FileUpload = ({
               ${error ? 'border-red-500' : 'border-gray-300'}
               transition-colors duration-200`}
             >
-              {fileUrl ? <IconStateActive /> : <IconInactive />}
+              {fileUrl ? <IconStateActiveWhite /> : <IconInactive />}
               <span>파일 업로드</span>
             </label>
           )}
