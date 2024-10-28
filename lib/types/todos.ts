@@ -1,4 +1,4 @@
-export interface Goal {
+export interface GoalInTodo {
   id: number;
   title: string;
 }
@@ -10,7 +10,7 @@ export interface Todo {
   fileUrl: string | null;
   title: string;
   id: number;
-  goal: Goal | null;
+  goal: GoalInTodo | null;
   userId: number;
   teamId: string;
   updatedAt: string;

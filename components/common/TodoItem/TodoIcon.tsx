@@ -4,11 +4,11 @@ import IconNoteView from '@/public/icons/IconNoteView';
 import IconNoteWrite from '@/public/icons/IconNoteWrite';
 import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
-import { TodoItemData } from '.';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
+import { Todo } from '@/lib/types/todos';
 
 interface TodoIconProps {
-  data: TodoItemData;
+  data: Todo;
 }
 
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {

@@ -18,7 +18,6 @@ export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}) => {
         ...(searchParams.goalId !== undefined && { goalId: String(searchParams.goalId) }),
         ...(searchParams.done !== undefined && { done: String(searchParams.done) }),
       };
-      console.log('pageParam', pageParam);
       // pageParam이 초기값(1)이 아닐 때만 cursor 추가
       if (pageParam !== 1) {
         stringifiedParams.cursor = String(pageParam);
