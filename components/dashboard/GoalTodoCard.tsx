@@ -21,7 +21,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
         </button>
       </div>
       <div className='my-2 w-full'>
-        <ProgressBar percentage={progress} />
+        <ProgressBar percentage={progress} className='px-[9px]' />
       </div>
       <TodoDoneItems goalId={goal.id} />
       <div className='w-full flex justify-center pt-4'>
