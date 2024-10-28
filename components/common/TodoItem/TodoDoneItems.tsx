@@ -8,17 +8,19 @@ const TodoDoneItems = ({ goalId, path }: { goalId: number; path?: string }) => {
   const todos = useTodosQuery(`${goalId}-todos`, { goalId: goalId, done: false, size: 5 }).data;
   const dones = useTodosQuery(`${goalId}-dones`, { goalId: goalId, done: true, size: 5 }).data;
 
-  const baseClass = 'w-full h-auto flex flex-col p-4 min-h-[228px] gap-4';
-  const todoContainerClass = clsx(baseClass, path === 'goalDetail' && 'bg-white rounded-lg');
-  const doneContainerClass = clsx(baseClass, path === 'goalDetail' && 'bg-slate-200 rounded-lg');
+  const baseClass = 'w-full h-auto flex flex-col min-h-[228px] gap-3';
+  const todoContainerClass = clsx(baseClass, path === 'goalDetail' && 'p-4 bg-white rounded-lg');
+  const doneContainerClass = clsx(baseClass, path === 'goalDetail' && 'p-4 bg-slate-200 rounded-lg');
 
   const contentClass = clsx(
-    'w-full',
-    todos?.totalCount === 0 ? 'h-full flex justify-center items-center' : 'h-auto flex flex-col gap-2'
+    'w-full flex',
+    todos?.totalCount === 0
+      ? 'h-full flex-col sm:flex-col lg:flex-row justify-center items-center'
+      : 'h-auto flex-col gap-2'
   );
 
   return (
-    <div className='flex gap-3'>
+    <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>
       <div className={todoContainerClass}>
         <div className='flex w-full justify-between'>
           <p className='bold text-sm font-semibold'>To do</p>
@@ -29,7 +31,6 @@ const TodoDoneItems = ({ goalId, path }: { goalId: number; path?: string }) => {
             </button>
           )}
         </div>
-
         <div className={contentClass}>
           {todos?.totalCount === 0 ? (
             <span className='text-sm text-center font-normal text-slate-500'>해야할 일이 아직 없어요</span>
@@ -38,7 +39,6 @@ const TodoDoneItems = ({ goalId, path }: { goalId: number; path?: string }) => {
           )}
         </div>
       </div>
-
       <div className={doneContainerClass}>
         <p className='bold text-sm font-semibold'>Done</p>
         <div className={contentClass}>
