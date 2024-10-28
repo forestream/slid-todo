@@ -24,7 +24,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
         <ProgressBar percentage={progress} className='px-[9px]' />
       </div>
       <TodoDoneItems goalId={goal.id} />
-      <div className='w-full flex justify-center pt-4'>
+      <div className='w-full flex justify-center'>
         <Button
           className='flex border-none gap-[2px] bg-white text-slate-700 hover:bg-blue-100
         text-sm font-semibold rounded-2xl w-[120px] h-8 justify-center items-center'

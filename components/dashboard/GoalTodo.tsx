@@ -37,7 +37,7 @@ const GoalTodo = () => {
               {page.goals.map((goal: Goal) => (
                 <div
                   key={goal.id}
-                  className='flex w-full h-[304px] p-6 bg-blue-50 rounded-[32px] hover:cursor-pointer'
+                  className='flex w-full min-h-[304px] h-auto p-6 bg-blue-50 rounded-[32px] hover:cursor-pointer'
                   onClick={handleGoalCardClick(goal.id)}
                 >
                   <GoalTodoCard goal={goal} />
