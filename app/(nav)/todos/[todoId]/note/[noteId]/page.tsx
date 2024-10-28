@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers';
 import NoteForm from '../../_view/NoteForm';
-import TiptapEditorProvider from '@/components/TiptapEditorProvider';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
   const { noteId } = params;
@@ -15,11 +14,7 @@ export default async function Page({ params }: { params: { noteId: string } }) {
 
   return (
     <main className='lg:flex h-screen w-screen'>
-      <TiptapEditorProvider
-        className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces '
-        content={content}
-        slotBefore={<NoteForm title={title} content={content} linkUrl={linkUrl} method='PATCH' noteId={noteId} />}
-      />
+      <NoteForm title={title} content={content} linkUrl={linkUrl} method='PATCH' noteId={noteId} />
     </main>
   );
 }
