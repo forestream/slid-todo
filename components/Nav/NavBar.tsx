@@ -1,21 +1,21 @@
 'use client';
-
 import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
+import { IconFold } from '@/public/icons/IconFold';
+import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
+import Link from 'next/link';
 import Profile from './NavProfile';
 import NavDashBoard from './NavDashBoard';
 import NavGoal from './NavGoal';
-import { IconFold } from '@/public/icons/IconFold';
 import ButtonSlid from '../common/ButtonSlid';
-import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 
 const NavBar = () => {
   return (
     <div className='w-screen h-screen flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
       <nav className='flex-col w-full h-full'>
         <div className='flex justify-between items-center pt-4'>
-          <div className='py-2 px-[5px] ml-4'>
+          <Link className='py-2 px-[5px] ml-4' href='/dashboard'>
             <ImageLogoWithText />
-          </div>
+          </Link>
           <button className='hidden sm:visible lg:visible w-6 h-6 mr-6 bg-white rounded-lg border-[1.5px] border-slate-400 sm:grid lg:grid place-items-center'>
             <IconFold />
           </button>
