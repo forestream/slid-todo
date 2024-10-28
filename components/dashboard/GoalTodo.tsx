@@ -5,8 +5,10 @@ import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import { Goal } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 const GoalTodo = () => {
+  const router = useRouter();
   const { ref, inView } = useInView({ threshold: 0.9 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(3);
 
@@ -15,6 +17,10 @@ const GoalTodo = () => {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
+
+  const handleGoalCardClick = (goalId: number) => () => {
+    router.push(`/goals/${goalId.toString()}`);
+  };
 
   return (
     <section className='flex mt-6'>
@@ -29,7 +35,11 @@ const GoalTodo = () => {
           {data?.pages.map((page, idx) => (
             <div key={page.nextCursor || idx} className='flex-col mt-6 space-y-4'>
               {page.goals.map((goal: Goal) => (
-                <div key={goal.id} className='flex w-full h-[304px] p-6 bg-blue-50 rounded-[32px]'>
+                <div
+                  key={goal.id}
+                  className='flex w-full h-[304px] p-6 bg-blue-50 rounded-[32px] hover:cursor-pointer'
+                  onClick={handleGoalCardClick(goal.id)}
+                >
                   <GoalTodoCard goal={goal} />
                 </div>
               ))}
