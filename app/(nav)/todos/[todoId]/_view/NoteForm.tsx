@@ -23,6 +23,7 @@ import TiptapCharacterCount from './TiptapCharacterCount';
 import IconCheck from '@/public/icons/IconCheck';
 import { useCurrentEditor } from '@tiptap/react';
 import LinkEmbed from './LinkEmbed';
+import IconModalClose from '@/public/icons/IconModalClose';
 
 type NoteFormProps = {
   title?: string;
@@ -43,6 +44,7 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
   const [savedToast, setSavedToast] = useState(false);
   const [openSavedToast, setOpenSavedToast] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
+  const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
@@ -74,6 +76,9 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
   };
 
   const handleCloseOpenSavedToast = () => setOpenSavedToast(false);
+
+  const handleOpenEmbed = () => setIsEmbedOpen(true);
+  const handleCloseEmbed = () => setIsEmbedOpen(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -117,16 +122,29 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
 
   return (
     <>
-      <section className='lg:w-10 lg:h-screen'>
-        <LinkEmbed linkUrl={linkUrl} />
-      </section>
-      <section className='max-w-[800px] w-full py-6 px-10 flex flex-col grow'>
+      {linkUrl && isEmbedOpen && (
+        <section className='max-h-[385px] md:max-h-[522px] lg:max-h-none h-full w-full lg:w-[543px] overflow-auto relative'>
+          <div className='absolute top-0 w-full h-10 flex justify-end items-center bg-white'>
+            <button className='mr-3' onClick={handleCloseEmbed}>
+              <IconModalClose />
+            </button>
+          </div>
+          <div className='h-full pt-10 bg-blue-50'>
+            <LinkEmbed linkUrl={linkUrl} />
+          </div>
+        </section>
+      )}
+      <section className='lg:max-w-[800px] w-full p-4 md:p-6 lg:py-6 lg:px-10 flex flex-col grow'>
         <div className='flex w-full items-center mb-4'>
           <h1 className='grow text-slate-900 font-semibold text-lg'>노트 작성</h1>
           <button className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' onClick={handleSave}>
             임시저장
           </button>
-          <Button disabled={!title.length || !editor?.getText().length} onClick={handleClickSubmit}>
+          <Button
+            disabled={!title.length || !editor?.getText().length}
+            onClick={handleClickSubmit}
+            className='py-2 px-4 md:py-3 md:px-6'
+          >
             작성 완료
           </Button>
         </div>
@@ -148,7 +166,7 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
             </button>
             <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
             <ModalProvider>
-              <ModalTrigger className='rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
+              <ModalTrigger className='shrink-0 rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
                 불러오기
               </ModalTrigger>
               <ModalContent className='max-w-[450px] flex flex-col items-center w-full'>
@@ -191,7 +209,9 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
               <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                 <IconEmbed />
               </div>
-              <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
+              <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={handleOpenEmbed}>
+                {linkUrl}
+              </p>
               <div className='w-6 h-6 rounded-full flex justify-center items-center'>
                 <IconClose />
               </div>
@@ -201,7 +221,7 @@ const NoteForm = ({ title: initTitle = '', linkUrl: initLinkUrl = '', method = '
             <TiptapEditor linkUrl={initLinkUrl} onSaveLinkUrl={handleSaveLinkUrl} />
           </div>
           {savedToast && (
-            <div className='absolute top-0 -translate-y-full w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 -ml-4 -mt-4 flex gap-2 items-center'>
+            <div className='max-w-[768px] fixed bottom-0 left-4 right-4 -translate-y-[155%] bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
               <IconCheck />
               <p className='font-semibold text-sm'>
                 임시 저장이 완료되었습니다 <span className='text-xs pointerfont-medium'>ㆍ {}초전</span>

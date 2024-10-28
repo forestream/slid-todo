@@ -50,8 +50,8 @@ const TiptapEditor = ({
   return (
     <>
       <EditorContent editor={editor} {...props} />
-      <div className='w-full border border-slate-200 rounded-full py-2.5 px-4 absolute bottom-0 bg-white flex gap-4'>
-        <div className='flex gap-1'>
+      <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 fixed bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
+        <div className='flex md:gap-1'>
           <button onClick={handleBold}>
             <IconTextBold className='cursor-pointer hover:bg-slate-100' />
           </button>
@@ -62,7 +62,7 @@ const TiptapEditor = ({
             <IconTextUnderline className='cursor- hover:bg-slate-100' />
           </button>
         </div>
-        <div className='flex gap-1'>
+        <div className='flex md:gap-1'>
           <button onClick={handleAlignLeft}>
             <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
           </button>
@@ -73,7 +73,7 @@ const TiptapEditor = ({
             <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
           </button>
         </div>
-        <div className='flex gap-1'>
+        <div className='flex md:gap-1'>
           <button onClick={handleBulletList}>
             <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
           </button>
