@@ -6,13 +6,13 @@ import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Goal } from '@/lib/types';
+import Link from 'next/link';
 
 const NavGoal = () => {
   const { ref, inView } = useInView({ threshold: 0.9 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
   useEffect(() => {
-    console.log(data);
     if (inView) {
       fetchNextPage();
     }
@@ -33,9 +33,9 @@ const NavGoal = () => {
         {data?.pages.map((page, idx) => (
           <div key={page.nextCursor || idx} className='flex-col'>
             {page.goals.map((goal: Goal) => (
-              <div key={goal.id} className='flex p-2 text-slate-700 text-sm font-medium'>
+              <Link href={`/goals/${goal.title}`} key={goal.id} className='flex p-2 text-slate-700 text-sm font-medium'>
                 {`· ${goal.title}`}
-              </div>
+              </Link>
             ))}
           </div>
         ))}
