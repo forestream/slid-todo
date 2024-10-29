@@ -1,22 +1,20 @@
 import IconInactive from '@/public/icons/IconInactive';
 import { useState } from 'react';
-
-import { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { UseFormRegister, UseFormSetValue, UseFormWatch, FieldValues, Path, PathValue } from 'react-hook-form';
 import IconClose from '@/public/icons/IconClose';
-import { TodoEditFormData } from '@/lib/schemas/todosSchemas';
 import { IconStateActiveWhite } from '@/public/icons/IconStateActiveWhite';
 
-interface FileUploadProps {
-  register: UseFormRegister<TodoEditFormData>;
-  setValue: UseFormSetValue<TodoEditFormData>;
-  watch: UseFormWatch<TodoEditFormData>;
+interface FileUploadProps<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  setValue: UseFormSetValue<T>;
+  watch: UseFormWatch<T>;
   maxSize?: number;
   className?: string;
   label?: string;
   error?: string;
 }
 
-const FileUpload = ({
+const FileUpload = <T extends FieldValues>({
   register,
   setValue,
   watch,
@@ -24,12 +22,11 @@ const FileUpload = ({
   className = '',
   label = '파일',
   error,
-}: FileUploadProps) => {
+}: FileUploadProps<T>) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
-  // react-hook-form을 통해 현재 파일 URL 값을 감시
-  const fileUrl = watch('fileUrl');
+  const fileUrl = watch('fileUrl' as Path<T>);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -43,6 +40,7 @@ const FileUpload = ({
     setIsUploading(true);
     setUploadError(null);
     setFileName(file.name);
+
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -57,8 +55,7 @@ const FileUpload = ({
       }
 
       const data = await response.json();
-      // react-hook-form의 setValue를 통해 form 값 업데이트
-      setValue('fileUrl', data.url, {
+      setValue('fileUrl' as Path<T>, data.url, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
@@ -72,32 +69,31 @@ const FileUpload = ({
   };
 
   const removeFile = () => {
-    setValue('fileUrl', '', {
+    setValue('fileUrl' as Path<T>, '' as PathValue<T, Path<T>>, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
+    setFileName(null);
   };
 
-  // register를 통해 hidden input 등록
-  const { ref, ...rest } = register('fileUrl');
+  const { ref, ...rest } = register('fileUrl' as Path<T>);
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className='block text-base font-semibold text-slate-800 mb-3 '>{label}</label>
+      <label className='block text-base font-semibold text-slate-800 mb-3'>{label}</label>
       <div className='flex items-center space-x-4'>
         <div className='relative'>
-          <input type='file' id={`file-upload-${name}`} className='hidden' onChange={handleFileUpload} accept='*/*' />
-          {/* hidden input for react-hook-form */}
+          <input type='file' id='file-upload' className='hidden' onChange={handleFileUpload} accept='*/*' />
           <input type='hidden' {...rest} ref={ref} />
           {isUploading ? (
-            <div className='flex items-center justify-center rounded-lg  text-white hover:text-slate-900 cursor-pointer py-2 px-3 gap-1'>
+            <div className='flex items-center justify-center rounded-lg text-white hover:text-slate-900 cursor-pointer py-2 px-3 gap-1'>
               <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900'></div>
               <span className='text-slate-400'>업로드 중...</span>
             </div>
           ) : (
             <label
-              htmlFor={`file-upload-${name}`}
+              htmlFor='file-upload'
               className={`flex items-center justify-center rounded-lg bg-slate-900 text-white hover:text-slate-900 cursor-pointer py-2 px-3 gap-1
               ${isUploading ? 'bg-gray-100' : 'hover:bg-gray-50 hover:text-slate-900'} 
               ${error ? 'border-red-500' : 'border-gray-300'}
@@ -111,7 +107,7 @@ const FileUpload = ({
 
         {fileUrl && (
           <div className='flex items-center space-x-2'>
-            <span className='text-sm text-slate-400'>{fileName}</span>
+            <span className='text-sm text-slate-400'>{fileName || '파일'}</span>
             <button
               type='button'
               onClick={removeFile}
@@ -122,7 +118,7 @@ const FileUpload = ({
           </div>
         )}
 
-        {!fileUrl && !isUploading && <span className=' text-slate-400'>업로드한 파일이 없습니다.</span>}
+        {!fileUrl && !isUploading && <span className='text-slate-400'>업로드한 파일이 없습니다.</span>}
       </div>
 
       {(uploadError || error) && <p className='text-red-500 text-sm mt-1'>{uploadError || error}</p>}
