@@ -1,11 +1,11 @@
 'use client';
 
-import TodoIcon from './TodoIcon';
-import GoalTitle from './GoalTitle';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
-import CheckIcon from './CheckIcon';
 import { Todo } from '@/lib/types/todos';
+import CheckIcon from './CheckIcon';
+import TodoIcon from './TodoIcon';
+import GoalTitle from './GoalTitle';
 
 interface TodoItemProps {
   data: Todo;
@@ -18,11 +18,11 @@ const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-x-2 min-w-0 flex-1'>
           <CheckIcon done={data.done} id={data.id} />
-          <div className={twMerge(clsx('truncate hover:underline cursor-pointer', data.done && 'line-through'))}>
+          <div className={twMerge(clsx('truncate hover:text-link cursor-pointer', data.done && 'line-through'))}>
             {data.title}
           </div>
         </div>
-        <div className='transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'>
+        <div className='flex transition-all duration-200 group-hover:w-auto group-focus-within:w-auto'>
           <TodoIcon data={data} />
         </div>
       </div>

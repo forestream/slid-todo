@@ -3,7 +3,7 @@ import { Goal } from '@/lib/types';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import ProgressBar from '../common/ProgressBar';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
-import TodoDoneItems from './TodoItemsDashboard';
+import TodoItemsDashboard from './TodoItemsDashboard';
 import Link from 'next/link';
 
 const GoalTodoCard = ({ goal }: { goal: Goal }) => {
@@ -25,7 +25,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
           <ProgressBar percentage={progress} className='px-[9px]' />
         </div>
       </div>
-      <TodoDoneItems goalId={goal.id} />
+      <TodoItemsDashboard goalId={goal.id} />
     </div>
   );
 };

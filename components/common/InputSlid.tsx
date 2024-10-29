@@ -6,7 +6,7 @@ import IconVisibilityOn from '@/public/icons/IconVisibilityOn';
 import IconVisibilityOff from '@/public/icons/IconVisibilityOff';
 
 interface Option {
-  value: string;
+  value: number | string;
   label: string;
 }
 
@@ -58,7 +58,9 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
       clsx('block text-base font-semibold text-slate-800 mb-3', 'text-sm sm:text-base', labelClassName)
     );
 
-    const errorClass = twMerge(clsx('mt-2 ml-4 text-red-700', 'text-xs sm:text-sm', 'animate-shake', errorClassName));
+    const errorClass = twMerge(
+      clsx('absolute mt-1 ml-4 text-red-700', 'text-xs sm:text-sm', 'animate-shake', errorClassName)
+    );
 
     return (
       <div className={twMerge('mb-4', className)}>
@@ -71,12 +73,10 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
           {type === 'select' ? (
             <select
               ref={ref as React.Ref<HTMLSelectElement>}
-              className={`${baseInputClass} appearance-none pr-10`}
+              className={`${baseInputClass} appearance-none pr-10 `}
               {...props}
             >
-              <option disabled value=''>
-                {placeholder || '선택하세요'}
-              </option>
+              <option value=''>{placeholder || '선택하세요'}</option>
               {options.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}

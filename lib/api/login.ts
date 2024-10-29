@@ -1,19 +1,4 @@
-interface LoginFormData {
-  email: string;
-  password: string;
-}
-
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface LoginResponse {
-  user: User;
-}
+import { LoginFormData, LoginResponse } from '../types/auth';
 
 export const login = async (data: LoginFormData): Promise<LoginResponse> => {
   try {
