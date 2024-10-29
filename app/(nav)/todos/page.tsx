@@ -1,5 +1,5 @@
-import TodoContent from '@/components/AllTodos/TodoContent';
-import PageContainer from '@/components/common/PageLayout/PageContainer';
+import TodoContent from '@/components/allTodos/TodoContent';
+import PageContainer from '@/components/common/pageLayout/PageContainer';
 import { Suspense } from 'react';
 
 export default function Alltodos() {
