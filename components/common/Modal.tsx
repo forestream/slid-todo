@@ -18,7 +18,9 @@ import {
 import { createPortal } from 'react-dom';
 import { twMerge } from 'tailwind-merge';
 
-const ModalContext = createContext({ isOpen: false, handleOpen: () => {}, handleClose: () => {} });
+const ModalContext = createContext<{ isOpen: boolean; handleOpen: () => void; handleClose: () => void } | undefined>(
+  undefined
+);
 
 const ModalProvider = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,22 +56,28 @@ const ModalTrigger = forwardRef(
 
 ModalTrigger.displayName = 'ModalTrigger';
 
-const ModalContent = ({ className, children, ...props }: ComponentPropsWithoutRef<'div'>) => {
+const ModalContent = ({
+  className,
+  closeOnClickOverlay = true,
+  children,
+  ...props
+}: ComponentPropsWithoutRef<'div'> & { closeOnClickOverlay?: boolean }) => {
   const { isOpen, handleClose } = useModalContext();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const handleClickOverlay: MouseEventHandler = (e) => {
+  const handleClickOverlay: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!closeOnClickOverlay) return;
     e.stopPropagation();
-    if (!ref.current?.contains(e.target as Node)) handleClose();
+    handleClose();
   };
 
   return (
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0 flex justify-center items-center p-8' onClick={handleClickOverlay}>
-            <div className='absolute inset-0 bg-black opacity-50'></div>
+          <div className='fixed inset-0 flex justify-center items-center p-8'>
+            <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
             <div className={twMerge('p-6 rounded-xl bg-white z-10', className)} ref={ref} {...props}>
               {children}
             </div>
@@ -80,29 +88,32 @@ const ModalContent = ({ className, children, ...props }: ComponentPropsWithoutRe
   );
 };
 
-const ModalClose = ({
-  asChild = false,
-  children,
-  ...props
-}: ComponentPropsWithoutRef<'button'> & { asChild?: boolean }) => {
-  const { handleClose } = useModalContext();
+const ModalClose = forwardRef(
+  (
+    { asChild = false, children, ...props }: ComponentPropsWithoutRef<'button'> & { asChild?: boolean },
+    ref: Ref<HTMLButtonElement>
+  ) => {
+    const { handleClose } = useModalContext();
 
-  if (asChild && Children.count(children) === 1 && isValidElement(children)) {
-    return cloneElement(children, {
-      ...props,
-      ...children.props,
-      onClick: () => {
-        if (children.props.onClick) children.props.onClick();
-        handleClose();
-      },
-    });
+    if (asChild && Children.count(children) === 1 && isValidElement(children)) {
+      return cloneElement(children, {
+        ...props,
+        ...children.props,
+        onClick: () => {
+          if (children.props.onClick) children.props.onClick();
+          handleClose();
+        },
+      });
+    }
+
+    return (
+      <button onClick={handleClose} {...props} ref={ref}>
+        {children ? children : <IconModalClose />}
+      </button>
+    );
   }
+);
 
-  return (
-    <button onClick={handleClose} {...props}>
-      {children ? children : <IconModalClose />}
-    </button>
-  );
-};
+ModalClose.displayName = 'ModalClose';
 
-export { ModalProvider, ModalTrigger, ModalContent, ModalClose };
+export { ModalProvider, ModalTrigger, ModalContent, ModalClose, useModalContext };
