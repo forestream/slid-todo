@@ -103,6 +103,7 @@ const ModalClose = forwardRef(
           if (children.props.onClick) children.props.onClick();
           handleClose();
         },
+        ref,
       });
     }
 
