@@ -17,7 +17,9 @@ const ModalSavedNote = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps) =>
         불러오기
       </ModalTrigger>
       <ModalContent className='max-w-[450px] flex flex-col items-center w-full'>
-        <p className='font-medium mt-2'>&apos;{savedNote.title.length ? savedNote.title : '제목없음'}&apos;</p>
+        <p className='font-medium mt-2'>
+          &apos;{savedNote && savedNote.title.length ? savedNote.title : '제목없음'}&apos;
+        </p>
         <p className='font-medium mb-8'>제목의 노트를 불러오시겠어요?</p>
         <div className='flex gap-2'>
           <ModalClose asChild>

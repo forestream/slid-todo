@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import LinkEmbed from './LinkEmbed';
+import { useCallback, useState } from 'react';
 import IconModalClose from '@/public/icons/IconModalClose';
 import NoteFormContent from './NoteFormContent';
+import TiptapEditorProvider from '@/components/TiptapEditorProvider';
 
 type NoteFormProps = {
   title?: string;
@@ -23,9 +23,9 @@ const NoteForm = ({
   const [linkUrl, setLinkUrl] = useState(initLinkUrl);
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
-  const handleSaveLinkUrl = (linkUrlValue: string) => setLinkUrl(linkUrlValue);
+  const handleSaveLinkUrl = useCallback((linkUrlValue: string) => setLinkUrl(linkUrlValue), []);
 
-  const handleOpenEmbed = () => setIsEmbedOpen(true);
+  const handleOpenEmbed = useCallback(() => setIsEmbedOpen(true), []);
   const handleCloseEmbed = () => setIsEmbedOpen(false);
 
   return (
@@ -38,18 +38,23 @@ const NoteForm = ({
             </button>
           </div>
           <div className='h-full pt-10 bg-blue-50'>
-            <LinkEmbed linkUrl={linkUrl} />
+            <iframe src={linkUrl} className='h-full w-full' />
           </div>
         </section>
       )}
-      <NoteFormContent
-        linkUrl={linkUrl}
-        onSaveLinkUrl={handleSaveLinkUrl}
-        initTitle={initTitle}
-        initContent={initContent}
-        method={method}
-        noteId={noteId}
-        onOpenEmbed={handleOpenEmbed}
+      <TiptapEditorProvider
+        className='resize-none w-full h-full focus-visible:outline-none text-slate-700 whitespace-break-spaces '
+        content={initContent}
+        slotBefore={
+          <NoteFormContent
+            linkUrl={linkUrl}
+            initTitle={initTitle}
+            method={method}
+            noteId={noteId}
+            onSaveLinkUrl={handleSaveLinkUrl}
+            onOpenEmbed={handleOpenEmbed}
+          />
+        }
       />
     </>
   );

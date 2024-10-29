@@ -8,7 +8,6 @@ import {
   createContext,
   forwardRef,
   isValidElement,
-  MouseEventHandler,
   PropsWithChildren,
   Ref,
   useContext,
