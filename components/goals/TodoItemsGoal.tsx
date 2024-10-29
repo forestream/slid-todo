@@ -43,9 +43,9 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
   const baseContainerClasses =
     'w-full h-auto flex flex-col min-h-[228px] max-h-[228px] sm:max-h-[228px] lg:max-h-[456px] p-4 gap-3';
 
-  const getContentClass = (isEmpty: boolean) =>
+  const contentClass = (isEmpty: boolean) =>
     clsx(
-      'w-full flex overflow-y-auto',
+      'w-full flex overflow-y-auto min-h-[200px]',
       isEmpty ? 'h-full flex-col sm:flex-col lg:flex-row justify-center items-center' : 'h-auto flex-col gap-2'
     );
 
@@ -66,7 +66,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
           )}
         </div>
 
-        <div className={getContentClass(isEmpty)}>
+        <div className={contentClass(isEmpty)}>
           {isEmpty ? (
             <span className='text-sm text-center font-normal text-slate-500'>{section.emptyMessage}</span>
           ) : (
