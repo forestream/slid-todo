@@ -4,7 +4,7 @@ import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { IconArrowDown2 } from '@/public/icons/IconArrowDown2';
 import { useMemo } from 'react';
 import { Todo } from '@/lib/types/todos';
-import TodoItem from '../common/TodoItem';
+import TodoItem from '../common/todoItem';
 import Button from '../common/ButtonSlid';
 
 const TODO_SECTIONS = [

@@ -4,7 +4,7 @@ import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import { useInView } from 'react-intersection-observer';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { useEffect, useMemo } from 'react';
-import TodoItem from '../common/TodoItem';
+import TodoItem from '../common/todoItem';
 import { Todo } from '@/lib/types/todos';
 
 const TODO_SECTIONS = [
