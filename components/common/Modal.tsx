@@ -8,7 +8,6 @@ import {
   createContext,
   forwardRef,
   isValidElement,
-  MouseEventHandler,
   PropsWithChildren,
   Ref,
   useContext,
@@ -71,8 +70,10 @@ const ModalContent = ({
     handleClose();
   };
 
-  if (isOpen) document.body.style.overflow = 'hidden';
-  else document.body.style.overflow = '';
+  if (globalThis.window) {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+  }
 
   return (
     <>
