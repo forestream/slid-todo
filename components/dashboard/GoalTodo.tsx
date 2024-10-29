@@ -29,7 +29,10 @@ const GoalTodo = () => {
           {data?.pages.map((page, idx) => (
             <div key={page.nextCursor || idx} className='flex-col mt-6 space-y-4'>
               {page.goals.map((goal: Goal) => (
-                <div key={goal.id} className='flex w-full h-[352px] p-6 bg-blue-50 rounded-[32px] hover:cursor-pointer'>
+                <div
+                  key={goal.id}
+                  className='flex w-full min-h-[352px] h-auto p-6 bg-blue-50 rounded-[32px] hover:cursor-pointer'
+                >
                   <GoalTodoCard goal={goal} />
                 </div>
               ))}
