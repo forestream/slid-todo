@@ -11,17 +11,37 @@ interface DropdownProps {
 const DropdownMenu = ({ icon: Icon, dropdownList, onItemClick, className: iconButtonClasses }: DropdownProps) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const iconButtonRef = useRef<HTMLButtonElement>(null);
 
-  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
-  const closeDropdown = () => setDropdownOpen(false);
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+    if (!isDropdownOpen) {
+      iconButtonRef.current?.focus();
+    } else {
+      iconButtonRef.current?.blur();
+    }
+  };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+  const handleMouseOut = () => {
+    if (!isDropdownOpen) {
       closeDropdown();
     }
   };
 
+  const closeDropdown = () => setDropdownOpen(false);
+
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target) &&
+        iconButtonRef.current &&
+        !iconButtonRef.current.contains(target)
+      ) {
+        closeDropdown();
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -29,7 +49,9 @@ const DropdownMenu = ({ icon: Icon, dropdownList, onItemClick, className: iconBu
   return (
     <div className='flex-col justify-center items-center relative inline-block'>
       <button
+        ref={iconButtonRef}
         onClick={toggleDropdown}
+        onMouseOut={handleMouseOut}
         className='rounded focus:outline-none flex justify-center items-center'
         aria-label='더보기 메뉴 열기'
       >
