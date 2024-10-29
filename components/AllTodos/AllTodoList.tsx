@@ -1,5 +1,5 @@
 import { Todo } from '@/lib/types/todos';
-import TodoItem from '../common/todoItem';
+import TodoItem from '../common/TodoItem';
 
 interface AllTodoListProps {
   todos: Todo[];
