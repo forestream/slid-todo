@@ -1,5 +1,5 @@
 import GoalTitleProgress from '@/components/common/GoalTitleWithProgress';
-import TodoDoneItems from '@/components/goals/TodoItemsGoal';
+import TodoItemsGoal from '@/components/goals/TodoItemsGoal';
 import IconArrowRight from '@/public/icons/IconArrowRight';
 import IconNoteAll from '@/public/icons/IconNoteAll';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ export default function GoalDetailPage({ params }: { params: { goalId: string } 
             </div>
           </Link>
         </div>
-        <TodoDoneItems goalId={+params.goalId} />
+        <TodoItemsGoal goalId={+params.goalId} />
       </div>
     </main>
   );
