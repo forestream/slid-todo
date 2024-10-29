@@ -2,7 +2,7 @@
 
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import Button from '../common/ButtonSlid';
-import PageHeader from '../common/pageLayout/PageHeader';
+import PageHeader from '../common/PageLayout/PageHeader';
 import { useSearchParams } from 'next/navigation';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';

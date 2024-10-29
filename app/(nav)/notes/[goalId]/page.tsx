@@ -1,7 +1,7 @@
 'use client';
 
-import PageContainer from '@/components/common/pageLayout/PageContainer';
-import PageHeader from '@/components/common/pageLayout/PageHeader';
+import PageContainer from '@/components/common/PageLayout/PageContainer';
+import PageHeader from '@/components/common/PageLayout/PageHeader';
 import NoteGoalTitle from '@/components/notes/NoteGoalTitle';
 import NotesList from '@/components/notes/NotesList';
 import baseFetch from '@/lib/api/baseFetch';
