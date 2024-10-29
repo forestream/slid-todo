@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: '%s | SlidToDo',
     default: 'SlidToDo',
   },
-  description: '할 일을 슬라이드로 관리하세요',
+  description: '할 일을 SlidToDo로 관리하세요',
   keywords: ['to do', 'slid', 'slide', '할 일', '슬라이드'],
   openGraph: {
     title: 'SlidToDo',
