@@ -1,5 +1,5 @@
 'use client';
-import TodoItem from '../common/TodoItem';
+import TodoItem from '../common/todoItem';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import { Goal } from '@/lib/types';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';

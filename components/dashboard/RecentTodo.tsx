@@ -1,6 +1,6 @@
 import IconArrowRight from '@/public/icons/IconArrowRight';
 import { IconTodoRecently } from '@/public/icons/IconTodoRecently';
-import TodoItem from '../common/TodoItem';
+import TodoItem from '../common/todoItem';
 import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import Link from 'next/link';
 
