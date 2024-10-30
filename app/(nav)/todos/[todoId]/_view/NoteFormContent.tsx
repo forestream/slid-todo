@@ -3,11 +3,10 @@
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
 import TiptapEditor from '@/components/TiptapEditor';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
-import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import IconClose from '@/public/icons/IconClose';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import {
   ChangeEventHandler,
   FormEventHandler,
@@ -54,11 +53,12 @@ type NoteFormContentProps = {
 
 const NoteFormContent = memo(
   ({ linkUrl = '', initTitle = '', method = 'POST', noteId, onSaveLinkUrl, onOpenEmbed }: NoteFormContentProps) => {
+    const searchParams = useSearchParams();
+    const todoTitle = searchParams.get('todo');
+    const goalTitle = searchParams.get('goal');
     const { editor } = useCurrentEditor();
     const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
     const { todoId } = useParams();
-    const { data } = useTodosQuery(todoId as string);
-    const todo = data?.todos.find((todo) => todo.id === Number(todoId));
     const { mutate } = useNoteMutation(todoId as string);
     const [title, setTitle] = useState(initTitle);
     const [savedToast, setSavedToast] = useState(false);
@@ -170,11 +170,11 @@ const NoteFormContent = memo(
           <div className='flex justify-center items-center rounded-md bg-slate-800 w-6 h-6'>
             <IconFlag />
           </div>
-          <p className='font-medium text-base text-slate-800'>{todo?.goal.title}</p>
+          <p className='font-medium text-base text-slate-800'>{goalTitle}</p>
         </div>
         <div className='flex w-full gap-2 mb-6'>
           <p className='rounded-md bg-slate-100 p-1 text-slate-700 text-xs'>To do</p>
-          <p className='text-sm font-normal text-slate-700'>{todo?.title}</p>
+          <p className='text-sm font-normal text-slate-700'>{todoTitle}</p>
         </div>
 
         {openSavedToast && (
