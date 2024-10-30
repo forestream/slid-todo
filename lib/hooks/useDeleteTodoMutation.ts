@@ -17,6 +17,7 @@ export const useDeleteTodoMutation = () => {
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['GoalProgress'] });
     },
   });
 };
