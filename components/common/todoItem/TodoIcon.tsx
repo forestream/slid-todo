@@ -9,6 +9,7 @@ import { Todo } from '@/lib/types/todos';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { SheetTrigger } from '../Sheet';
+import { useRouter } from 'next/navigation';
 
 interface TodoIconProps {
   data: Todo;
@@ -17,6 +18,7 @@ interface TodoIconProps {
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const modalRef = useRef<HTMLButtonElement>(null);
   const deleteTodo = useDeleteTodoMutation();
+  const router = useRouter();
 
   const handleDelete = () => {
     // 삭제할지 모달을 띄워주면 좋겠음
@@ -48,6 +50,11 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     if (!linkUrl) return;
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
+
+  const handleCreateNote = () => {
+    router.push(`/todos/${data.id}/create?todo=${data.title}&goal=${data.goal?.title}`);
+  };
+
   return (
     <>
       <div className='flex items-center gap-x-2'>
@@ -68,7 +75,9 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
           </SheetTrigger>
         )}
-        <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+        <button onClick={handleCreateNote}>
+          <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+        </button>
         <div className='flex justify-center items-center'>
           <DropdownMenu
             icon={IconKebabWithCircle}

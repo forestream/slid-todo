@@ -3,6 +3,10 @@ import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
 import { useState } from 'react';
 import TiptapEditorProvider from '../TiptapEditorProvider';
+import DropdownMenu from '../common/DropdownMenu';
+import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
+import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
+import { useRouter } from 'next/navigation';
 
 type NoteDetailProps = {
   id: number;
@@ -12,6 +16,28 @@ type NoteDetailProps = {
 
 const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { data: note, isLoading } = useNoteQuery(id);
+
+  const createdAt = new Date(note?.createdAt ?? 0);
+  const year = createdAt.getFullYear();
+  const month = createdAt.getMonth() + 1;
+  const date = createdAt.getDate();
+  const deleteNote = useDeleteNoteMutation();
+  const router = useRouter();
+
+  const handleDelete = () => {
+    // 삭제할지 모달을 띄워주면 좋겠음
+    deleteNote.mutate({ noteId: id });
+  };
+
+  const handleDropdaownMenuClick = (item: string) => {
+    if (item === '수정하기') {
+      // 수정하기페이지로 이동
+      router.push(`/todos/${note?.todo.id}/note/${note?.id}?todo=${note?.todo.title}&goal=${note?.goal.title}`);
+    } else if (item === '삭제하기') {
+      handleDelete();
+    }
+  };
+
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
   const handleToggleEmbed = () => setIsEmbedOpen(!isEmbedOpen);
@@ -34,10 +60,20 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
             <IconFlag />
           </div>
           <p className='font-medium text-base text-slate-800'>{goalTitle}</p>
+          <div className='grow flex justify-end w-10'>
+            <DropdownMenu
+              icon={IconKebabWithCircle}
+              dropdownList={['수정하기', '삭제하기']}
+              onItemClick={handleDropdaownMenuClick}
+            />
+          </div>
         </div>
-        <div className='flex w-full gap-2 mb-6'>
+        <div className='flex items-center w-full gap-2 mb-6'>
           <p className='rounded-md bg-slate-100 p-1 text-slate-700 text-xs'>To do</p>
           <p className='text-sm font-normal text-slate-700'>{todoTitle}</p>
+          <p className='grow text-right text-xs text-slate-500'>
+            {year}. {String(month).padStart(2, '0')}. {date}
+          </p>
         </div>
 
         <hr />
@@ -58,7 +94,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
           )}
           <div className='lg:relative'>
             <div>
-              <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }}></TiptapEditorProvider>
+              <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }} />
             </div>
           </div>
         </div>

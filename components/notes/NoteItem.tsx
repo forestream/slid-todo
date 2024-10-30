@@ -6,6 +6,7 @@ import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { MouseEventHandler, useRef } from 'react';
 import NoteDetail from './NoteDetail';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
+import { useRouter } from 'next/navigation';
 
 interface NoteItemProps {
   note: Note;
@@ -13,6 +14,7 @@ interface NoteItemProps {
 
 const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const deleteNote = useDeleteNoteMutation();
+  const router = useRouter();
 
   const handleDelete = () => {
     // 삭제할지 모달을 띄워주면 좋겠음
@@ -22,6 +24,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const handleDropdaownMenuClick = (item: string) => {
     if (item === '수정하기') {
       // 수정하기페이지로 이동
+      router.push(`/todos/${note.todo.id}/note/${note.id}?todo=${note.todo.title}&goal=${note.goal.title}`);
     } else if (item === '삭제하기') {
       handleDelete();
     }
