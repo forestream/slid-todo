@@ -1,6 +1,6 @@
 'use client';
 
-import { EditorProvider } from '@tiptap/react';
+import { EditorOptions, EditorProvider } from '@tiptap/react';
 import { PropsWithChildren, ReactElement } from 'react';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
@@ -13,9 +13,15 @@ const TiptapEditorProvider = ({
   className = '',
   content = '',
   slotBefore,
+  editorOptions,
   children,
-}: PropsWithChildren<{ className?: string; content?: string; slotBefore?: ReactElement }>) => {
-  const options = {
+}: PropsWithChildren<{
+  className?: string;
+  content?: string;
+  slotBefore?: ReactElement;
+  editorOptions?: Partial<EditorOptions>;
+}>) => {
+  const options: Partial<EditorOptions> = {
     extensions: [
       StarterKit.configure({
         bulletList: {
@@ -44,12 +50,15 @@ const TiptapEditorProvider = ({
         class: className,
       },
     },
-    slotBefore,
     content,
-    immediatelyRender: false,
+    ...editorOptions,
   };
 
-  return <EditorProvider {...options}>{children}</EditorProvider>;
+  return (
+    <EditorProvider slotBefore={slotBefore} immediatelyRender={false} {...options}>
+      {children}
+    </EditorProvider>
+  );
 };
 
 export default TiptapEditorProvider;

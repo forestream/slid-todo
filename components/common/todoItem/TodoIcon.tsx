@@ -8,6 +8,7 @@ import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todos';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
+import { SheetTrigger } from '../Sheet';
 
 interface TodoIconProps {
   data: Todo;
@@ -62,7 +63,11 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             onClick={() => handleOpenLink(data?.linkUrl)}
           />
         )}
-        {data.noteId && <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />}
+        {data.noteId && (
+          <SheetTrigger>
+            <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+          </SheetTrigger>
+        )}
         <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
         <div className='flex justify-center items-center'>
           <DropdownMenu
