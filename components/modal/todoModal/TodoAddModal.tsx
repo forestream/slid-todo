@@ -9,6 +9,7 @@ import Button from '@/components/common/ButtonSlid';
 import { useAddTodoMutation } from '@/lib/hooks/useAddTodoMutation';
 import { TodoAddFormData, todoAddSchema } from '@/lib/schemas/todosSchemas';
 import cleanedFormData from '@/lib/utils/cleanedFormData';
+import GoalSelector from './GoalSelector';
 
 interface TodoAddModalProps {
   children?: React.ReactNode;
@@ -35,7 +36,6 @@ const Content = () => {
 
   const onSubmit = (data: TodoAddFormData) => {
     const cleanedData = cleanedFormData(data);
-
     addTodo.mutate({ updates: cleanedData });
     handleClose();
   };
@@ -45,7 +45,7 @@ const Content = () => {
 
   return (
     <ModalContent className='sm:w-[520px] sm:h-[676px] w-full h-full p-4 sm:p-6 flex flex-col'>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full'>
         <div className='flex gap-2 flex-col'>
           <div className='flex justify-between items-center'>
             <h1 className='text-lg font-bold'>할 일 생성</h1>
@@ -70,12 +70,10 @@ const Content = () => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
-        <InputSlid
-          label='목표'
-          type='select'
-          placeholder='정해진 목표가 없습니다'
-          {...register('goalId')}
-          options={goals && goals.map((goal) => ({ value: goal.id, label: goal.title }))}
+        <GoalSelector
+          goals={goals}
+          onSelect={(goalId) => setValue('goalId', goalId)}
+          selectedGoalId={watch('goalId')}
         />
         <div className='mt-10'>
           <Button type='submit' className='w-full'>
