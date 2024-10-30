@@ -8,6 +8,7 @@ import TodoIcon from './TodoIcon';
 import GoalTitle from './GoalTitle';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
 import NoteDetail from '@/components/notes/NoteDetail';
+import { usePathname } from 'next/navigation';
 
 interface TodoItemProps {
   data: Todo;
@@ -15,6 +16,8 @@ interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
+  const pathname = usePathname();
+
   return (
     <SheetProvider>
       <div className='text-sm group'>
@@ -33,14 +36,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
         </div>
         {viewGoal && data.goal?.id && <GoalTitle goal={data.goal} />}
       </div>
-      <SheetContent className='relative'>
-        <div className='overflow-auto h-full'>
-          <div className='flex justify-end mb-6'>
-            <SheetClose />
-          </div>
-          <NoteDetail id={data.noteId} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
-        </div>
-      </SheetContent>
+      {pathname.includes('/notes/') ||
+        (pathname.includes('/todos') && (
+          <SheetContent className='relative'>
+            <div className='overflow-auto h-full'>
+              <div className='flex justify-end mb-6'>
+                <SheetClose />
+              </div>
+              <NoteDetail id={data.noteId ?? 0} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
+            </div>
+          </SheetContent>
+        ))}
     </SheetProvider>
   );
 };
