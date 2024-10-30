@@ -79,6 +79,7 @@ const DropdownMenu = ({
     <div className={`flex-col justify-center items-center relative inline-block text-nowrap ${className}`}>
       <button
         ref={iconButtonRef}
+        type='button'
         onClick={toggleDropdown}
         onMouseOut={handleMouseOut}
         className={`rounded focus:outline-none flex w-full justify-between items-center ${buttonClassName}`}
