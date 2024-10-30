@@ -1,4 +1,4 @@
-import { User } from '@/lib/api/login';
+import { User } from '@/lib/types/auth';
 import { getUserFromStorage, removeUserFromStorage } from '@/lib/utils/auth';
 import { ImageProfile } from '@/public/images/ImageProfile';
 import { ImageProfileSmall } from '@/public/images/ImageProfileSmall';
