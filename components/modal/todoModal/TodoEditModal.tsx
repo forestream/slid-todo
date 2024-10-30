@@ -11,6 +11,7 @@ import Button from '@/components/common/ButtonSlid';
 import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
 import { useUpdateTodoMutation } from '@/lib/hooks/useUpdateTodoMutation';
 import cleanedFormData from '@/lib/utils/cleanedFormData';
+import GoalSelector from './GoalSelector';
 
 interface TodoEditModalProps {
   data: Todo;
@@ -76,13 +77,19 @@ const Content = ({ data }: { data: Todo }) => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
-        <InputSlid
+        {/* <InputSlid
           label='목표'
           type='select'
           placeholder='정해진 목표가 없습니다'
           {...register('goalId')}
           options={goals && goals.map((goal) => ({ value: goal.id, label: goal.title }))}
+        /> */}
+        <GoalSelector
+          goals={goals}
+          onSelect={(goalId) => setValue('goalId', goalId)}
+          selectedGoalId={watch('goalId')}
         />
+
         <div className='mt-10'>
           <Button type='submit' className='w-full'>
             확인
