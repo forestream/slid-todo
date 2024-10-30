@@ -77,13 +77,6 @@ const Content = ({ data }: { data: Todo }) => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
-        {/* <InputSlid
-          label='목표'
-          type='select'
-          placeholder='정해진 목표가 없습니다'
-          {...register('goalId')}
-          options={goals && goals.map((goal) => ({ value: goal.id, label: goal.title }))}
-        /> */}
         <GoalSelector
           goals={goals}
           onSelect={(goalId) => setValue('goalId', goalId)}
