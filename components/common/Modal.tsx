@@ -17,16 +17,19 @@ import {
 import { createPortal } from 'react-dom';
 import { twMerge } from 'tailwind-merge';
 
-const ModalContext = createContext<{ isOpen: boolean; handleOpen: () => void; handleClose: () => void } | undefined>(
-  undefined
-);
+const ModalContext = createContext<
+  { isOpen: boolean; handleOpen: () => void; handleClose: () => void; beforeClose?: () => void } | undefined
+>(undefined);
 
-const ModalProvider = ({ children }: PropsWithChildren) => {
+const ModalProvider = ({ beforeClose, children }: PropsWithChildren<{ beforeClose?: () => void }>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
 
-  const handleClose = () => setIsOpen(false);
+  const handleClose = () => {
+    beforeClose?.();
+    setIsOpen(false);
+  };
 
   return <ModalContext.Provider value={{ isOpen, handleOpen, handleClose }}>{children}</ModalContext.Provider>;
 };
