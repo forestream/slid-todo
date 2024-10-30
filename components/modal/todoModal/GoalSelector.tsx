@@ -6,12 +6,14 @@ import IconArrowDown from '@/public/icons/IconArrowDown';
 import clsx from 'clsx';
 
 interface GoalSelectorProps {
+  label: string;
+  placeholder: string;
   goals: GoalInTodo[] | undefined;
   onSelect: (goalId: number | null) => void;
   selectedGoalId: number | null;
 }
 
-const GoalSelector = ({ goals, onSelect, selectedGoalId }: GoalSelectorProps) => {
+const GoalSelector = ({ label, placeholder, goals, onSelect, selectedGoalId }: GoalSelectorProps) => {
   const [selectedGoal, setSelectedGoal] = useState<GoalInTodo | null>(null);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const GoalSelector = ({ goals, onSelect, selectedGoalId }: GoalSelectorProps) =>
   };
 
   const isPlaceholder = !selectedGoal;
-  const dropdownText = selectedGoal ? selectedGoal.title : '목표를 선택해주세요';
+  const dropdownText = selectedGoal ? selectedGoal.title : placeholder;
   const goalClass = clsx(
     'w-full px-6 py-3 rounded-xl',
     'focus:outline-none focus:ring-1 focus:ring-blue-500',
@@ -49,15 +51,16 @@ const GoalSelector = ({ goals, onSelect, selectedGoalId }: GoalSelectorProps) =>
   );
 
   return (
-    <div className='w-full justify-center items-center text-center'>
+    <div className='w-full justify-center pt-6'>
+      {label && <label className={'block text-sm font-semibold text-slate-800 mb-3 sm:text-base'}>{label}</label>}
       <DropdownMenu
         text={dropdownText}
         sideIcon={IconArrowDown}
-        dropdownList={['목표를 선택해주세요', ...(goals ? goals.map((goal) => goal.title) : [])]}
+        dropdownList={[placeholder, ...(goals ? goals.map((goal) => goal.title) : [])]}
         dropdownAlign='center'
         onItemClick={handleDropdownClick}
         className={goalClass}
-        dropdownListClassName='bg-gray-50 hover:bg-gray-200'
+        dropdownItemClassName='bg-gray-50 hover:bg-gray-200'
       />
       <input type='hidden' value={selectedGoal ? selectedGoal.id : ''} />
     </div>

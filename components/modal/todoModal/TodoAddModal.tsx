@@ -73,6 +73,8 @@ const Content = () => {
           error={errors.fileUrl?.message}
         />
         <GoalSelector
+          label='목표'
+          placeholder='목표를 선택해주세요'
           goals={goals}
           onSelect={(goalId) => setValue('goalId', goalId)}
           selectedGoalId={watch('goalId')}

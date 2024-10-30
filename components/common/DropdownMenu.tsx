@@ -13,6 +13,7 @@ interface DropdownProps {
   iconClassName?: string;
   buttonClassName?: string;
   dropdownListClassName?: string;
+  dropdownItemClassName?: string;
 }
 
 const DropdownMenu = ({
@@ -26,6 +27,7 @@ const DropdownMenu = ({
   iconClassName,
   buttonClassName,
   dropdownListClassName,
+  dropdownItemClassName,
 }: DropdownProps) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,14 +67,19 @@ const DropdownMenu = ({
   }, []);
 
   const dropdownClassNames = clsx(
-    'z-10 absolute mt-2 bg-white rounded-xl text-slate-700',
+    'z-10 absolute mt-2 bg-white rounded-xl text-slate-700 max-h-64 sm:max-h-32 lg:max-h-32 overflow-y-auto',
     dropdownAlign === 'right' ? 'right-0 shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)]' : 'w-full shadow-lg left-0'
   );
 
   const dropdownMenuListClassNames = clsx(
-    'w-full flex justify-center items-center text-center',
-    'px-4 pt-2 pb-[6px] hover:bg-gray-100 cursor-pointer first:rounded-t-xl last:rounded-b-xl',
+    'flex flex-col text-nowrap text-sm sm:text-lg lg:text-lg justify-center items-center text-center',
     dropdownListClassName
+  );
+
+  const dropdownMenuItemClassNames = clsx(
+    'w-full flex max-h-[100px] overflow-y-auto',
+    'px-4 pt-2 pb-[6px] hover:bg-gray-100 cursor-pointer first:rounded-t-xl last:rounded-b-xl',
+    dropdownItemClassName
   );
 
   return (
@@ -90,11 +97,11 @@ const DropdownMenu = ({
 
       {isDropdownOpen && (
         <div ref={dropdownRef} className={dropdownClassNames}>
-          <ul className='flex flex-col text-nowrap text-sm sm:text-lg lg:text-lg justify-center items-center text-center'>
+          <ul className={dropdownMenuListClassNames}>
             {dropdownList.map((listItem, idx) => (
               <li
                 key={idx}
-                className={dropdownMenuListClassNames}
+                className={dropdownMenuItemClassNames}
                 onClick={() => {
                   onItemClick(listItem);
                   closeDropdown();
