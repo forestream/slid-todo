@@ -1,4 +1,5 @@
 'use client';
+
 import clsx from 'clsx';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { IconArrowDown2 } from '@/public/icons/IconArrowDown2';
