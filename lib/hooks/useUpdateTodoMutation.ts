@@ -64,6 +64,7 @@ export const useUpdateTodoMutation = () => {
     // 이 함수에서는 캐시된 데이터를 무효화한다
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['GoalProgress'] });
     },
   });
 };

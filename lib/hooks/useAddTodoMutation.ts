@@ -23,6 +23,7 @@ export const useAddTodoMutation = () => {
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['GoalProgress'] });
     },
   });
 };
