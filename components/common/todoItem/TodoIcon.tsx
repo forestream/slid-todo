@@ -8,8 +8,7 @@ import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todos';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
-import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
-import NoteDetail from '@/components/notes/NoteDetail';
+import { SheetTrigger } from '../Sheet';
 
 interface TodoIconProps {
   data: Todo;
@@ -65,19 +64,9 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         )}
         {data.noteId && (
-          <SheetProvider>
-            <SheetTrigger>
-              <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
-            </SheetTrigger>
-            <SheetContent className='relative'>
-              <div className='overflow-auto h-full'>
-                <div className='flex justify-end mb-6'>
-                  <SheetClose />
-                </div>
-                <NoteDetail id={data.noteId} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
-              </div>
-            </SheetContent>
-          </SheetProvider>
+          <SheetTrigger>
+            <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+          </SheetTrigger>
         )}
         <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
         <div className='flex justify-center items-center'>
