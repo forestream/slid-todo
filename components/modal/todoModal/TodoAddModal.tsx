@@ -24,6 +24,7 @@ const Content = () => {
     formState: { errors },
     setValue,
     watch,
+    reset,
   } = useForm<TodoAddFormData>({
     resolver: zodResolver(todoAddSchema),
     defaultValues: {
@@ -37,6 +38,7 @@ const Content = () => {
   const onSubmit = (data: TodoAddFormData) => {
     const cleanedData = cleanedFormData(data);
     addTodo.mutate({ updates: cleanedData });
+    reset();
     handleClose();
   };
 
