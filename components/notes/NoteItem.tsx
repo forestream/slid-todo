@@ -3,9 +3,9 @@ import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { Note } from '@/app/(nav)/notes/[goalId]/page';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
-import { ModalContent, ModalProvider, ModalTrigger } from '../common/Modal';
 import { MouseEventHandler, useRef } from 'react';
 import NoteDetail from './NoteDetail';
+import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
 
 interface NoteItemProps {
   note: Note;
@@ -60,12 +60,17 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
           </div>
         </div>
       </div>
-      <ModalProvider>
-        <ModalTrigger ref={triggerRef}></ModalTrigger>
-        <ModalContent>
-          <NoteDetail id={note.id} goalTitle={note.goal.title} todoTitle={note.todo.title} />
-        </ModalContent>
-      </ModalProvider>
+      <SheetProvider>
+        <SheetTrigger ref={triggerRef}></SheetTrigger>
+        <SheetContent className='relative'>
+          <div className='overflow-auto h-full'>
+            <div className='flex justify-end mb-6'>
+              <SheetClose />
+            </div>
+            <NoteDetail id={note.id} goalTitle={note.goal.title} todoTitle={note.todo.title} />
+          </div>
+        </SheetContent>
+      </SheetProvider>
     </>
   );
 };

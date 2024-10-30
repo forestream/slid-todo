@@ -2,7 +2,6 @@ import useNoteQuery from '@/lib/hooks/useNoteQuery';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
 import { useState } from 'react';
-import IconModalClose from '@/public/icons/IconModalClose';
 import TiptapEditorProvider from '../TiptapEditorProvider';
 
 type NoteDetailProps = {
@@ -15,27 +14,21 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { data: note, isLoading } = useNoteQuery(id);
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
-  const handleOpenEmbed = () => setIsEmbedOpen(true);
-  const handleCloseEmbed = () => setIsEmbedOpen(false);
+  const handleToggleEmbed = () => setIsEmbedOpen(!isEmbedOpen);
 
   if (isLoading) return;
 
   return (
     <>
       {note?.linkUrl && isEmbedOpen && (
-        <section className='max-h-[385px] md:max-h-[522px] lg:max-h-none h-full w-full lg:w-[543px] overflow-auto relative'>
-          <div className='absolute top-0 w-full h-10 flex justify-end items-center bg-white'>
-            <button className='mr-3' onClick={handleCloseEmbed}>
-              <IconModalClose />
-            </button>
-          </div>
-          <div className='h-full pt-10 bg-blue-50'>
+        <section className='h-[385px] lg:h-full w-full lg:w-[543px] overflow-auto relative mb-4 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:-translate-x-full'>
+          <div className='h-full bg-blue-50'>
             <iframe src={note?.linkUrl} className='h-full w-full' />
           </div>
         </section>
       )}
 
-      <section className='lg:max-w-[800px] w-full h-full p-4 md:p-6 lg:py-6 lg:px-10 flex flex-col grow '>
+      <section className='lg:max-w-[800px] w-full flex flex-col grow '>
         <div className='flex w-full gap-1.5 mb-3'>
           <div className='flex justify-center items-center rounded-md bg-slate-800 w-6 h-6'>
             <IconFlag />
@@ -48,27 +41,27 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
         </div>
 
         <hr />
-        <form className='grow w-full relative flex flex-col'>
+        <div className='w-full relative flex flex-col'>
           <div className='w-full relative h-7 my-3'>
             <div className='w-full text-lg font-medium focus-visible:outline-none'>{note?.title}</div>
           </div>
-          <hr />
+          <hr className='mb-3' />
           {note?.linkUrl && (
             <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
               <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                 <IconEmbed />
               </div>
-              <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={handleOpenEmbed}>
+              <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={handleToggleEmbed}>
                 {note?.linkUrl}
               </p>
             </div>
           )}
-          <div className='grow lg:relative'>
-            <div className='overflow-visible h-full'>
+          <div className='lg:relative'>
+            <div>
               <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }}></TiptapEditorProvider>
             </div>
           </div>
-        </form>
+        </div>
       </section>
     </>
   );
