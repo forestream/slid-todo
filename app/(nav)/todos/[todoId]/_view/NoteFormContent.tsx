@@ -14,7 +14,6 @@ import {
   MouseEventHandler,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -47,12 +46,31 @@ type NoteFormContentProps = {
   initTitle?: string;
   method: 'POST' | 'PATCH';
   noteId?: string;
+  openSavedToast: boolean;
+  savedNote: SavedNote;
+  savedToast: boolean;
   onSaveLinkUrl: (value: string) => void;
   onOpenEmbed: () => void;
+  onOpenSaved: () => void;
+  onChangeSavedToast: (status: boolean) => void;
+  onChangeOpenSavedToast: (status: boolean) => void;
 };
 
 const NoteFormContent = memo(
-  ({ linkUrl = '', initTitle = '', method = 'POST', noteId, onSaveLinkUrl, onOpenEmbed }: NoteFormContentProps) => {
+  ({
+    linkUrl = '',
+    initTitle = '',
+    method = 'POST',
+    noteId,
+    savedNote,
+    savedToast,
+    openSavedToast,
+    onSaveLinkUrl,
+    onOpenEmbed,
+    onOpenSaved,
+    onChangeSavedToast,
+    onChangeOpenSavedToast,
+  }: NoteFormContentProps) => {
     const searchParams = useSearchParams();
     const todoTitle = searchParams.get('todo');
     const goalTitle = searchParams.get('goal');
@@ -61,8 +79,6 @@ const NoteFormContent = memo(
     const { todoId } = useParams();
     const { mutate } = useNoteMutation(todoId as string);
     const [title, setTitle] = useState(initTitle);
-    const [savedToast, setSavedToast] = useState(false);
-    const [openSavedToast, setOpenSavedToast] = useState(false);
     const titleRef = useRef<HTMLInputElement>(null);
 
     const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
@@ -76,27 +92,13 @@ const NoteFormContent = memo(
         'savedNote' + todoId,
         JSON.stringify({ todoId, title: titleRef.current?.value, content: editor?.getHTML(), linkUrl })
       );
-      setSavedToast(true);
+      onChangeSavedToast(true);
       setTimeout(() => {
-        setSavedToast(false);
+        onChangeSavedToast(false);
       }, 1000 * 5);
-    }, [todoId, linkUrl, editor]);
+    }, [todoId, editor, linkUrl, onChangeSavedToast]);
 
-    const savedNote = useMemo<SavedNote>(() => {
-      if (!globalThis.window) return;
-      const item = window.localStorage.getItem('savedNote' + todoId);
-      return item && JSON.parse(item);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [todoId, savedToast]);
-
-    const handleOpenSaved = useCallback(() => {
-      if (!savedNote) return;
-      setTitle(savedNote.title.length ? savedNote.title : '제목없음');
-      onSaveLinkUrl(savedNote.linkUrl);
-      setOpenSavedToast(false);
-    }, [savedNote, onSaveLinkUrl]);
-
-    const handleCloseOpenSavedToast = () => setOpenSavedToast(false);
+    const handleCloseOpenSavedToast = () => onChangeOpenSavedToast(false);
 
     useEffect(() => {
       const id = setInterval(() => {
@@ -107,7 +109,7 @@ const NoteFormContent = memo(
     }, [handleSave, todoId]);
 
     useEffect(() => {
-      if (savedNote) setOpenSavedToast(true);
+      if (savedNote) onChangeOpenSavedToast(true);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -183,7 +185,7 @@ const NoteFormContent = memo(
               <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
             </button>
             <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
-            <ModalSavedNote onOpenSaved={handleOpenSaved} savedNote={savedNote} />
+            <ModalSavedNote onOpenSaved={onOpenSaved} savedNote={savedNote} />
           </div>
         )}
         <hr />
