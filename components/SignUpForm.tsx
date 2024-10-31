@@ -7,10 +7,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signUp } from '@/lib/api/signUp';
 import { useEffect, useRef, useState } from 'react';
-import IconStateActive from '@/public/icons/IconStateActive';
+import IconCheck from '@/public/icons/IconCheck';
+import SignupSuccessModal from './modal/SignupSuccessModal';
 
 const SignUpForm: React.FC = () => {
+  const modalRef = useRef<HTMLButtonElement>(null);
   const [isEmailAvailable, setIsEmailAvailable] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -29,10 +32,8 @@ const SignUpForm: React.FC = () => {
       setIsEmailAvailable(false);
       const response = await signUp(fetchData);
       console.log(response);
-      // Simulating an API call
 
-      // If login is successful, you might redirect or update state
-      // history.push('/dashboard');
+      modalRef.current?.click();
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes('이메일')) {
@@ -129,47 +130,50 @@ const SignUpForm: React.FC = () => {
   }, [email, setError]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-6 w-[343px] sm:w-[640px]'>
-      <InputSlid
-        type='text'
-        label='이름'
-        placeholder='이름를 입력해주세요'
-        {...register('name')}
-        error={errors.name?.message}
-      />
-      <div className=' relative'>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-6 w-[343px] sm:w-[640px]'>
         <InputSlid
           type='text'
-          label='이메일'
-          placeholder='이메일을 입력해주세요'
-          {...register('email')}
-          error={errors.email?.message}
+          label='이름'
+          placeholder='이름를 입력해주세요'
+          {...register('name')}
+          error={errors.name?.message}
         />
-        {isEmailAvailable && email && (
-          <div className='absolute left-2 -bottom-6 flex items-center text-link'>
-            <IconStateActive />
-            <span className='ml-1 text-sm'>사용 가능한 이메일입니다</span>
-          </div>
-        )}
-      </div>
-      <InputSlid
-        type='password'
-        label='비밀번호'
-        placeholder='비밀번호를 입력해주세요'
-        {...register('password')}
-        error={errors.password?.message}
-      />
-      <InputSlid
-        type='password'
-        label='비밀번호 확인'
-        placeholder='비밀번호를 다시 한 번 입력해주세요'
-        {...register('confirmPassword')}
-        error={errors.confirmPassword?.message}
-      />
-      <Button className='w-full' type='submit' disabled={isSubmitting}>
-        회원가입하기
-      </Button>
-    </form>
+        <div className=' relative'>
+          <InputSlid
+            type='text'
+            label='이메일'
+            placeholder='이메일을 입력해주세요'
+            {...register('email')}
+            error={errors.email?.message}
+          />
+          {isEmailAvailable && email && (
+            <div className='absolute left-2 -bottom-6 flex items-center text-link'>
+              <IconCheck />
+              <span className='ml-1 text-sm'>사용 가능한 이메일입니다</span>
+            </div>
+          )}
+        </div>
+        <InputSlid
+          type='password'
+          label='비밀번호'
+          placeholder='비밀번호를 입력해주세요'
+          {...register('password')}
+          error={errors.password?.message}
+        />
+        <InputSlid
+          type='password'
+          label='비밀번호 확인'
+          placeholder='비밀번호를 다시 한 번 입력해주세요'
+          {...register('confirmPassword')}
+          error={errors.confirmPassword?.message}
+        />
+        <Button className='w-full' type='submit' disabled={isSubmitting}>
+          회원가입하기
+        </Button>
+      </form>
+      <SignupSuccessModal ref={modalRef} />
+    </>
   );
 };
 
