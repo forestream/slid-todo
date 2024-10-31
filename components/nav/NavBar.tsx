@@ -7,13 +7,32 @@ import Profile from './NavProfile';
 import NavDashBoard from './NavDashBoard';
 import NavGoal from './NavGoal';
 import ButtonSlid from '../common/ButtonSlid';
-import { useRef } from 'react';
+import { SetStateAction, useRef, useState } from 'react';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
+import InputSlid from '../common/InputSlid';
+import { useAddGoalMutation } from '@/lib/hooks/useAddGoalMutation';
 
 const NavBar = () => {
   const modalRef = useRef<HTMLButtonElement>(null);
+  const [isGoalInputVisible, setIsGoalInputVisible] = useState(false);
+  const [goalInputValue, setGoalInputValue] = useState('· ');
+  const addGoal = useAddGoalMutation();
   const handleModalOpen = () => {
     modalRef.current?.click();
+  };
+  const handleAddGoalButtonClick = () => {
+    setIsGoalInputVisible(!isGoalInputVisible);
+  };
+  const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
+    setGoalInputValue(e.target.value);
+  };
+
+  const handleGoalSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Goal submitted:', goalInputValue);
+    addGoal.mutate({ updates: { title: goalInputValue.slice(1) } });
+    setIsGoalInputVisible(false);
+    setGoalInputValue('· ');
   };
 
   return (
@@ -38,8 +57,21 @@ const NavBar = () => {
             </div>
             <NavDashBoard />
             <NavGoal />
-            <div className='hidden sm:flex lg:flex items-center border-none w-full justify-center mb-6'>
-              <ButtonSlid variant='outlined' className='gap-[2px] w-[232px]'>
+            <div className='flex-col hidden sm:flex lg:flex items-center border-none w-full justify-center mb-6'>
+              {isGoalInputVisible && (
+                <div className='w-full flex items-center'>
+                  <form onSubmit={handleGoalSubmit} className='w-full'>
+                    <InputSlid
+                      type='text'
+                      inputClassName='flex p-2 text-sm font-medium bg-white'
+                      value={goalInputValue}
+                      onChange={handleInputChange}
+                    />
+                  </form>
+                </div>
+              )}
+
+              <ButtonSlid onClick={handleAddGoalButtonClick} variant='outlined' className='gap-[2px] w-[232px]'>
                 <IconPlusSmall stroke='#3B82F6' />
                 <span>새 목표</span>
               </ButtonSlid>
