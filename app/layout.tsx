@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     siteName: 'SlidToDo',
     images: [
       {
-        url: 'https://private-user-images.githubusercontent.com/126558640/380996792-e395877f-61ec-4394-ae79-955fe705312f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzAxODE3NzIsIm5iZiI6MTczMDE4MTQ3MiwicGF0aCI6Ii8xMjY1NTg2NDAvMzgwOTk2NzkyLWUzOTU4NzdmLTYxZWMtNDM5NC1hZTc5LTk1NWZlNzA1MzEyZi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQxMDI5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MTAyOVQwNTU3NTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xM2FlYjI3NTQ4OGQ0ZTU1YjYxZDlhOWVlMDRkMWI5NjkwN2EyZjc4MWU4YzFlNmEwN2E4NWQ3ZDdjNTJkOTk4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.EmRmkekrd5aiNgvoP3wGD7Gf8tbUxz9BjuXZWdjEQQ8',
-        width: 280,
-        height: 140,
+        url: 'https://raw.githubusercontent.com/FESI-4-4/slid-todo/94e3e96a28ec1a799f1d5d36c2dd833c7213ddf4/public/images/ImageOG.png',
+        width: 300,
+        height: 180,
       },
     ],
 
