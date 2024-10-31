@@ -35,6 +35,8 @@ import InputSlid from '@/components/common/InputSlid';
 import Button from '@/components/common/ButtonSlid';
 import ModalSavedNote from './ModalSavedNote';
 import { afterNoteMutation } from '@/app/actions';
+import { revalidatePath } from 'next/cache';
+import { useQueryClient } from '@tanstack/react-query';
 
 export type SavedNote = {
   title: string;
@@ -72,6 +74,7 @@ const NoteFormContent = memo(
     onChangeSavedToast,
     onChangeOpenSavedToast,
   }: NoteFormContentProps) => {
+    const queryClient = useQueryClient();
     const router = useRouter();
     const searchParams = useSearchParams();
     const todoTitle = searchParams.get('todo');
@@ -144,6 +147,7 @@ const NoteFormContent = memo(
         {
           onSuccess: () => {
             afterNoteMutation(Array.isArray(todoId) ? todoId[0] : todoId, noteId ?? '0');
+            queryClient.invalidateQueries({ queryKey: ['notes'] });
             router.back();
           },
         }

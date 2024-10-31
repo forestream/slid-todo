@@ -1,7 +1,7 @@
 import useNoteQuery from '@/lib/hooks/useNoteQuery';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import TiptapEditorProvider from '../TiptapEditorProvider';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
@@ -41,6 +41,10 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
   const handleToggleEmbed = () => setIsEmbedOpen(!isEmbedOpen);
+
+  const TiptapProviderOnContentChange = useCallback(() => {
+    return <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }} />;
+  }, [note?.content]);
 
   if (isLoading) return;
 
@@ -94,7 +98,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
           )}
           <div className='lg:relative'>
             <div>
-              <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }} />
+              <TiptapProviderOnContentChange />
             </div>
           </div>
         </div>
