@@ -15,7 +15,7 @@ const NavDashBoard = () => {
   return (
     <>
       <div className='w-full flex justify-between px-4 py-6 gap-2 text-nowrap'>
-        <Link href='/dashboard' className='flex gap-2'>
+        <Link href='/dashboard' className='flex gap-2 w-full'>
           <div className='w-6 h-6 flex justify-center items-center'>
             <IconDashboardSmall />
           </div>

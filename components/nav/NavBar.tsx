@@ -9,6 +9,7 @@ import NavGoal from './NavGoal';
 import ButtonSlid from '../common/ButtonSlid';
 import { useRef } from 'react';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
+import NavAllTodos from './NavAllTodos';
 
 const NavBar = () => {
   const modalRef = useRef<HTMLButtonElement>(null);
@@ -38,6 +39,7 @@ const NavBar = () => {
               </ButtonSlid>
             </div>
             <NavDashBoard />
+            <NavAllTodos />
             <NavGoal />
           </div>
         </nav>
