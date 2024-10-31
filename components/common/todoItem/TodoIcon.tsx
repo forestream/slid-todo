@@ -8,7 +8,9 @@ import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todos';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
-import { SheetTrigger } from '../Sheet';
+import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
+import { useRouter } from 'next/navigation';
+import NoteDetail from '@/components/notes/NoteDetail';
 
 interface TodoIconProps {
   data: Todo;
@@ -17,6 +19,7 @@ interface TodoIconProps {
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const modalRef = useRef<HTMLButtonElement>(null);
   const deleteTodo = useDeleteTodoMutation();
+  const router = useRouter();
 
   const handleDelete = () => {
     // 삭제할지 모달을 띄워주면 좋겠음
@@ -48,6 +51,12 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     if (!linkUrl) return;
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
+
+  const handleClickMutateNote = () =>
+    router.push(
+      `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${data.goal?.title}`
+    );
+
   return (
     <>
       <div className='flex items-center gap-x-2'>
@@ -64,11 +73,23 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         )}
         {data.noteId && (
-          <SheetTrigger>
-            <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
-          </SheetTrigger>
+          <SheetProvider>
+            <SheetTrigger>
+              <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+            </SheetTrigger>
+            <SheetContent className='relative'>
+              <div className='overflow-auto h-full'>
+                <div className='flex justify-end mb-6'>
+                  <SheetClose />
+                </div>
+                <NoteDetail id={data.noteId ?? 0} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
+              </div>
+            </SheetContent>
+          </SheetProvider>
         )}
-        <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+        <button onClick={handleClickMutateNote}>
+          <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+        </button>
         <div className='flex justify-center items-center'>
           <DropdownMenu
             icon={IconKebabWithCircle}

@@ -10,12 +10,12 @@ export async function middleware(request: NextRequest) {
   const search = request.nextUrl.search;
 
   // 이미 로그인한 사용자가 접근하면 안 되는 페이지 목록
-  const guestOnlyPages = ['/login', '/signup'];
+  const guestOnlyPages = new Set(['/login', '/signup']);
   // 이미 로그인한 사용자만 접근할 수 있는 페이지 목록
-  const userOnlyPages = ['/dashboard', '/todos'];
-
+  const userOnlyPages = ['/dashboard', '/todos', '/goals', '/notes'];
+  const isMainPage = pathname === '/';
   // 이미 로그인한 사용자가 로그인/회원가입 페이지에 접근하는 경우
-  if (guestOnlyPages.some((page) => pathname.startsWith(page))) {
+  if (guestOnlyPages.has(pathname) || isMainPage) {
     if (accessToken) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
@@ -55,5 +55,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/4-4-dev/:path*', '/login', '/signup', '/dashboard', '/todos'],
+  matcher: ['/4-4-dev/:path*', '/login', '/signup', '/dashboard', '/todos', '/goals', '/notes', '/'],
 };

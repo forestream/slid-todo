@@ -1,12 +1,12 @@
 import IconArrowRight from '@/public/icons/IconArrowRight';
 import { IconTodoRecently } from '@/public/icons/IconTodoRecently';
 import TodoItem from '../common/todoItem';
-import useTodosQuery from '@/lib/hooks/useTodosQuery';
 import Link from 'next/link';
+import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 
 const RecentTodo = () => {
-  const { data: recentTodos } = useTodosQuery('recentTodos', { size: 4 }); // 4로 고정
-
+  const { data } = useTodosInfiniteQuery({ size: 4 }); // 4로 고정
+  const recentTodos = data?.pages[0];
   return (
     <section
       className='flex-col bg-white rounded-xl border border-slate-100 gap-4

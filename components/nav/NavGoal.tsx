@@ -27,7 +27,6 @@ const NavGoal = () => {
   }, [inView, fetchNextPage]);
 
   const handleGoalClick = (goalId: number) => {
-    console.log(goalId);
     setSelectedGoalId(goalId);
   };
 
