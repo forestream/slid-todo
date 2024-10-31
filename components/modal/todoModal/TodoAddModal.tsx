@@ -13,9 +13,10 @@ import GoalSelector from './GoalSelector';
 
 interface TodoAddModalProps {
   children?: React.ReactNode;
+  goalId?: number;
 }
 
-const Content = () => {
+const Content = ({ goalId }: { goalId?: number }) => {
   const { handleClose } = useModalContext();
   const addTodo = useAddTodoMutation();
   const {
@@ -31,7 +32,7 @@ const Content = () => {
       title: '',
       fileUrl: '',
       linkUrl: '',
-      goalId: null,
+      goalId: goalId || null,
     },
   });
 
@@ -89,11 +90,11 @@ const Content = () => {
   );
 };
 
-const TodoAddModal = forwardRef<HTMLButtonElement, TodoAddModalProps>(({ children }, ref) => {
+const TodoAddModal = forwardRef<HTMLButtonElement, TodoAddModalProps>(({ children, goalId }, ref) => {
   return (
     <ModalProvider>
       <ModalTrigger ref={ref}>{children}</ModalTrigger>
-      <Content />
+      <Content goalId={goalId} />
     </ModalProvider>
   );
 });
