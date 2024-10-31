@@ -6,7 +6,7 @@ import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import IconClose from '@/public/icons/IconClose';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
   ChangeEventHandler,
   FormEventHandler,
@@ -34,6 +34,7 @@ import IconAddLink from '@/public/icons/IconAddLink';
 import InputSlid from '@/components/common/InputSlid';
 import Button from '@/components/common/ButtonSlid';
 import ModalSavedNote from './ModalSavedNote';
+import { afterNoteMutation } from '@/app/actions';
 
 export type SavedNote = {
   title: string;
@@ -71,6 +72,7 @@ const NoteFormContent = memo(
     onChangeSavedToast,
     onChangeOpenSavedToast,
   }: NoteFormContentProps) => {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const todoTitle = searchParams.get('todo');
     const goalTitle = searchParams.get('goal');
@@ -134,10 +136,18 @@ const NoteFormContent = memo(
         delete note.linkUrl;
       }
 
-      mutate({
-        noteId,
-        options: { method, body: JSON.stringify(note) },
-      });
+      mutate(
+        {
+          noteId,
+          options: { method, body: JSON.stringify(note) },
+        },
+        {
+          onSuccess: () => {
+            afterNoteMutation(Array.isArray(todoId) ? todoId[0] : todoId, noteId ?? '0');
+            router.push('/dashboard');
+          },
+        }
+      );
     };
 
     const handleBold = () => editor?.chain().focus().toggleBold().run();
