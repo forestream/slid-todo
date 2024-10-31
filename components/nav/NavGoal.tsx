@@ -17,7 +17,7 @@ const NavGoal = () => {
 
   const addGoal = useAddGoalMutation();
 
-  const { ref, inView } = useInView({ threshold: 0.9 });
+  const { ref, inView } = useInView({ threshold: 0.1 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const NavGoal = () => {
         onClick={handleAddGoalButtonClick}
       />
 
-      <div className='order-3 sm:order-2 lg:order-2 w-full overflow-y-auto h-auto'>
+      <div className='order-3 sm:order-2 lg:order-2 w-full max-h-[460px] overflow-y-auto h-auto'>
         {data?.pages.map((page, idx) => (
           <div key={page.nextCursor || idx} className='flex-col'>
             {page.goals.map((goal: Goal) => (

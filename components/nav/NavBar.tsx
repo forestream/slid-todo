@@ -19,7 +19,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className='w-screen h-screen flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
+      <div className='flex-shrink-0 w-screen h-screen flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
         <nav className='flex-col w-full h-full'>
           <div className='flex justify-between items-center pt-4'>
             <Link className='py-2 px-[5px] ml-4' href='/dashboard'>
