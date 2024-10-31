@@ -54,7 +54,9 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
 
   const handleClickMutateNote = () =>
     router.push(
-      `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${data.goal?.title}`
+      `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${
+        data.goal?.title ?? '목표 없음'
+      }`
     );
 
   return (
