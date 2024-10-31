@@ -14,6 +14,7 @@ import {
   MouseEventHandler,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -36,6 +37,7 @@ import Button from '@/components/common/ButtonSlid';
 import ModalSavedNote from './ModalSavedNote';
 import { afterNoteMutation } from '@/app/actions';
 import { useQueryClient } from '@tanstack/react-query';
+import SecondsTimer from './SecondsTimer';
 
 export type SavedNote = {
   title: string;
@@ -75,15 +77,21 @@ const NoteFormContent = memo(
   }: NoteFormContentProps) => {
     const queryClient = useQueryClient();
     const router = useRouter();
+    const { todoId } = useParams();
     const searchParams = useSearchParams();
     const todoTitle = searchParams.get('todo');
     const goalTitle = searchParams.get('goal');
     const { editor } = useCurrentEditor();
     const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
-    const { todoId } = useParams();
-    const { mutate } = useNoteMutation(todoId as string);
     const [title, setTitle] = useState(initTitle);
     const titleRef = useRef<HTMLInputElement>(null);
+    const { mutate } = useNoteMutation(todoId as string);
+
+    const savedAt: string | undefined = useMemo(() => {
+      if (!globalThis.window || !savedNote) return;
+      const note = JSON.parse(window.localStorage.getItem('savedNote' + todoId) ?? '{}');
+      return note.savedAt;
+    }, [savedNote, todoId]);
 
     const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
       setLinkUrlValue(e.target.value);
@@ -94,7 +102,13 @@ const NoteFormContent = memo(
     const handleSave = useCallback(() => {
       window.localStorage.setItem(
         'savedNote' + todoId,
-        JSON.stringify({ todoId, title: titleRef.current?.value, content: editor?.getHTML(), linkUrl })
+        JSON.stringify({
+          todoId,
+          title: titleRef.current?.value,
+          content: editor?.getHTML(),
+          linkUrl,
+          savedAt: new Date(),
+        })
       );
       onChangeSavedToast(true);
       setTimeout(() => {
@@ -305,7 +319,10 @@ const NoteFormContent = memo(
             <div className='max-w-[768px] fixed lg:sticky bottom-0 left-4 right-4 -translate-y-[155%] bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
               <IconCheck />
               <p className='font-semibold text-sm'>
-                임시 저장이 완료되었습니다 <span className='text-xs pointerfont-medium'>ㆍ {}초전</span>
+                임시 저장이 완료되었습니다{' '}
+                <span className='text-xs pointerfont-medium'>
+                  ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
+                </span>
               </p>
             </div>
           )}
