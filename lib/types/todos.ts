@@ -22,3 +22,7 @@ export interface GetTodosResponse {
   totalCount: number;
   nextCursor?: number;
 }
+
+export interface GetTodosProgressResponse {
+  progress: number;
+}
