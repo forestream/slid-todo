@@ -144,7 +144,7 @@ const NoteFormContent = memo(
         {
           onSuccess: () => {
             afterNoteMutation(Array.isArray(todoId) ? todoId[0] : todoId, noteId ?? '0');
-            router.push('/dashboard');
+            router.back();
           },
         }
       );
