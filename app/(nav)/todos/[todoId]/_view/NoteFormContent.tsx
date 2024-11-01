@@ -126,11 +126,6 @@ const NoteFormContent = memo(
       return () => clearInterval(id);
     }, [handleSave, todoId]);
 
-    useEffect(() => {
-      if (savedNote) onChangeOpenSavedToast(true);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
       e.preventDefault();
     };
