@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/constants/api';
+import { API_BASE_URL } from '@/constants';
 import setAuthCookies from '@/lib/utils/setAuthCookies';
 import { NextRequest, NextResponse } from 'next/server';
 
