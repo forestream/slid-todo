@@ -76,20 +76,22 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
       <div className='flex items-center gap-x-2'>
         {data.fileUrl && (
           <IconFile
-            className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 sm:cursor-pointer'
+            className='sm:cursor-pointer'
+            circleClassName='hover:fill-slate-200'
             onClick={() => handleDownloadFile(data.fileUrl)}
           />
         )}
         {data.linkUrl && (
           <IconLink
-            className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 sm:cursor-pointer'
+            className='sm:cursor-pointer'
+            circleClassName='hover:fill-blue-200'
             onClick={() => handleOpenLink(data?.linkUrl)}
           />
         )}
         {data.noteId && (
           <SheetProvider>
             <SheetTrigger onClick={handleSheet}>
-              <IconNoteView className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 sm:cursor-pointer cursor-default' />
+              <IconNoteView className='sm:cursor-pointer cursor-default' circleClassName='hover:fill-slate-200' />
             </SheetTrigger>
             <SheetContent className='relative'>
               <div className='overflow-auto h-full'>
@@ -102,14 +104,14 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           </SheetProvider>
         )}
         <button onClick={handleClickMutateNote}>
-          <IconNoteWrite className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 sm:cursor-pointer w-0 sm:w-auto' />
+          <IconNoteWrite className='sm:cursor-pointer w-0 sm:w-auto' circleClassName='hover:fill-slate-200' />
         </button>
         <div className='flex justify-center items-center'>
           <DropdownMenu
             icon={IconKebabWithCircle}
             dropdownList={['수정하기', '삭제하기']}
             onItemClick={handleDropdaownMenuClick}
-            className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 cursor-pointer w-0 sm:w-auto'
+            className='sm:hover:stroke-slate-200 sm:hover:fill-slate-200 cursor-pointer w-0 sm:w-auto'
           />
         </div>
       </div>
