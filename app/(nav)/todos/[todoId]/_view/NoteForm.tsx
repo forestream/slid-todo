@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import IconModalClose from '@/public/icons/IconModalClose';
 import NoteFormContent, { SavedNote } from './NoteFormContent';
 import TiptapEditorProvider from '@/components/TiptapEditorProvider';
@@ -108,6 +108,11 @@ const NoteForm = ({
     },
     [content]
   );
+
+  useEffect(() => {
+    if (savedNote) setOpenSavedToast(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
