@@ -1,7 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
 import { findMatchingTodoQueries, isTodosQueryKey } from '../utils/findMatchingTodoQueries';
-import { GetTodosResponse } from '../types/todos';
+import { GetTodosResponse } from '../types/todo';
 
 export interface UpdateTodoInput {
   id: number;

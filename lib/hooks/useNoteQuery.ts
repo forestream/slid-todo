@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
-import { Note } from '../types';
+import { Note } from '../types/todo';
 
 const useNoteQuery = (noteId: number) =>
   useQuery<Note>({

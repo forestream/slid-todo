@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Goal } from '../types';
+import { Goal } from '../types/todo';
 import baseFetch from '../api/baseFetch';
 
 const useGoalQuery = (goalId: number) => {

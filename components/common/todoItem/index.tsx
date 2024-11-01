@@ -2,7 +2,7 @@
 
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import CheckIcon from './CheckIcon';
 import TodoIcon from './TodoIcon';
 import GoalTitle from './GoalTitle';
