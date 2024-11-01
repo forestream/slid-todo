@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/constants/api';
+import { API_BASE_URL } from '@/constants';
 import { SignupFormData, SignupResponse } from '../types/auth';
 
 export const signUp = async (data: SignupFormData): Promise<SignupResponse> => {
