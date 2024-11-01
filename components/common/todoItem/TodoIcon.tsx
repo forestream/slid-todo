@@ -6,19 +6,18 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todo';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
-import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
 import { useRouter } from 'next/navigation';
-import NoteDetail from '@/components/notes/NoteDetail';
 import { MOBILE_BREAKPOINT } from '@/constants';
+import NoteViewSheet from '@/components/sheet/NoteViewSheet';
 
 interface TodoIconProps {
   data: Todo;
 }
 
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
-  const modalRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, onChangeIsOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -35,7 +34,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const handleDropdaownMenuClick = (item: string) => {
     if (isMobile()) return;
     if (item === '수정하기') {
-      modalRef.current?.click();
+      onChangeIsOpen(true);
     } else if (item === '삭제하기') {
       handleDelete();
     }
@@ -92,22 +91,11 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         )}
         {data.noteId && (
-          <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={handleSheetOpen}>
-            <SheetTrigger onClick={handleSheet}>
-              <IconNoteView
-                className='sm:cursor-pointer cursor-default group'
-                circleClassName='sm:group-hover:fill-slate-200'
-              />
-            </SheetTrigger>
-            <SheetContent position='right'>
-              <div className='overflow-auto h-full'>
-                <div className='flex justify-end mb-6'>
-                  <SheetClose />
-                </div>
-                <NoteDetail id={data.noteId ?? 0} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
-              </div>
-            </SheetContent>
-          </SheetProvider>
+          <IconNoteView
+            className='sm:cursor-pointer cursor-default group'
+            circleClassName='sm:group-hover:fill-slate-200'
+            onClick={handleSheet}
+          />
         )}
         <button onClick={handleClickMutateNote}>
           <IconNoteWrite
@@ -124,7 +112,14 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         </div>
       </div>
-      <TodoEditModal ref={modalRef} data={data} />
+      <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />
+      <NoteViewSheet
+        isSheetOpen={isSheetOpen}
+        handleSheetOpen={handleSheetOpen}
+        noteId={data.noteId}
+        goal={data.goal}
+        todoTitle={data.title}
+      />
     </>
   );
 };

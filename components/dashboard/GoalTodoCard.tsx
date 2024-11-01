@@ -5,15 +5,15 @@ import ProgressBar from '../common/ProgressBar';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 import TodoItemsDashboard from './TodoItemsDashboard';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useState } from 'react';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
 
 const GoalTodoCard = ({ goal }: { goal: Goal }) => {
   // 진행률 요청
   const progress = useTodoProgressQuery(goal.id).data?.progress || 0;
-  const modalRef = useRef<HTMLButtonElement>(null);
-  const handleAddTodo = () => {
-    modalRef.current?.click();
+  const [isOpen, onChangeIsOpen] = useState(false);
+  const handleOpenModal = () => {
+    onChangeIsOpen(true);
   };
 
   return (
@@ -26,7 +26,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
             </Link>
             <button className='flex gap-1 items-center text-blue-500'>
               <IconPlusSmall stroke='#3b82f6' />
-              <span onClick={handleAddTodo}>할일 추가</span>
+              <span onClick={handleOpenModal}>할일 추가</span>
             </button>
           </div>
           <div className='my-2 w-full'>
@@ -35,7 +35,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
         </div>
         <TodoItemsDashboard goalId={goal.id} />
       </div>
-      <TodoAddModal ref={modalRef} goalId={goal.id} />
+      <TodoAddModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} goalId={goal.id} />
     </>
   );
 };

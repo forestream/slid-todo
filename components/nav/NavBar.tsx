@@ -4,17 +4,17 @@ import { IconFold } from '@/public/icons/IconFold';
 import Link from 'next/link';
 import Profile from './NavProfile';
 import NavGoal from './NavGoal';
-import { useRef } from 'react';
+import { useState } from 'react';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
 import NavAllTodos from './NavAllTodos';
 import AddTodoButton from './AddTodoButton';
 import { IconDashboardSmall } from '@/public/icons/IconDashboardSmall';
 
 const NavBar = () => {
-  const modalRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, onChangeIsOpen] = useState(false);
 
   const handleModalOpen = () => {
-    modalRef.current?.click();
+    onChangeIsOpen(true);
   };
 
   return (
@@ -57,7 +57,7 @@ const NavBar = () => {
           </div>
         </nav>
       </div>
-      <TodoAddModal ref={modalRef} />
+      <TodoAddModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} />
     </>
   );
 };
