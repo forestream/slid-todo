@@ -7,6 +7,8 @@ import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { useRouter } from 'next/navigation';
+import { useSheetContext } from '../common/Sheet';
+import { useQueryClient } from '@tanstack/react-query';
 
 type NoteDetailProps = {
   id: number;
@@ -16,6 +18,8 @@ type NoteDetailProps = {
 
 const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { data: note, isLoading } = useNoteQuery(id);
+  const { handleClose } = useSheetContext();
+  const queryClient = useQueryClient();
 
   const createdAt = new Date(note?.createdAt ?? 0);
   const year = createdAt.getFullYear();
@@ -26,7 +30,15 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
 
   const handleDelete = () => {
     // 삭제할지 모달을 띄워주면 좋겠음
-    deleteNote.mutate({ noteId: id });
+    deleteNote.mutate(
+      { noteId: id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['todos'] });
+          handleClose();
+        },
+      }
+    );
   };
 
   const handleDropdaownMenuClick = (item: string) => {

@@ -6,7 +6,7 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todo';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
 import { useRouter } from 'next/navigation';
@@ -21,6 +21,8 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const modalRef = useRef<HTMLButtonElement>(null);
   const deleteTodo = useDeleteTodoMutation();
   const router = useRouter();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const handleSheetOpen = (isOpen: boolean) => setIsSheetOpen(isOpen);
 
   const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
 
@@ -89,7 +91,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         )}
         {data.noteId && (
-          <SheetProvider>
+          <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={handleSheetOpen}>
             <SheetTrigger onClick={handleSheet}>
               <IconNoteView className='sm:cursor-pointer cursor-default' circleClassName='hover:fill-slate-200' />
             </SheetTrigger>
