@@ -1,22 +1,25 @@
 'use client';
 import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
 import { IconFold } from '@/public/icons/IconFold';
-import { IconDashboardSmall } from '@/public/icons/IconDashboardSmall';
 import { ImageLogo } from '@/public/images/ImageLogo';
 import Button from '../common/ButtonSlid';
 import Profile from './NavProfile';
 import NavGoal from './NavGoal';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
-import NavAllTodos from './NavAllTodos';
 import AddTodoButton from './AddTodoButton';
 import { MOBILE_BREAKPOINT, TABLET_BREAKPOINT } from '@/constants';
 import { SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import NavAllTodos from './NavAllTodos';
+import NavDashBoard from './NavDashBoard';
 
 const NavBar = () => {
   const modalRef = useRef<HTMLButtonElement>(null);
   const [isNavOpened, setIsNavOpened] = useState(false);
+  const pathname = usePathname();
+  const hasMounted = useRef(false);
 
   // 태블릿에서만 nav를 좌측 modal처럼 사용
   const isTablet = () => MOBILE_BREAKPOINT < window.innerWidth && window.innerWidth < TABLET_BREAKPOINT;
@@ -26,9 +29,18 @@ const NavBar = () => {
   };
 
   const handleFoldButtonClick = () => {
-    console.log('fold clicked');
     setIsNavOpened(!isNavOpened);
   };
+
+  // 페이지 이동 시 nav를 닫음
+  useEffect(() => {
+    // 첫 마운트 이후에만(페이지 이동시에만) 실행
+    if (hasMounted.current) {
+      setIsNavOpened(false);
+    } else {
+      hasMounted.current = true;
+    }
+  }, [pathname]);
 
   const NavContent = () => (
     <div className='flex-shrink-0 w-screen h-screen flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
@@ -46,7 +58,7 @@ const NavBar = () => {
         </div>
         <div className='flex flex-col divide-y divide-slate-200'>
           <Profile className='sm:border-none lg:border-none' />
-          {/* 대시보드 라벨과 새 할일 버튼 */}
+          {/* 대시보드 라벨과 새 할일 버튼 div */}
           <div className='flex flex-row sm:flex-col lg:flex-col divide-y divide-slate-200 sm:border-none lg:border-none'>
             {/* 새 할일 버튼 */}
             <div className='flex sm:justify-center items-center border-none px-4 py-6 order-2 sm:order-1 lg:order-1 ml-auto sm:w-full lg:w-full'>
@@ -57,17 +69,12 @@ const NavBar = () => {
             </div>
             {/* 대시보드 라벨 */}
             <div className='px-4 py-6 order-1 sm:order-2 lg:order-2'>
-              <Link href='/dashboard' className='flex gap-2 w-full'>
-                <div className='w-6 h-6 flex justify-center items-center'>
-                  <IconDashboardSmall />
-                </div>
-                <div className='flex-grow flex-col'>
-                  <div className='text-lg font-medium text-slate-800'>대시보드</div>
-                </div>
-              </Link>
+              <NavDashBoard />
             </div>
           </div>
-          <NavAllTodos />
+          <div className='w-full flex justify-between px-4 py-6 gap-2 text-nowrap'>
+            <NavAllTodos />
+          </div>
           <NavGoal />
         </div>
       </nav>
