@@ -8,6 +8,7 @@ import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { useRouter } from 'next/navigation';
 import { useSheetContext } from '../common/Sheet';
+import { useQueryClient } from '@tanstack/react-query';
 
 type NoteDetailProps = {
   id: number;
@@ -18,6 +19,7 @@ type NoteDetailProps = {
 const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { data: note, isLoading } = useNoteQuery(id);
   const { handleClose } = useSheetContext();
+  const queryClient = useQueryClient();
 
   const createdAt = new Date(note?.createdAt ?? 0);
   const year = createdAt.getFullYear();
@@ -32,11 +34,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
       { noteId: id },
       {
         onSuccess: () => {
-          console.log('success');
-          handleClose();
-        },
-        onError(error, variable, context) {
-          console.log('error', error, variable, context);
+          queryClient.invalidateQueries({ queryKey: ['todos'] });
           handleClose();
         },
       }
