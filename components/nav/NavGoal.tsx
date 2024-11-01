@@ -71,7 +71,7 @@ const NavGoal = ({ className }: { className?: string }) => {
 
       {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
       <AddGoalButton
-        className='order-2 sm:order-4 lg:order-4 ml-auto mr-3 sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:p-3 lg:p-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
+        className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:p-3 lg:p-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
         onClick={handleAddGoalButtonClick}
       />
 
@@ -103,7 +103,7 @@ const NavGoal = ({ className }: { className?: string }) => {
             <InputSlid
               type='text'
               className='m-0'
-              inputClassName='flex-grow p-2 m-0 text-sm font-medium bg-white rounded-lg'
+              inputClassName='flex-grow p-2 m-0 text-sm font-medium bg-white rounded-lg border-2 border-blue-200'
               value={goalInputValue}
               onChange={handleInputChange}
               autoFocus
