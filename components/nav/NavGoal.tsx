@@ -33,7 +33,6 @@ const NavGoal = ({ className }: { className?: string }) => {
   };
 
   const handleAddGoalButtonClick = () => {
-    // 모바일 태블릿용
     // 펼쳐진 상태 && 내용이 입력된 상태에서 추가 한 번 더 누르면 제출되도록 하기
     if (isGoalInputVisible && goalInputValue !== DEFAULT_INPUT_VALUE) {
       handleGoalSubmit();
@@ -55,7 +54,8 @@ const NavGoal = ({ className }: { className?: string }) => {
 
   const handleGoalSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    addGoal.mutate({ updates: { title: goalInputValue.slice(1) } });
+    const trimmedGoalValue = goalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
+    addGoal.mutate({ updates: { title: trimmedGoalValue } });
     setIsGoalInputVisible(false);
     setGoalInputValue('· ');
   };
@@ -98,11 +98,12 @@ const NavGoal = ({ className }: { className?: string }) => {
 
       {/* 새 목표 클릭시 생성되는 인풋 */}
       {isGoalInputVisible && (
-        <div className='order-4 sm:order-3 lg:order-3 w-full flex items-center mt-4'>
-          <form onSubmit={handleGoalSubmit} className='w-full h-auto'>
+        <div className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
+          <form onSubmit={handleGoalSubmit} className='w-full h-auto m-0'>
             <InputSlid
               type='text'
-              inputClassName='flex-grow p-2 text-sm font-medium bg-white rounded-lg'
+              className='m-0'
+              inputClassName='flex-grow p-2 m-0 text-sm font-medium bg-white rounded-lg'
               value={goalInputValue}
               onChange={handleInputChange}
               autoFocus
