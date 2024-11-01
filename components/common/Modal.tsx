@@ -72,11 +72,12 @@ const ModalTrigger = forwardRef(
 ModalTrigger.displayName = 'ModalTrigger';
 
 const ModalContent = ({
+  overlayClassName,
   className,
   closeOnClickOverlay = true,
   children,
   ...props
-}: ComponentPropsWithoutRef<'div'> & { closeOnClickOverlay?: boolean }) => {
+}: ComponentPropsWithoutRef<'div'> & { overlayClassName?: string; closeOnClickOverlay?: boolean }) => {
   const { isOpen, handleClose } = useModalContext();
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -95,7 +96,10 @@ const ModalContent = ({
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0 flex justify-center items-center ' onClick={(e) => e.stopPropagation()}>
+          <div
+            className={twMerge('fixed inset-0 flex justify-center items-center p-8', overlayClassName)}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
             <div className={twMerge('p-6 rounded-xl bg-white z-10', className)} ref={ref} {...props}>
               {children}
