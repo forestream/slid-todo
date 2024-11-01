@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import NoteForm from '../../_view/NoteForm';
+import { Note } from '@/lib/types/todo';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
   const { noteId } = params;
@@ -9,12 +10,12 @@ export default async function Page({ params }: { params: { noteId: string } }) {
     headers: { Authorization: `Bearer ${accessToken?.value}` },
     cache: 'no-store',
   });
-  const body = await response.json();
+  const body: Partial<Note> = await response.json();
   const { title, content, linkUrl } = body;
 
   return (
     <main className='lg:flex h-screen w-screen'>
-      <NoteForm title={title} content={content} linkUrl={linkUrl} method='PATCH' noteId={noteId} />
+      <NoteForm title={title} content={content} linkUrl={linkUrl ?? ''} method='PATCH' noteId={noteId} />
     </main>
   );
 }
