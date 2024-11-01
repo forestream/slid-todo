@@ -97,7 +97,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             icon={IconKebabWithCircle}
             dropdownList={['수정하기', '삭제하기']}
             onItemClick={handleDropdaownMenuClick}
-            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer transition-all duration-200 w-0 group-hover:w-auto group-focus-within:w-auto'
+            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
           />
         </div>
       </div>
