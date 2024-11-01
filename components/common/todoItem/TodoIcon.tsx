@@ -98,7 +98,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
                 circleClassName='sm:group-hover:fill-slate-200'
               />
             </SheetTrigger>
-            <SheetContent className='relative'>
+            <SheetContent position='right'>
               <div className='overflow-auto h-full'>
                 <div className='flex justify-end mb-6'>
                   <SheetClose />

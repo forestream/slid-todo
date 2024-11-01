@@ -70,11 +70,22 @@ const SheetTrigger = forwardRef(
 SheetTrigger.displayName = 'SheetTrigger';
 
 const SheetContent = ({
+  position,
   className,
   closeOnClickOverlay = true,
   children,
   ...props
-}: ComponentPropsWithoutRef<'div'> & { closeOnClickOverlay?: boolean }) => {
+}: ComponentPropsWithoutRef<'div'> & {
+  position: 'top' | 'bottom' | 'right' | 'left';
+  closeOnClickOverlay?: boolean;
+}) => {
+  const variants = {
+    top: 'top-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px]',
+    bottom: 'bottom-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px]',
+    right: 'right-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px]',
+    left: 'left-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px]',
+  };
+
   const { isOpen, handleClose } = useSheetContext();
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -93,13 +104,9 @@ const SheetContent = ({
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0 flex justify-end items-center' onClick={(e) => e.stopPropagation()}>
+          <div className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
             <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
-            <div
-              className={twMerge('w-full h-full md:max-w-[512px] lg:max-w-[800px] p-6 bg-white z-10', className)}
-              ref={ref}
-              {...props}
-            >
+            <div className={twMerge('absolute p-6 bg-white z-10', variants[position], className)} ref={ref} {...props}>
               {children}
             </div>
           </div>,
