@@ -13,13 +13,13 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
   return (
-    <div className='text-sm group'>
+    <div className='text-sm'>
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-x-2 min-w-0 flex-1'>
           <CheckIcon done={data.done} id={data.id} />
           <TodoTitle data={data} />
         </div>
-        <div className='flex transition-all duration-200 group-hover:w-auto group-focus-within:w-auto'>
+        <div className='flex'>
           <TodoIcon data={data} />
         </div>
       </div>

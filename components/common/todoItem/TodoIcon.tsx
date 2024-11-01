@@ -78,22 +78,25 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
       <div className='flex items-center gap-x-2'>
         {data.fileUrl && (
           <IconFile
-            className='sm:cursor-pointer'
-            circleClassName='hover:fill-slate-200'
+            className='sm:cursor-pointer group'
+            circleClassName='sm:group-hover:fill-slate-200'
             onClick={() => handleDownloadFile(data.fileUrl)}
           />
         )}
         {data.linkUrl && (
           <IconLink
-            className='sm:cursor-pointer'
-            circleClassName='hover:fill-blue-200'
+            className='sm:cursor-pointer group'
+            circleClassName='sm:group-hover:fill-blue-200 '
             onClick={() => handleOpenLink(data?.linkUrl)}
           />
         )}
         {data.noteId && (
           <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={handleSheetOpen}>
             <SheetTrigger onClick={handleSheet}>
-              <IconNoteView className='sm:cursor-pointer cursor-default' circleClassName='hover:fill-slate-200' />
+              <IconNoteView
+                className='sm:cursor-pointer cursor-default group'
+                circleClassName='sm:group-hover:fill-slate-200'
+              />
             </SheetTrigger>
             <SheetContent className='relative'>
               <div className='overflow-auto h-full'>
@@ -106,7 +109,10 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           </SheetProvider>
         )}
         <button onClick={handleClickMutateNote}>
-          <IconNoteWrite className='sm:cursor-pointer w-0 sm:w-auto' circleClassName='hover:fill-slate-200' />
+          <IconNoteWrite
+            className='sm:cursor-pointer w-0 sm:w-auto group'
+            circleClassName='sm:group-hover:fill-slate-200'
+          />
         </button>
         <div className='flex justify-center items-center'>
           <DropdownMenu
