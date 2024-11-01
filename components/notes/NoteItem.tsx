@@ -65,7 +65,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       </div>
       <SheetProvider>
         <SheetTrigger ref={triggerRef}></SheetTrigger>
-        <SheetContent className='relative'>
+        <SheetContent position='right'>
           <div className='overflow-auto h-full'>
             <div className='flex justify-end mb-6'>
               <SheetClose />

@@ -59,7 +59,7 @@ export type Note = {
   goal: {
     title: string;
     id: number;
-  };
+  } | null;
   userId: number;
   teamId: string;
 };
