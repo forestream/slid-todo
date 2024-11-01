@@ -19,17 +19,30 @@ const SheetContext = createContext<
   { isOpen: boolean; handleOpen: () => void; handleClose: () => void; beforeClose?: () => void } | undefined
 >(undefined);
 
-const SheetProvider = ({ beforeClose, children }: PropsWithChildren<{ beforeClose?: () => void }>) => {
+const SheetProvider = ({
+  isOpen: initIsOpen,
+  onChangeIsOpen,
+  beforeClose,
+  children,
+}: PropsWithChildren<{ isOpen?: boolean; onChangeIsOpen?: (isOpen: boolean) => void; beforeClose?: () => void }>) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    setIsOpen(true);
+    onChangeIsOpen?.(true);
+  };
 
   const handleClose = () => {
     beforeClose?.();
+    onChangeIsOpen?.(false);
     setIsOpen(false);
   };
 
-  return <SheetContext.Provider value={{ isOpen, handleOpen, handleClose }}>{children}</SheetContext.Provider>;
+  return (
+    <SheetContext.Provider value={{ isOpen: initIsOpen ?? isOpen, handleOpen, handleClose }}>
+      {children}
+    </SheetContext.Provider>
+  );
 };
 
 const useSheetContext = () => {
