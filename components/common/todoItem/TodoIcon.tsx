@@ -67,6 +67,10 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     );
   };
 
+  const handleSheet = () => {
+    if (isMobile()) return;
+  };
+
   return (
     <>
       <div className='flex items-center gap-x-2'>
@@ -84,14 +88,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
         )}
         {data.noteId && (
           <SheetProvider>
-            <SheetTrigger
-              onClick={(e) => {
-                if (window.innerWidth < 640) {
-                  e.preventDefault(); // 클릭 이벤트 차단
-                  return;
-                }
-              }}
-            >
+            <SheetTrigger onClick={handleSheet}>
               <IconNoteView className='sm:hover:stroke-slate-100 sm:hover:fill-slate-200 sm:cursor-pointer cursor-default' />
             </SheetTrigger>
             <SheetContent className='relative'>
