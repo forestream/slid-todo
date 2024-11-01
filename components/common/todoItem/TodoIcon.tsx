@@ -104,7 +104,11 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
                 <div className='flex justify-end mb-6'>
                   <SheetClose />
                 </div>
-                <NoteDetail id={data.noteId ?? 0} goalTitle={data.goal ? data.goal.title : ''} todoTitle={data.title} />
+                <NoteDetail
+                  id={data.noteId ?? 0}
+                  goalTitle={data.goal ? data.goal.title : '목표 없음'}
+                  todoTitle={data.title}
+                />
               </div>
             </SheetContent>
           </SheetProvider>
