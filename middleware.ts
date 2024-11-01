@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchNewAccessToken } from './lib/api/refreshToken';
-import { API_BASE_URL } from './constants/api';
+import { API_BASE_URL } from './constants';
 import setAuthCookies from './lib/utils/setAuthCookies';
 
 export async function middleware(request: NextRequest) {
