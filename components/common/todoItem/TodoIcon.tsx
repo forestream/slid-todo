@@ -71,6 +71,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
 
   const handleSheet = () => {
     if (isMobile()) return;
+    setIsSheetOpen(true);
   };
 
   return (
