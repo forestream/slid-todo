@@ -1,4 +1,4 @@
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import TodoItem from '../common/todoItem';
 
 interface AllTodoListProps {

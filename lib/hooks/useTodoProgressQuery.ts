@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
-import { GetTodosProgressResponse } from '../types/todos';
+import { GetTodosProgressResponse } from '../types/todo';
 
 const useTodoProgressQuery = (goalId?: number) => {
   return useQuery<GetTodosProgressResponse>({

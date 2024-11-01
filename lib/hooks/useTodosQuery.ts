@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Todos } from '../types';
+import { GetTodosResponse } from '../types/todo';
 import baseFetch from '../api/baseFetch';
 
 const useTodosQuery = (
@@ -14,7 +14,7 @@ const useTodosQuery = (
   const typed = Object.entries(searchParams).map((entry) => [entry[0], String(entry[1])]);
   const params = new URLSearchParams(typed);
 
-  return useQuery<Todos>({
+  return useQuery<GetTodosResponse>({
     queryKey: ['todos', todoId],
     queryFn: () => baseFetch(`/4-4-dev/todos${params.size ? '?' + params.toString() : ''}`),
   });

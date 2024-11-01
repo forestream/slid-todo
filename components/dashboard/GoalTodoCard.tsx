@@ -1,5 +1,5 @@
 'use client';
-import { Goal } from '@/lib/types';
+import { Goal } from '@/lib/types/todo';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import ProgressBar from '../common/ProgressBar';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';

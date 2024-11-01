@@ -1,5 +1,5 @@
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
-import { GetTodosResponse } from '../types/todos';
+import { GetTodosResponse } from '../types/todo';
 
 export const isTodosQueryKey = (queryKey: QueryKey): queryKey is ['todos'] | ['todos', Record<string, unknown>] => {
   return Array.isArray(queryKey) && queryKey[0] === 'todos';

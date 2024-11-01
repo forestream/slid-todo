@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
-import { GetTodosResponse } from '../types/todos';
+import { GetTodosResponse } from '../types/todo';
 
 interface TodosSearchParams {
   goalId?: number;
