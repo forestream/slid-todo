@@ -82,7 +82,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             <SheetTrigger>
               <IconNoteView className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
             </SheetTrigger>
-            <SheetContent className='relative'>
+            <SheetContent position='right'>
               <div className='overflow-auto h-full'>
                 <div className='flex justify-end mb-6'>
                   <SheetClose />
