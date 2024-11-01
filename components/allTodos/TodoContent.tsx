@@ -6,7 +6,7 @@ import PageHeader from '../common/pageLayout/PageHeader';
 import { useSearchParams } from 'next/navigation';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
-import { useRef } from 'react';
+import { useState } from 'react';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
 import Filters from './Filters';
 import AllTodoList from './AllTodoList';
@@ -27,9 +27,9 @@ const TodoContent = () => {
   const todos = data?.pages.flatMap((page) => page.todos) ?? [];
   const totalCount = data?.pages[0]?.totalCount ?? 0;
 
-  const modalRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, onChangeIsOpen] = useState(false);
   const handleOpenModal = () => {
-    modalRef.current?.click();
+    onChangeIsOpen(true);
   };
   return (
     <>
@@ -46,7 +46,7 @@ const TodoContent = () => {
           {isFetching && <div>불러오는 중...</div>}
         </div>
       </div>
-      <TodoAddModal ref={modalRef} />
+      <TodoAddModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} />
     </>
   );
 };

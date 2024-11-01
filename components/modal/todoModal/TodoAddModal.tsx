@@ -1,5 +1,4 @@
-import { forwardRef } from 'react';
-import { ModalClose, ModalContent, ModalProvider, ModalTrigger, useModalContext } from '../../common/Modal';
+import { ModalClose, ModalContent, ModalProvider, useModalContext } from '../../common/Modal';
 import InputSlid from '../../common/InputSlid';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,8 +11,9 @@ import cleanedFormData from '@/lib/utils/cleanedFormData';
 import GoalSelector from './GoalSelector';
 
 interface TodoAddModalProps {
-  children?: React.ReactNode;
   goalId?: number;
+  isOpen: boolean;
+  onChangeIsOpen: (isOpen: boolean) => void;
 }
 
 const Content = ({ goalId }: { goalId?: number }) => {
@@ -90,15 +90,12 @@ const Content = ({ goalId }: { goalId?: number }) => {
   );
 };
 
-const TodoAddModal = forwardRef<HTMLButtonElement, TodoAddModalProps>(({ children, goalId }, ref) => {
+const TodoAddModal: React.FC<TodoAddModalProps> = ({ goalId, isOpen, onChangeIsOpen }) => {
   return (
-    <ModalProvider>
-      <ModalTrigger ref={ref}>{children}</ModalTrigger>
+    <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
       <Content goalId={goalId} />
     </ModalProvider>
   );
-});
-
-TodoAddModal.displayName = 'TodoAddModal';
+};
 
 export default TodoAddModal;
