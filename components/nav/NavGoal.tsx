@@ -3,7 +3,7 @@ import { IconFlagSmall } from '@/public/icons/IconFlagSmall';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Goal } from '@/lib/types';
+import { Goal } from '@/lib/types/todo';
 import Link from 'next/link';
 import { useAddGoalMutation } from '@/lib/hooks/useAddGoalMutation';
 import InputSlid from '../common/InputSlid';

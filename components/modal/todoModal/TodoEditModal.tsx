@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger, useModalContext } from '../../common/Modal';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import InputSlid from '../../common/InputSlid';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -5,7 +5,7 @@ import IconNoteWrite from '@/public/icons/IconNoteWrite';
 import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
@@ -54,7 +54,9 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
 
   const handleClickMutateNote = () =>
     router.push(
-      `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${data.goal?.title}`
+      `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${
+        data.goal?.title ?? '목표 없음'
+      }`
     );
 
   return (

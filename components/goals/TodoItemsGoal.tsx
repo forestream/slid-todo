@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { useEffect, useMemo } from 'react';
 import TodoItem from '../common/todoItem';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 
 const TODO_SECTIONS = [
   {

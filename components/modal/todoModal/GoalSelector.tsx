@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { GoalInTodo } from '@/lib/types/todos';
+import { GoalInTodo } from '@/lib/types/todo';
 import DropdownMenu from '@/components/common/DropdownMenu';
 import IconArrowDown from '@/public/icons/IconArrowDown';
 import clsx from 'clsx';
