@@ -90,14 +90,14 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           </SheetProvider>
         )}
         <button onClick={handleClickMutateNote}>
-          <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer' />
+          <IconNoteWrite className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer w-0 sm:w-auto' />
         </button>
         <div className='flex justify-center items-center'>
           <DropdownMenu
             icon={IconKebabWithCircle}
             dropdownList={['수정하기', '삭제하기']}
             onItemClick={handleDropdaownMenuClick}
-            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer'
+            className='hover:stroke-slate-100 hover:fill-slate-200 cursor-pointer w-0 sm:w-auto'
           />
         </div>
       </div>
