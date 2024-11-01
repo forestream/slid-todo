@@ -6,7 +6,7 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todo';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,7 @@ interface TodoIconProps {
 }
 
 const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
-  const modalRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, onChangeIsOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -35,7 +35,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const handleDropdaownMenuClick = (item: string) => {
     if (isMobile()) return;
     if (item === '수정하기') {
-      modalRef.current?.click();
+      onChangeIsOpen(true);
     } else if (item === '삭제하기') {
       handleDelete();
     }
@@ -124,7 +124,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           />
         </div>
       </div>
-      <TodoEditModal ref={modalRef} data={data} />
+      <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />
     </>
   );
 };

@@ -1,5 +1,4 @@
-import { forwardRef } from 'react';
-import { ModalClose, ModalContent, ModalProvider, ModalTrigger, useModalContext } from '../../common/Modal';
+import { ModalClose, ModalContent, ModalProvider, useModalContext } from '../../common/Modal';
 import { Todo } from '@/lib/types/todo';
 import InputSlid from '../../common/InputSlid';
 import { useForm } from 'react-hook-form';
@@ -15,7 +14,8 @@ import GoalSelector from './GoalSelector';
 
 interface TodoEditModalProps {
   data: Todo;
-  children?: React.ReactNode;
+  isOpen: boolean;
+  onChangeIsOpen: (isOpen: boolean) => void;
 }
 
 const Content = ({ data }: { data: Todo }) => {
@@ -95,15 +95,12 @@ const Content = ({ data }: { data: Todo }) => {
   );
 };
 
-const TodoEditModal = forwardRef<HTMLButtonElement, TodoEditModalProps>(({ children, data }, ref) => {
+const TodoEditModal: React.FC<TodoEditModalProps> = ({ data, isOpen, onChangeIsOpen }) => {
   return (
-    <ModalProvider>
-      <ModalTrigger ref={ref}>{children}</ModalTrigger>
+    <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
       <Content data={data} />
     </ModalProvider>
   );
-});
-
-TodoEditModal.displayName = 'TodoModal';
+};
 
 export default TodoEditModal;
