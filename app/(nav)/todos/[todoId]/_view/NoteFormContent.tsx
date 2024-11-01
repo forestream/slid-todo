@@ -177,7 +177,7 @@ const NoteFormContent = memo(
       editor?.chain().focus().setColor(e.target.value).run();
 
     return (
-      <section className='lg:max-w-[800px] w-full h-full p-4 md:p-6 lg:py-6 lg:px-10 flex flex-col grow '>
+      <section className='lg:max-w-[800px] w-full h-full p-4 md:p-6 lg:py-6 lg:px-10 flex flex-col grow'>
         <div className='flex w-full items-center mb-4'>
           <h1 className='grow text-slate-900 font-semibold text-lg'>노트 작성</h1>
           <button className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' onClick={handleSave}>
@@ -245,7 +245,7 @@ const NoteFormContent = memo(
               <TiptapEditor />
             </div>
           </div>
-          <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 fixed lg:sticky bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
+          <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
             <div className='flex md:gap-1'>
               <button onClick={handleBold}>
                 <IconTextBold className='cursor-pointer hover:bg-slate-100' />
