@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { IconArrowDown2 } from '@/public/icons/IconArrowDown2';
 import { useMemo } from 'react';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import TodoItem from '../common/todoItem';
 import Button from '../common/ButtonSlid';
 

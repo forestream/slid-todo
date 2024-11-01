@@ -5,7 +5,7 @@ import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Goal } from '@/lib/types';
+import { Goal } from '@/lib/types/todo';
 import Link from 'next/link';
 
 const NavGoal = () => {

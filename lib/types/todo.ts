@@ -1,25 +1,31 @@
-export type Todo = {
-  noteId: null;
+export interface GoalInTodo {
+  id: number;
+  title: string;
+}
+
+export interface Todo {
+  noteId: number | null;
   done: boolean;
-  linkUrl: null;
-  fileUrl: null;
+  linkUrl: string | null;
+  fileUrl: string | null;
   title: string;
   id: number;
-  goal: {
-    title: string;
-    id: number;
-  };
+  goal: GoalInTodo | null;
   userId: number;
   teamId: string;
   updatedAt: string;
   createdAt: string;
-};
+}
 
-export type Todos = {
+export interface GetTodosResponse {
   todos: Todo[];
-  nextCursor: number | null;
   totalCount: number;
-};
+  nextCursor?: number;
+}
+
+export interface GetTodosProgressResponse {
+  progress: number;
+}
 
 export type Goal = {
   id: number;

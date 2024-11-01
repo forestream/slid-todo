@@ -95,7 +95,7 @@ const ModalContent = ({
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0 flex justify-center items-center p-8' onClick={(e) => e.stopPropagation()}>
+          <div className='fixed inset-0 flex justify-center items-center ' onClick={(e) => e.stopPropagation()}>
             <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
             <div className={twMerge('p-6 rounded-xl bg-white z-10', className)} ref={ref} {...props}>
               {children}

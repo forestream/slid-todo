@@ -5,7 +5,7 @@ import IconNoteWrite from '@/public/icons/IconNoteWrite';
 import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
-import { Todo } from '@/lib/types/todos';
+import { Todo } from '@/lib/types/todo';
 import { useRef } from 'react';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../Sheet';

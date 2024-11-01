@@ -1,4 +1,4 @@
-import { GoalInTodo } from '@/lib/types/todos';
+import { GoalInTodo } from '@/lib/types/todo';
 import IconGoal from '@/public/icons/IconGoal';
 
 const GoalTitle = ({ goal }: { goal: GoalInTodo }) => {

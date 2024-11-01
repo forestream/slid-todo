@@ -4,7 +4,7 @@ import GoalTodoCard from './GoalTodoCard';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import { Goal } from '@/lib/types';
+import { Goal } from '@/lib/types/todo';
 
 const GoalTodo = () => {
   const { ref, inView } = useInView({ threshold: 0.9 });
