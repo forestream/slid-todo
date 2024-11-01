@@ -11,6 +11,7 @@ import AddGoalButton from './AddGoalButton';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+const DEFAULT_INPUT_VALUE = '· ';
 const NavGoal = ({ className }: { className?: string }) => {
   const [isGoalInputVisible, setIsGoalInputVisible] = useState(false);
   const [goalInputValue, setGoalInputValue] = useState('');
@@ -32,22 +33,28 @@ const NavGoal = ({ className }: { className?: string }) => {
   };
 
   const handleAddGoalButtonClick = () => {
+    // 모바일 태블릿용
+    // 펼쳐진 상태 && 내용이 입력된 상태에서 추가 한 번 더 누르면 제출되도록 하기
+    if (isGoalInputVisible && goalInputValue !== DEFAULT_INPUT_VALUE) {
+      handleGoalSubmit();
+    }
+
     setIsGoalInputVisible(!isGoalInputVisible);
-    setGoalInputValue('· ');
+    setGoalInputValue(DEFAULT_INPUT_VALUE);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     // 유저가 `·` 기호를 지우지 못하게 항상 앞에 추가
-    if (!inputValue.startsWith('· ')) {
-      setGoalInputValue(`· ${inputValue.replace(/^·\s*/, '')}`);
+    if (!inputValue.startsWith(DEFAULT_INPUT_VALUE)) {
+      setGoalInputValue(`${DEFAULT_INPUT_VALUE}${inputValue.replace(/^·\s*/, '')}`);
     } else {
       setGoalInputValue(inputValue);
     }
   };
 
-  const handleGoalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleGoalSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
     addGoal.mutate({ updates: { title: goalInputValue.slice(1) } });
     setIsGoalInputVisible(false);
     setGoalInputValue('· ');
@@ -81,7 +88,7 @@ const NavGoal = ({ className }: { className?: string }) => {
                 )}
                 onClick={() => handleGoalClick(goal.id)}
               >
-                {`· ${goal.title}`}
+                {`${DEFAULT_INPUT_VALUE}${goal.title}`}
               </Link>
             ))}
           </div>
