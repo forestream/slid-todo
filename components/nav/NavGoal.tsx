@@ -9,8 +9,9 @@ import { useAddGoalMutation } from '@/lib/hooks/useAddGoalMutation';
 import InputSlid from '../common/InputSlid';
 import AddGoalButton from './AddGoalButton';
 import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-const NavGoal = () => {
+const NavGoal = ({ className }: { className?: string }) => {
   const [isGoalInputVisible, setIsGoalInputVisible] = useState(false);
   const [goalInputValue, setGoalInputValue] = useState('');
   const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
@@ -53,7 +54,7 @@ const NavGoal = () => {
   };
 
   return (
-    <div className='flex flex-wrap px-4 py-6 gap-4'>
+    <div className={twMerge(clsx('flex flex-wrap px-4 py-6 gap-4', className))}>
       <div className='flex items-center gap-2 order-1 sm:order-1 lg:order-1'>
         <div className='w-6 h-6 flex justify-center items-center'>
           <IconFlagSmall />
@@ -63,7 +64,7 @@ const NavGoal = () => {
 
       {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
       <AddGoalButton
-        className='order-2 sm:order-4 lg:order-4 ml-auto sm:ml-0 lg:ml-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:p-3 lg:p-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
+        className='order-2 sm:order-4 lg:order-4 ml-auto mr-3 sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:p-3 lg:p-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
         onClick={handleAddGoalButtonClick}
       />
 
