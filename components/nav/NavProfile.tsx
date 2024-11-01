@@ -2,9 +2,11 @@ import { User } from '@/lib/types/auth';
 import { getUserFromStorage, removeUserFromStorage } from '@/lib/utils/auth';
 import { ImageProfile } from '@/public/images/ImageProfile';
 import { ImageProfileSmall } from '@/public/images/ImageProfileSmall';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-const Profile = () => {
+const Profile = ({ className }: { className?: string }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const Profile = () => {
   };
 
   return (
-    <div className='w-full flex px-4 py-6 gap-2 text-nowrap'>
+    <div className={twMerge(clsx('w-full flex px-4 py-6 pt-3 sm:pb-0 lg:pb-0 gap-2 text-nowrap', className))}>
       <div className=''>
         <div className='w-8 h-8 bg-blue-50 rounded-xl flex justify-center items-center sm:hidden lg:hidden'>
           <ImageProfileSmall />

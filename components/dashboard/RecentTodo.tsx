@@ -9,10 +9,10 @@ const RecentTodo = () => {
   const recentTodos = data?.pages[0];
   return (
     <section
-      className='flex-col bg-white rounded-xl border border-slate-100 gap-4
+      className='flex flex-1 flex-col bg-white rounded-xl border border-slate-100 gap-4
       w-[343px] h-[250px] px-4 pb-6 pt-4
       sm:w-[306px] sm:h-[250px] sm:px-6 sm:pb-6 sm:pt-4
-      lg:w-[588px] lg:h-[250px]
+      lg:h-[250px]
     '
     >
       <div className='flex items-center w-full gap-2'>
