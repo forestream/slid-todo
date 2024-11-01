@@ -43,14 +43,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const handleDownloadFile = (fileUrl: string | null) => {
     if (isMobile()) return;
     if (!fileUrl) return;
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.target = '_blank';
-
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
+    window.open(fileUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenLink = (linkUrl: string | null) => {
