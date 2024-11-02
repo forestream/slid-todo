@@ -2,48 +2,52 @@
 import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
 import { IconFold } from '@/public/icons/IconFold';
 import { ImageLogo } from '@/public/images/ImageLogo';
+import { IconHamburger } from '@/public/icons/IconHamburger';
 import Button from '../common/ButtonSlid';
 import Profile from './NavProfile';
 import NavGoal from './NavGoal';
+import NavAllTodos from './NavAllTodos';
+import NavDashBoard from './NavDashBoard';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
 import AddTodoButton from './AddTodoButton';
-import { MOBILE_BREAKPOINT, TABLET_BREAKPOINT } from '@/constants';
 import { SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import NavAllTodos from './NavAllTodos';
-import NavDashBoard from './NavDashBoard';
 
 const NavBar = () => {
   const modalRef = useRef<HTMLButtonElement>(null);
-  const [isNavOpened, setIsNavOpened] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isSheetNavOpen, setIsSheetNavOpen] = useState(false);
   const pathname = usePathname();
   const hasMounted = useRef(false);
-
-  // 태블릿에서만 nav를 좌측 modal처럼 사용
-  const isTablet = () => MOBILE_BREAKPOINT < window.innerWidth && window.innerWidth < TABLET_BREAKPOINT;
+  const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
 
   const handleModalOpen = () => {
     modalRef.current?.click();
   };
 
-  const handleFoldButtonClick = () => {
-    setIsNavOpened(!isNavOpened);
+  const handleNavButtonClick = () => {
+    setIsNavOpen(!isNavOpen);
   };
+
+  useEffect(() => {
+    console.log('isopen:', isNavOpen);
+  }, [isNavOpen]);
 
   // 페이지 이동 시 nav를 닫음
   useEffect(() => {
-    // 첫 마운트 이후에만(페이지 이동시에만) 실행
+    // 첫 마운트 이후에만(페이지 이동시에만)실행
     if (hasMounted.current) {
-      setIsNavOpened(false);
+      setIsNavOpen(false);
+      setCurrentPageLabel(document.title.split('|')[0].trim());
     } else {
       hasMounted.current = true;
     }
   }, [pathname]);
 
   const NavContent = () => (
-    <div className='flex-shrink-0 w-screen h-screen flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
+    <div className='flex-shrink-0 flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
       <nav className='flex-col w-full h-full'>
         <div className='flex justify-between items-center p-4'>
           <Link className='py-2 px-[5px]' href='/dashboard'>
@@ -51,7 +55,7 @@ const NavBar = () => {
           </Link>
           <Button
             className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-            onClick={handleFoldButtonClick}
+            onClick={handleNavButtonClick}
           >
             <IconFold isFold={false} />
           </Button>
@@ -81,33 +85,56 @@ const NavBar = () => {
     </div>
   );
 
+  const NavWithSheet = () => {
+    return (
+      <SheetProvider isOpen={isSheetNavOpen} onChangeIsOpen={setIsSheetNavOpen}>
+        <SheetTrigger>
+          <IconFold isFold={false} />
+        </SheetTrigger>
+        <SheetContent position='left' className='sm:w-[280px] p-0'>
+          <NavContent />
+        </SheetContent>
+      </SheetProvider>
+    );
+  };
   return (
     <>
-      {isNavOpened ? (
-        isTablet() ? (
-          <SheetProvider isOpen={isNavOpened} onChangeIsOpen={setIsNavOpened}>
-            <SheetTrigger>
-              <IconFold isFold={false} />
-            </SheetTrigger>
-            <SheetContent position='left' className='w-[280px] p-0'>
-              <NavContent />
-            </SheetContent>
-          </SheetProvider>
-        ) : (
-          <NavContent />
-        )
+      {isNavOpen ? (
+        <>
+          {/* 모바일 화면일 때 NavWithSheet 렌더링 */}
+          <div className='block lg:hidden w-full'>
+            <NavWithSheet />
+          </div>
+          {/* 데스크탑 화면일 때 NavContent 렌더링 */}
+          <div className='hidden lg:block'>
+            <NavContent />
+          </div>
+        </>
       ) : (
-        <nav className='pt-4 px-[14px] flex flex-col gap-4 items-center sm:border-r-[1px]'>
-          <Link href='/dashboard'>
-            <ImageLogo />
-          </Link>
-          <Button
-            className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-            onClick={handleFoldButtonClick}
-          >
-            <IconFold isFold />
-          </Button>
-        </nav>
+        <>
+          {/* 모바일용 접힌 nav */}
+          <div className='w-full flex flex-row gap-4 items-center px-4 py-3 sm:hidden lg:hidden'>
+            <Button
+              className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg'
+              onClick={handleNavButtonClick}
+            >
+              <IconHamburger />
+            </Button>
+            <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
+          </div>
+          {/* 태블릿, 데스크탑용 접힌 nav */}
+          <div className='hidden sm:flex lg:flex pt-4 px-[14px] flex-col space-y-4 items-center sm:border-r-[1px] '>
+            <Link href='/dashboard'>
+              <ImageLogo />
+            </Link>
+            <Button
+              className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
+              onClick={handleNavButtonClick}
+            >
+              <IconFold isFold />
+            </Button>
+          </div>
+        </>
       )}
 
       <TodoAddModal ref={modalRef} />
