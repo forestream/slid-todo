@@ -27,25 +27,32 @@ const NavBar = () => {
     modalRef.current?.click();
   };
 
-  const handleNavButtonClick = () => {
-    setIsNavOpen(!isNavOpen);
+  const handleNavButtonClick = (widthType?: 'mobile' | 'tablet' | 'desktop') => {
+    if (widthType === 'desktop') {
+      setIsNavOpen(!isNavOpen);
+    } else {
+      setIsSheetNavOpen(!isSheetNavOpen);
+    }
   };
 
   useEffect(() => {
-    console.log('isopen:', isNavOpen);
-  }, [isNavOpen]);
+    console.log('isNavopen:', isNavOpen);
+    console.log('isSheetNavopen:', isSheetNavOpen);
+  }, [isNavOpen, isSheetNavOpen]);
 
   // 페이지 이동 시 nav를 닫음
   useEffect(() => {
     // 첫 마운트 이후에만(페이지 이동시에만)실행
     if (hasMounted.current) {
       setIsNavOpen(false);
+      setIsSheetNavOpen(false);
       setCurrentPageLabel(document.title.split('|')[0].trim());
     } else {
       hasMounted.current = true;
     }
   }, [pathname]);
 
+  // 기본 nav
   const NavContent = () => (
     <div className='flex-shrink-0 flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
       <nav className='flex-col w-full h-full'>
@@ -55,7 +62,7 @@ const NavBar = () => {
           </Link>
           <Button
             className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-            onClick={handleNavButtonClick}
+            onClick={isNavOpen ? () => handleNavButtonClick('desktop') : () => handleNavButtonClick()}
           >
             <IconFold isFold={false} />
           </Button>
@@ -85,51 +92,66 @@ const NavBar = () => {
     </div>
   );
 
-  const NavWithSheet = () => {
-    return (
-      <SheetProvider isOpen={isSheetNavOpen} onChangeIsOpen={setIsSheetNavOpen}>
-        <SheetTrigger>
-          <IconFold isFold={false} />
-        </SheetTrigger>
-        <SheetContent position='left' className='sm:w-[280px] p-0'>
-          <NavContent />
-        </SheetContent>
-      </SheetProvider>
-    );
-  };
+  // 모바일, 태블릿용 nav
+  const NavWithSheet = () => (
+    <SheetProvider isOpen={isSheetNavOpen} onChangeIsOpen={setIsSheetNavOpen}>
+      <SheetTrigger>
+        <IconFold isFold={false} />
+      </SheetTrigger>
+      <SheetContent position='left' className='sm:w-[280px] p-0'>
+        <NavContent />
+      </SheetContent>
+    </SheetProvider>
+  );
   return (
     <>
-      {isNavOpen ? (
+      {isNavOpen || isSheetNavOpen ? (
         <>
-          {/* 모바일 화면일 때 NavWithSheet 렌더링 */}
-          <div className='block lg:hidden w-full'>
+          {/* 모바일 화면일 때 열린 Nav (NavWithSheet) */}
+          <div className='block sm:hidden lg:hidden'>
             <NavWithSheet />
           </div>
-          {/* 데스크탑 화면일 때 NavContent 렌더링 */}
-          <div className='hidden lg:block'>
+          {/* 태블릿 화면일 때 열린 Nav (NavWithSheet) */}
+          <div className='hidden sm:block lg:hidden'>
+            <NavWithSheet />
+          </div>
+          {/* 데스크탑 화면일 때 Nav (NavContent) */}
+          <div className='hidden sm:hidden lg:block'>
             <NavContent />
           </div>
         </>
       ) : (
         <>
-          {/* 모바일용 접힌 nav */}
+          {/* 모바일 화면일 때 접힌 Nav */}
           <div className='w-full flex flex-row gap-4 items-center px-4 py-3 sm:hidden lg:hidden'>
             <Button
               className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg'
-              onClick={handleNavButtonClick}
+              onClick={() => handleNavButtonClick('mobile')}
             >
               <IconHamburger />
             </Button>
             <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
           </div>
-          {/* 태블릿, 데스크탑용 접힌 nav */}
-          <div className='hidden sm:flex lg:flex pt-4 px-[14px] flex-col space-y-4 items-center sm:border-r-[1px] '>
+          {/* 태블릿 화면일 때 접힌 nav */}
+          <div className='hidden sm:flex lg:hidden pt-4 px-[14px] flex-col space-y-4 items-center sm:border-r-[1px] '>
             <Link href='/dashboard'>
               <ImageLogo />
             </Link>
             <Button
               className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-              onClick={handleNavButtonClick}
+              onClick={() => handleNavButtonClick('tablet')}
+            >
+              <IconFold isFold />
+            </Button>
+          </div>
+          {/* 데스크탑 화면일 때 접힌 nav */}
+          <div className='hidden sm:hidden lg:flex pt-4 px-[14px] flex-col space-y-4 items-center sm:border-r-[1px] '>
+            <Link href='/dashboard'>
+              <ImageLogo />
+            </Link>
+            <Button
+              className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
+              onClick={() => handleNavButtonClick('desktop')}
             >
               <IconFold isFold />
             </Button>
