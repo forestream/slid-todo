@@ -3,9 +3,10 @@ import clsx from 'clsx';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import { useInView } from 'react-intersection-observer';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TodoItem from '../common/todoItem';
 import { Todo } from '@/lib/types/todo';
+import TodoAddModal from '../modal/todoModal/TodoAddModal';
 
 const TODO_SECTIONS = [
   {
@@ -23,6 +24,7 @@ const TODO_SECTIONS = [
 ] as const;
 
 const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const todoRef = useInView({ threshold: 1 });
   const doneRef = useInView({ threshold: 1 });
   const views = useMemo(() => [todoRef, doneRef], [todoRef, doneRef]);
@@ -58,7 +60,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
         <div className='flex w-full justify-between'>
           <p className='bold text-sm font-semibold'>{section.title}</p>
           {section.showAddTodo && (
-            <button className='flex gap-1 items-center text-blue-500'>
+            <button onClick={() => setIsModalOpen(true)} className='flex gap-1 items-center text-blue-500'>
               <IconPlusSmall stroke='#3b82f6' />
               <span>할일 추가</span>
             </button>
@@ -85,7 +87,12 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     );
   });
 
-  return <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>;
+  return (
+    <>
+      <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>
+      <TodoAddModal isOpen={isModalOpen} onChangeIsOpen={setIsModalOpen} goalId={goalId} />
+    </>
+  );
 };
 
 export default TodoItemsGoal;

@@ -45,7 +45,7 @@ const FileUpload = <T extends FieldValues>({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`4-4-dev/files`, {
+      const response = await fetch(`/4-4-dev/files`, {
         method: 'POST',
         body: formData,
       });
@@ -83,7 +83,7 @@ const FileUpload = <T extends FieldValues>({
     <div className={`space-y-2 ${className}`}>
       <label className='block text-base font-semibold text-slate-800 mb-3'>{label}</label>
       <div className='flex items-center space-x-4'>
-        <div className='relative'>
+        <div className='relative shrink-0'>
           <input type='file' id='file-upload' className='hidden' onChange={handleFileUpload} accept='*/*' />
           <input type='hidden' {...rest} ref={ref} />
           {isUploading ? (
