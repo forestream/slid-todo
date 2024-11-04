@@ -7,29 +7,55 @@ import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 import { IconKebab } from '@/public/icons/IconKebab';
 import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
 import { useDeleteGoalMutation } from '@/lib/hooks/useDeleteGoalMutation';
+import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import InputSlid from './InputSlid';
 
 const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
   const { data: goal } = useGoalQuery(goalId);
   const progress = useTodoProgressQuery(goalId).data?.progress || 0;
   const deleteGoal = useDeleteGoalMutation();
+  const updateGoal = useUpdateGoalMutation();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [goalInputValue, setGoalInputValue] = useState('');
+
   const router = useRouter();
 
-  const handleDelete = () => {
+  const handleDropdaownMenuClick = (item: string) => {
+    if (item === '수정하기') {
+      setIsEditClicked(true);
+    } else if (item === '삭제하기') {
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  const handleGoalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGoalInputValue(e.target.value);
+  };
+
+  // 수정
+  const handleGoalEditSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    updateGoal.mutate(
+      { id: goalId, updates: { title: goalInputValue.trim() } },
+      {
+        onSuccess: (data) => {
+          setGoalInputValue(data.title);
+          setIsEditClicked(false);
+        },
+      }
+    );
+  };
+
+  // 삭제
+  const handleGoalDelete = () => {
     deleteGoal.mutate({ goalId: goalId });
     router.push('/dashboard');
   };
 
-  const handleDropdaownMenuClick = (item: string) => {
-    if (item === '수정하기') {
-    } else if (item === '삭제하기') {
-      console.log('삭제하기 누름');
-      setIsDeleteModalOpen(true);
-    }
-  };
   return (
     <>
       <div className='w-full bg-white rounded-xl px-6 py-4'>
@@ -37,7 +63,20 @@ const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
           <div className='w-10 h-10 flex-shrink-0 bg-slate-900 rounded-[15px] grid place-content-center'>
             <IconFlag />
           </div>
-          <span className='text-lg font-semibold'>{goal?.title}</span>
+          {isEditClicked ? (
+            <form onSubmit={handleGoalEditSubmit} className='w-full h-auto m-0'>
+              <InputSlid
+                placeholder={goal?.title}
+                className='m-0 w-full'
+                inputClassName='w-full'
+                autoFocus
+                value={goalInputValue}
+                onChange={handleGoalInputChange}
+              />
+            </form>
+          ) : (
+            <span className='text-lg font-semibold'>{goalInputValue || goal?.title}</span>
+          )}
           <div className='ml-auto'>
             <DropdownMenu
               icon={IconKebab}
@@ -55,7 +94,7 @@ const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
         isOpen={isDeleteModalOpen}
         onChangeIsOpen={setIsDeleteModalOpen}
         itemType='goal'
-        onDelete={handleDelete}
+        onDelete={handleGoalDelete}
       />
     </>
   );
