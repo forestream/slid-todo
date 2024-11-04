@@ -1,20 +1,19 @@
-import { forwardRef } from 'react';
-import { ModalContent, ModalProvider, ModalTrigger } from '../common/Modal';
+import { ModalContent, ModalProvider } from '../common/Modal';
 import Button from '../common/ButtonSlid';
 import { useRouter } from 'next/navigation';
 
 interface SignupSuccessModalProps {
-  children?: React.ReactNode;
+  isOpen: boolean;
+  onChangeIsOpen: (isOpen: boolean) => void;
 }
 
-const SignupSuccessModal = forwardRef<HTMLButtonElement, SignupSuccessModalProps>(({ children }, ref) => {
+const SignupSuccessModal: React.FC<SignupSuccessModalProps> = ({ isOpen, onChangeIsOpen }) => {
   const router = useRouter();
   const handleRedirect = () => {
     router.push('/login');
   };
   return (
-    <ModalProvider>
-      <ModalTrigger ref={ref}>{children}</ModalTrigger>
+    <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
       <ModalContent closeOnClickOverlay={false}>
         <div className='flex flex-col items-center gap-4'>
           <h1 className='text-lg font-bold'>회원가입 성공</h1>
@@ -25,8 +24,6 @@ const SignupSuccessModal = forwardRef<HTMLButtonElement, SignupSuccessModalProps
       </ModalContent>
     </ModalProvider>
   );
-});
-
-SignupSuccessModal.displayName = 'SignupSuccessModal';
+};
 
 export default SignupSuccessModal;

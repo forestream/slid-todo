@@ -6,6 +6,7 @@ import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { MouseEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteViewSheet from '../sheet/NoteViewSheet';
+import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
 
 interface NoteItemProps {
   note: Note;
@@ -15,8 +16,8 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const deleteNote = useDeleteNoteMutation();
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = () => {
-    // 삭제할지 모달을 띄워주면 좋겠음
     deleteNote.mutate({ noteId: note.id });
   };
 
@@ -25,7 +26,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       // 수정하기페이지로 이동
       router.push(`/todos/${note.todo.id}/note/${note.id}?todo=${note.todo.title}&goal=${note.goal.title}`);
     } else if (item === '삭제하기') {
-      handleDelete();
+      setIsDeleteModalOpen(true);
     }
   };
 
@@ -67,6 +68,12 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
         noteId={note.id}
         goal={note.goal}
         todoTitle={note.todo.title}
+      />
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onChangeIsOpen={setIsDeleteModalOpen}
+        onDelete={handleDelete}
+        itemType='note'
       />
     </>
   );
