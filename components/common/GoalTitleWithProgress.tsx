@@ -5,7 +5,7 @@ import ProgressBar from './ProgressBar';
 import useGoalQuery from '@/lib/hooks/useGoalQuery';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 import { IconKebab } from '@/public/icons/IconKebab';
-import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
+import ConfirmationModal from '../modal/ConfirmationModal';
 import { useDeleteGoalMutation } from '@/lib/hooks/useDeleteGoalMutation';
 import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import { useState } from 'react';
@@ -90,11 +90,11 @@ const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
           <ProgressBar percentage={progress} />
         </div>
       </div>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onChangeIsOpen={setIsDeleteModalOpen}
         itemType='goal'
-        onDelete={handleGoalDelete}
+        onConfirm={handleGoalDelete}
       />
     </>
   );
