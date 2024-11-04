@@ -50,7 +50,7 @@ export type Note = {
     title: string;
     id: number;
   };
-  linkUrl: string;
+  linkUrl: string | null;
   content: string;
   updatedAt: string;
   createdAt: string;
