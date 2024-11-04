@@ -45,7 +45,7 @@ const FileUpload = <T extends FieldValues>({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`4-4-dev/files`, {
+      const response = await fetch(`/4-4-dev/files`, {
         method: 'POST',
         body: formData,
       });
