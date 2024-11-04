@@ -10,7 +10,9 @@ import { useTodoContext } from './TodosContext';
 const TodosHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { totalCount } = useTodoContext();
-  const handleOpenModal = () => {};
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <PageHeader title={`모든 할 일 (${totalCount})`}>
