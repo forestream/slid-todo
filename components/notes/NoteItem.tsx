@@ -5,8 +5,8 @@ import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { MouseEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteViewSheet from '../sheet/NoteViewSheet';
-import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
 import { Note } from '@/lib/types/todo';
+import ConfirmationModal from '../modal/ConfirmationModal';
 
 interface NoteItemProps {
   note: Note;
@@ -69,10 +69,10 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
         goal={note.goal}
         todoTitle={note.todo.title}
       />
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onChangeIsOpen={setIsDeleteModalOpen}
-        onDelete={handleDelete}
+        onConfirm={handleDelete}
         itemType='note'
       />
     </>

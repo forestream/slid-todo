@@ -9,7 +9,7 @@ import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { useRouter } from 'next/navigation';
 import { useSheetContext } from '../common/Sheet';
 import { useQueryClient } from '@tanstack/react-query';
-import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
+import ConfirmationModal from '../modal/ConfirmationModal';
 
 type NoteDetailProps = {
   id: number;
@@ -117,10 +117,10 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
           </div>
         </div>
       </section>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onChangeIsOpen={setIsDeleteModalOpen}
-        onDelete={handleDelete}
+        onConfirm={handleDelete}
         itemType='note'
       />
     </>

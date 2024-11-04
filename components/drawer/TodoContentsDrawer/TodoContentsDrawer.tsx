@@ -8,19 +8,19 @@ import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import NoteViewSheet from '@/components/sheet/NoteViewSheet';
 
 interface TodoContentsDrawerProps {
-  isopen: boolean;
+  isOpen: boolean;
   onChangeIsOpen: (isOpen: boolean) => void;
   data: Todo;
 }
 
-const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isopen, onChangeIsOpen, data }) => {
+const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChangeIsOpen, data }) => {
   const [isNoteViewOpen, setIsNoteViewOpen] = useState(false);
   const [isEditTodoModalOpen, setIsEditTodoModalOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
 
   return (
     <>
-      <SheetProvider isOpen={isopen} onChangeIsOpen={onChangeIsOpen}>
+      <SheetProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
         <SheetContent position='bottom' className='w-full h-auto'>
           <div className='flex flex-col space-y-6'>
             <h2 className='text-center'>{data.title}</h2>
