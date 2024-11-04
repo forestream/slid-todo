@@ -1,12 +1,12 @@
 import { IconRectangle } from '@/public/icons/IconRectangle';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
-import { Note } from '@/app/(nav)/notes/[goalId]/page';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { MouseEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteViewSheet from '../sheet/NoteViewSheet';
 import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
+import { Note } from '@/lib/types/todo';
 
 interface NoteItemProps {
   note: Note;
