@@ -1,13 +1,15 @@
-import TodoContent from '@/components/allTodos/TodoContent';
+import TodosContent from '@/components/allTodos/TodosContent';
+import { TodosProvider } from '@/components/allTodos/TodosContext';
+import TodosHeader from '@/components/allTodos/TodosHeader';
 import PageContainer from '@/components/common/pageLayout/PageContainer';
-import { Suspense } from 'react';
 
 export default function Alltodos() {
   return (
     <PageContainer>
-      <Suspense fallback={'불러오는 중...'}>
-        <TodoContent />
-      </Suspense>
+      <TodosProvider>
+        <TodosHeader />
+        <TodosContent />
+      </TodosProvider>
     </PageContainer>
   );
 }
