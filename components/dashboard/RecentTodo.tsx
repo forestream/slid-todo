@@ -23,7 +23,12 @@ const RecentTodo = () => {
           <IconArrowRight />
         </Link>
       </div>
-      <div className='w-full'>
+      <div className='w-full h-full relative'>
+        {recentTodos?.totalCount === 0 && (
+          <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm text-slate-500'>
+            최근에 등록한 할 일이 없어요
+          </span>
+        )}
         {recentTodos?.todos.map((todo) => (
           <TodoItem data={todo} key={todo.id} viewGoal />
         ))}

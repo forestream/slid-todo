@@ -7,7 +7,7 @@ import RecentTodo from '@/components/dashboard/RecentTodo';
 
 export default function DashboardPage() {
   return (
-    <PageContainer className={'max-w-[1200px] gap-4'}>
+    <PageContainer className={'max-w-[1200px] gap-4 flex flex-col'}>
       <div className='hidden sm:block lg:block'>
         <PageHeader title='대시보드' />
       </div>
