@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function GoalDetailPage({ params }: { params: { goalId: string } }) {
   return (
-    <PageContainer className={'max-w-[1200px] space-y-6'}>
+    <PageContainer className={'max-w-[1200px] flex flex-col gap-4'}>
       <div className='hidden sm:block lg:block'>
         <PageHeader title='목표' />
       </div>
@@ -17,14 +17,18 @@ export default function GoalDetailPage({ params }: { params: { goalId: string } 
       </article>
       <div className='bg-blue-100 rounded-xl'>
         <Link href={`/notes/${params.goalId}`} className='flex px-6 py-4 gap-2 items-center'>
-          <IconNoteAll />
+          <div className='flex-shrink-0'>
+            <IconNoteAll />
+          </div>
           <span className='text-lg font-bold text-slate-800'>노트 모아보기</span>
           <div className='ml-auto'>
             <IconArrowRight />
           </div>
         </Link>
       </div>
-      <TodoItemsGoal goalId={+params.goalId} />
+      <div className='flex flex-col'>
+        <TodoItemsGoal goalId={+params.goalId} />
+      </div>
     </PageContainer>
   );
 }

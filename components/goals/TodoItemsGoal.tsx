@@ -40,12 +40,11 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     });
   }, [views, queries]);
 
-  const baseContainerClasses =
-    'w-full h-auto flex flex-col min-h-[228px] max-h-[228px] sm:max-h-[228px] lg:max-h-[456px] p-4 gap-3';
+  const baseContainerClasses = 'h-auto flex flex-col flex-1 p-4 gap-3';
 
   const contentClass = (isEmpty: boolean) =>
     clsx(
-      'w-full flex overflow-y-auto min-h-[200px]',
+      'w-full flex overflow-y-auto min-h-[200px] max-h-[228px] lg:max-h-[456px]',
       isEmpty ? 'h-full flex-col sm:flex-col lg:flex-row justify-center items-center' : 'h-auto flex-col gap-2'
     );
 

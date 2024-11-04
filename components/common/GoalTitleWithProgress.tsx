@@ -13,7 +13,7 @@ const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
   return (
     <div className='w-full bg-white rounded-xl px-6 py-4'>
       <div className='w-full flex items-center gap-2'>
-        <div className='w-10 h-10 bg-slate-900 rounded-[15px] grid place-content-center'>
+        <div className='w-10 h-10 flex-shrink-0 bg-slate-900 rounded-[15px] grid place-content-center'>
           <IconFlag />
         </div>
         <span className='text-lg font-semibold'>{goal?.title}</span>
