@@ -3,10 +3,9 @@ import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { Note } from '@/app/(nav)/notes/[goalId]/page';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
-import { MouseEventHandler, useRef } from 'react';
-import NoteDetail from './NoteDetail';
-import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
+import { MouseEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import NoteViewSheet from '../sheet/NoteViewSheet';
 
 interface NoteItemProps {
   note: Note;
@@ -15,7 +14,7 @@ interface NoteItemProps {
 const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const deleteNote = useDeleteNoteMutation();
   const router = useRouter();
-
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const handleDelete = () => {
     // 삭제할지 모달을 띄워주면 좋겠음
     deleteNote.mutate({ noteId: note.id });
@@ -30,11 +29,10 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
     }
   };
 
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const kebabRef = useRef<HTMLDivElement | null>(null);
   const handleClickTrigger: MouseEventHandler<HTMLDivElement> = (e) => {
     if (kebabRef.current?.contains(e.target as Node)) return;
-    triggerRef.current?.click();
+    setIsSheetOpen(true);
   };
 
   return (
@@ -63,17 +61,13 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
           </div>
         </div>
       </div>
-      <SheetProvider>
-        <SheetTrigger ref={triggerRef}></SheetTrigger>
-        <SheetContent position='right'>
-          <div className='overflow-auto h-full'>
-            <div className='flex justify-end mb-6'>
-              <SheetClose />
-            </div>
-            <NoteDetail id={note.id} goalTitle={note.goal.title} todoTitle={note.todo.title} />
-          </div>
-        </SheetContent>
-      </SheetProvider>
+      <NoteViewSheet
+        isSheetOpen={isSheetOpen}
+        handleSheetOpen={setIsSheetOpen}
+        noteId={note.id}
+        goal={note.goal}
+        todoTitle={note.todo.title}
+      />
     </>
   );
 };
