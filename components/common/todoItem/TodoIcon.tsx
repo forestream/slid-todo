@@ -11,7 +11,7 @@ import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { useRouter } from 'next/navigation';
 import { MOBILE_BREAKPOINT } from '@/constants';
 import NoteViewSheet from '@/components/sheet/NoteViewSheet';
-import DeleteConfirmationModal from '@/components/modal/DeleteConfirmationModal';
+import ConfirmationModal from '@/components/modal/ConfirmationModal';
 
 interface TodoIconProps {
   data: Todo;
@@ -114,11 +114,11 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
         goal={data.goal}
         todoTitle={data.title}
       />
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onChangeIsOpen={setIsDeleteModalOpen}
         itemType='todo'
-        onDelete={handleDelete}
+        onConfirm={handleDelete}
       />
     </>
   );
