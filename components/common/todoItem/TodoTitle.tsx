@@ -1,4 +1,4 @@
-import TodoContentsDrawer from '@/components/drawer/TodoContentsDrawer';
+import TodoContentsDrawer from '@/components/drawer/TodoContentsDrawer/TodoContentsDrawer';
 import { MOBILE_BREAKPOINT } from '@/constants';
 import { Todo } from '@/lib/types/todo';
 import clsx from 'clsx';
