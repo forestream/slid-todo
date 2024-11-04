@@ -24,7 +24,9 @@ export default function GoalDetailPage({ params }: { params: { goalId: string } 
           </div>
         </Link>
       </div>
-      <TodoItemsGoal goalId={+params.goalId} />
+      <div className='flex flex-col'>
+        <TodoItemsGoal goalId={+params.goalId} />
+      </div>
     </PageContainer>
   );
 }
