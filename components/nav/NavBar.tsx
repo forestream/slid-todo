@@ -18,8 +18,8 @@ import Link from 'next/link';
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
 const NavBar = () => {
-  const [isNavOpen, setIsNavOpen] = useState(false); // 모바일,데스크탑 기본 nav 열림 여부
-  const [isSheetNavOpen, setIsSheetNavOpen] = useState(false); // 태블릿 nav 왼쪽 시트 열림 여부
+  const [isNavOpen, setIsNavOpen] = useState(false); //데스크탑 기본 nav 열림 여부
+  const [isSheetNavOpen, setIsSheetNavOpen] = useState(false); // 모바일, 태블릿 nav 왼쪽 시트 열림 여부
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false); // 할 일 모달 열림 여부
   const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
   const pathname = usePathname();
@@ -30,12 +30,20 @@ const NavBar = () => {
   };
 
   const handleNavButtonClick = (widthType?: widthType) => {
-    if (widthType === 'tablet') {
-      setIsSheetNavOpen(!isSheetNavOpen);
-    } else {
+    if (widthType === 'desktop') {
       setIsNavOpen(!isNavOpen);
+    } else {
+      setIsSheetNavOpen(!isSheetNavOpen);
     }
   };
+
+  useEffect(() => {
+    if (isNavOpen || isSheetNavOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isNavOpen, isSheetNavOpen]);
 
   // 페이지 이동 시 nav를 닫음
   useEffect(() => {
@@ -49,7 +57,7 @@ const NavBar = () => {
     }
   }, [pathname]);
 
-  // 기본(모바일, 데스크탑) nav
+  // 기본(데스크탑) nav
   const NavContent = () => (
     <div className='flex-shrink-0 flex-col sm:w-[280px] h-screen divide-slate-200 sm:border-r-[1px]'>
       <nav className='flex-col w-full h-full'>
@@ -59,7 +67,7 @@ const NavBar = () => {
           </Link>
           <Button
             className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-            onClick={isSheetNavOpen ? () => handleNavButtonClick('tablet') : () => handleNavButtonClick()}
+            onClick={isNavOpen ? () => handleNavButtonClick('desktop') : () => handleNavButtonClick()}
           >
             <IconFold isFold={false} />
           </Button>
@@ -89,7 +97,7 @@ const NavBar = () => {
     </div>
   );
 
-  // 태블릿용 nav
+  // 모바일,태블릿용 nav
   const NavWithSheet = () => (
     <SheetProvider isOpen={isSheetNavOpen} onChangeIsOpen={setIsSheetNavOpen}>
       <SheetTrigger>
