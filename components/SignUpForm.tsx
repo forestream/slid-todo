@@ -11,7 +11,7 @@ import IconCheck from '@/public/icons/IconCheck';
 import SignupSuccessModal from './modal/SignupSuccessModal';
 
 const SignUpForm: React.FC = () => {
-  const modalRef = useRef<HTMLButtonElement>(null);
+  const [isSusccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [isEmailAvailable, setIsEmailAvailable] = useState<boolean>(false);
 
   const {
@@ -32,8 +32,7 @@ const SignUpForm: React.FC = () => {
       setIsEmailAvailable(false);
       const response = await signUp(fetchData);
       console.log(response);
-
-      modalRef.current?.click();
+      setIsSuccessModalOpen(true);
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes('이메일')) {
@@ -172,7 +171,7 @@ const SignUpForm: React.FC = () => {
           회원가입하기
         </Button>
       </form>
-      <SignupSuccessModal ref={modalRef} />
+      <SignupSuccessModal isOpen={isSusccessModalOpen} onChangeIsOpen={setIsSuccessModalOpen} />
     </>
   );
 };
