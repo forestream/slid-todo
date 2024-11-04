@@ -9,14 +9,12 @@ const RecentTodo = () => {
   const recentTodos = data?.pages[0];
   return (
     <section
-      className='flex flex-1 flex-col bg-white rounded-xl border border-slate-100 gap-4
-      w-[343px] h-[250px] px-4 pb-6 pt-4
-      sm:w-[306px] sm:h-[250px] sm:px-6 sm:pb-6 sm:pt-4
-      lg:h-[250px]
+      className='flex flex-1 flex-col min-w-0 min-h-[250px] bg-white rounded-xl border border-slate-100 gap-4
+      px-4 pb-6 pt-4 sm:px-6 sm:pb-6 sm:pt-4
     '
     >
       <div className='flex items-center w-full gap-2'>
-        <div className='w-10 h-10 bg-blue-500 rounded-[15px] grid place-content-center'>
+        <div className='w-10 h-10 flex-shrink-0 bg-blue-500 rounded-[15px] grid place-content-center'>
           <IconTodoRecently />
         </div>
         <p className='text-slate-800 text-lg font-semibold text-nowrap'>최근 등록한 할 일</p>
