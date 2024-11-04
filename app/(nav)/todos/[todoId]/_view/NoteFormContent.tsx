@@ -1,6 +1,5 @@
 'use client';
 
-import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
 import TiptapEditor from '@/components/TiptapEditor';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import IconClose from '@/public/icons/IconClose';
@@ -31,13 +30,12 @@ import IconTextItalics from '@/public/icons/IconTextItalics';
 import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
 import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import IconTextHighlight from '@/public/icons/IconTextHighlight';
-import IconAddLink from '@/public/icons/IconAddLink';
-import InputSlid from '@/components/common/InputSlid';
 import Button from '@/components/common/ButtonSlid';
 import ModalSavedNote from './ModalSavedNote';
 import { afterNoteMutation } from '@/app/actions';
 import { useQueryClient } from '@tanstack/react-query';
 import SecondsTimer from './SecondsTimer';
+import NoteFormLinkModal from './NoteFormLinkModal';
 
 export type SavedNote = {
   title: string;
@@ -82,7 +80,6 @@ const NoteFormContent = memo(
     const todoTitle = searchParams.get('todo');
     const goalTitle = searchParams.get('goal');
     const { editor } = useCurrentEditor();
-    const [linkUrlValue, setLinkUrlValue] = useState(linkUrl);
     const [title, setTitle] = useState(initTitle);
     const titleRef = useRef<HTMLInputElement>(null);
     const { mutate } = useNoteMutation(todoId as string);
@@ -93,9 +90,6 @@ const NoteFormContent = memo(
       return note.savedAt;
     }, [savedNote, todoId]);
 
-    const handleChangeLinkUrlValue: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) =>
-      setLinkUrlValue(e.target.value);
-    const handleSaveLinkUrl = () => onSaveLinkUrl(linkUrlValue);
     const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
       setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
     };
@@ -240,11 +234,7 @@ const NoteFormContent = memo(
               </div>
             </div>
           )}
-          <div className='grow lg:relative'>
-            <div className='overflow-visible h-full'>
-              <TiptapEditor />
-            </div>
-          </div>
+          <TiptapEditor />
           <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
             <div className='flex md:gap-1'>
               <button onClick={handleBold}>
@@ -285,30 +275,7 @@ const NoteFormContent = memo(
               </label>
             </div>
             <div className='grow flex justify-end'>
-              <ModalProvider>
-                <ModalTrigger type='button'>
-                  <IconAddLink className='cursor-pointer hover:bg-slate-100' />
-                </ModalTrigger>
-                <ModalContent className='w-full max-w-[520px] flex flex-col'>
-                  <div className='flex justify-between mb-6'>
-                    <h1 className='text-lg font-bold'>링크 업로드</h1>
-                    <ModalClose />
-                  </div>
-                  <InputSlid
-                    label='링크'
-                    type='text'
-                    placeholder='영상이나 글, 파일의 링크를 넣어주세요'
-                    className='mb-10'
-                    value={linkUrlValue}
-                    onChange={handleChangeLinkUrlValue}
-                  />
-                  <ModalClose asChild>
-                    <Button className='w-full' onClick={handleSaveLinkUrl}>
-                      확인
-                    </Button>
-                  </ModalClose>
-                </ModalContent>
-              </ModalProvider>
+              <NoteFormLinkModal linkUrl={linkUrl} onSaveLinkUrl={onSaveLinkUrl} />
             </div>
           </div>
           {savedToast && (
