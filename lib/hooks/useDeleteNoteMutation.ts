@@ -15,8 +15,10 @@ export const useDeleteNoteMutation = () => {
       });
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === 'notes' && query.queryKey[1] !== variables.noteId,
+      });
     },
   });
 };

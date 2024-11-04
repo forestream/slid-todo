@@ -36,6 +36,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todos'] });
+          queryClient.removeQueries({ queryKey: ['notes', id] });
           handleClose();
         },
       }
