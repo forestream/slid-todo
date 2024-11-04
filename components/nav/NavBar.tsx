@@ -51,7 +51,7 @@ const NavBar = () => {
 
   // 기본(모바일, 데스크탑) nav
   const NavContent = () => (
-    <div className='flex-shrink-0 flex-col sm:w-[280px] divide-slate-200 sm:border-r-[1px]'>
+    <div className='flex-shrink-0 flex-col sm:w-[280px] h-screen divide-slate-200 sm:border-r-[1px]'>
       <nav className='flex-col w-full h-full'>
         <div className='flex justify-between items-center p-4'>
           <Link className='py-2 px-[5px]' href='/dashboard'>
