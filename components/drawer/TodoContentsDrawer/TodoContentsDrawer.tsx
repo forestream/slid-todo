@@ -7,6 +7,8 @@ import ActionButtons from './ActionButtons';
 import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import NoteViewSheet from '@/components/sheet/NoteViewSheet';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
+import IconTrash from '@/public/icons/IconTrash';
+import IconEditTodo from '@/public/icons/IconEditTodo';
 
 interface TodoContentsDrawerProps {
   isOpen: boolean;
@@ -25,10 +27,20 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
       <SheetProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
         <SheetContent position='bottom' className='w-full h-auto'>
           <div className='flex flex-col space-y-6'>
-            <h2 className='text-center'>{data.title}</h2>
+            <h2 className='text-center text-xl font-bold'>{data.title}</h2>
             <div className='flex justify-around'>
-              <Button onClick={() => setIsEditTodoModalOpen(true)}>수정하기</Button>
-              <Button onClick={() => setIsConfirmationModalOpen(true)}>삭제하기</Button>
+              <Button className='text-slate-800' variant='outlined' onClick={() => setIsEditTodoModalOpen(true)}>
+                <IconEditTodo className='mr-1.5' />
+                수정하기
+              </Button>
+              <Button
+                className='border-red-500 text-slate-800'
+                variant='outlined'
+                onClick={() => setIsConfirmationModalOpen(true)}
+              >
+                <IconTrash className='mr-1.5' />
+                삭제하기
+              </Button>
             </div>
             <ActionButtons data={data} onNoteView={() => setIsNoteViewOpen(true)} />
           </div>
