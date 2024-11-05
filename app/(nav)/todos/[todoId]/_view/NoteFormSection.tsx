@@ -92,7 +92,13 @@ const NoteFormSection = ({
   );
 
   return (
-    <NoteForm method={method} noteId={noteId} saveButtonRef={saveButtonRef} onChangeSavedToast={onChangeSavedToast}>
+    <NoteForm
+      method={method}
+      noteId={noteId}
+      saveButtonRef={saveButtonRef}
+      onChangeSavedToast={onChangeSavedToast}
+      className='flex flex-col h-full'
+    >
       <div className='flex w-full items-center mb-4'>
         <h1 className='grow text-slate-900 font-semibold text-lg'>노트 작성</h1>
         <button id='saveNote' className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' ref={saveButtonRef}>

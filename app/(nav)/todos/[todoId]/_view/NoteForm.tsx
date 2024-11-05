@@ -2,7 +2,7 @@ import { afterNoteMutation } from '@/app/actions';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import { FormEventHandler, MutableRefObject, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
+import { ComponentPropsWithoutRef, FormEventHandler, MutableRefObject, useCallback, useEffect, useRef } from 'react';
 
 type NoteFormProps = {
   noteId?: string;
@@ -17,7 +17,8 @@ const NoteForm = ({
   saveButtonRef,
   onChangeSavedToast,
   children,
-}: PropsWithChildren<NoteFormProps>) => {
+  ...props
+}: ComponentPropsWithoutRef<'form'> & NoteFormProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { todoId } = useParams();
@@ -100,7 +101,7 @@ const NoteForm = ({
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form ref={formRef} onSubmit={handleSubmit} {...props}>
       {children}
     </form>
   );
