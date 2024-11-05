@@ -90,7 +90,6 @@ const NoteFormContent = memo(
       return note.savedAt;
     }, [savedNote, todoId]);
 
-    const handleSaveLinkUrl = (linkUrlValue: string) => onSaveLinkUrl(linkUrlValue);
     const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
       setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
     };
@@ -276,7 +275,7 @@ const NoteFormContent = memo(
               </label>
             </div>
             <div className='grow flex justify-end'>
-              <AddLinkModal linkUrl={linkUrl} onSave={handleSaveLinkUrl} />
+              <AddLinkModal linkUrl={linkUrl} onSave={onSaveLinkUrl} />
             </div>
           </div>
           {savedToast && (
