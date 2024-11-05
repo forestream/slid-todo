@@ -73,7 +73,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
         {data.fileUrl && (
           <IconFile
             className='sm:cursor-pointer group'
-            circleClassName='sm:group-hover:fill-slate-200'
+            circleClassName='sm:group-hover:fill-blue-200'
             onClick={() => handleDownloadFile(data.fileUrl)}
           />
         )}
@@ -87,14 +87,14 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
         {data.noteId && (
           <IconNoteView
             className='sm:cursor-pointer cursor-default group'
-            circleClassName='sm:group-hover:fill-slate-200'
+            circleClassName='sm:group-hover:fill-orange-200'
             onClick={handleSheet}
           />
         )}
         <button onClick={handleClickMutateNote}>
           <IconNoteWrite
             className='sm:cursor-pointer w-0 sm:w-auto group'
-            circleClassName='sm:group-hover:fill-slate-200'
+            circleClassName='sm:group-hover:fill-orange-200'
           />
         </button>
         <div className='flex justify-center items-center'>
@@ -102,7 +102,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             icon={IconKebabWithCircle}
             dropdownList={['수정하기', '삭제하기']}
             onItemClick={handleDropdaownMenuClick}
-            className='sm:hover:stroke-slate-200 sm:hover:fill-slate-200 cursor-pointer w-0 sm:w-auto'
+            iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
           />
         </div>
       </div>
