@@ -2,8 +2,16 @@ import React, { SVGProps } from 'react';
 
 export const IconKebabWithCircle = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' {...props}>
-      <circle cx='12' cy='12' r='10' fill='#F8FAFC' />
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      className='group'
+      {...props}
+    >
+      <circle cx='12' cy='12' r='12' fill='#F8FAFC' />
       <g transform='translate(10, 6)'>
         <svg xmlns='http://www.w3.org/2000/svg' width='4' height='12' viewBox='0 0 4 12' fill='none'>
           <circle

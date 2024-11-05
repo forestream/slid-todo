@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   const isMainPage = pathname === '/';
   // 이미 로그인한 사용자가 로그인/회원가입 페이지에 접근하는 경우
   if (guestOnlyPages.has(pathname) || isMainPage) {
-    if (accessToken) {
+    if (accessToken || refreshToken) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }

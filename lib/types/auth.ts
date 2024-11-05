@@ -17,7 +17,7 @@ export interface LoginResponse {
   accessToken: string;
 }
 
-export interface SignupFormData {
+export interface SignupFormRequest {
   name: string;
   email: string;
   password: string;
