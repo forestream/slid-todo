@@ -100,7 +100,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
 
         <hr />
         <div className='w-full relative flex flex-col'>
-          <div className='w-full relative h-7 my-3'>
+          <div className='w-full relative my-3'>
             <div className='w-full text-lg font-medium focus-visible:outline-none'>{note?.title}</div>
           </div>
           <hr className='mb-3' />
