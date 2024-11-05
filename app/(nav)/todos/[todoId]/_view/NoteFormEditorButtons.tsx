@@ -32,32 +32,32 @@ const NoteFormEditorButtons = () => {
   return (
     <>
       <div className='flex md:gap-1'>
-        <button onClick={handleBold}>
+        <button type='button' onClick={handleBold}>
           <IconTextBold className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button onClick={handleItalics}>
+        <button type='button' onClick={handleItalics}>
           <IconTextItalics className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button onClick={handleUnderline}>
+        <button type='button' onClick={handleUnderline}>
           <IconTextUnderline className='cursor- hover:bg-slate-100' />
         </button>
       </div>
       <div className='flex md:gap-1'>
-        <button onClick={handleAlignLeft}>
+        <button type='button' onClick={handleAlignLeft}>
           <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button onClick={handleAlignCenter}>
+        <button type='button' onClick={handleAlignCenter}>
           <IconTextAlignMiddle className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button onClick={handleAlignRight}>
+        <button type='button' onClick={handleAlignRight}>
           <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
         </button>
       </div>
       <div className='flex md:gap-1'>
-        <button onClick={handleBulletList}>
+        <button type='button' onClick={handleBulletList}>
           <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button onClick={handleOrderedList}>
+        <button type='button' onClick={handleOrderedList}>
           <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
         </button>
         <label htmlFor='textHighlight' className='relative'>
