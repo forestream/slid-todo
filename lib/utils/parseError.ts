@@ -2,12 +2,12 @@ import { AUTH_ERROR_MESSAGES } from '@/constants';
 
 export type ErrorField = 'email' | 'password' | 'root.serverError';
 
-export interface SignupError {
+export interface AuthError {
   field: ErrorField;
   message: string;
 }
 
-export const parseSignupError = (error: Error): SignupError => {
+export const parseAuthError = (error: Error): AuthError => {
   const errorMessage = error.message.toLowerCase();
 
   if (errorMessage.includes('이메일')) {

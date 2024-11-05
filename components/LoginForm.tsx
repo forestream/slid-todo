@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFormData, loginSchema } from '@/lib/schemas/authSchemas';
 import { login } from '@/lib/api/login';
 import { setUserToStorage } from '@/lib/utils/auth';
+import { parseAuthError } from '@/lib/utils/parseError';
 
 const LoginForm: React.FC = () => {
   const {
@@ -26,24 +27,11 @@ const LoginForm: React.FC = () => {
       window.location.href = '/dashboard';
     } catch (error) {
       if (error instanceof Error) {
-        // 서버에서 받은 에러 메시지를 적절한 필드에 설정
-        if (error.message.includes('이메일')) {
-          setError('email', {
-            type: 'manual',
-            message: error.message,
-          });
-        } else if (error.message.includes('비밀번호')) {
-          setError('password', {
-            type: 'manual',
-            message: error.message,
-          });
-        } else {
-          // 일반적인 에러의 경우 비밀번호 필드에 표시 (임시)
-          setError('password', {
-            type: 'manual',
-            message: error.message,
-          });
-        }
+        const { field, message } = parseAuthError(error);
+        setError(field, {
+          type: 'manual',
+          message,
+        });
       }
     }
   };
@@ -67,6 +55,9 @@ const LoginForm: React.FC = () => {
       <Button className='w-full' type='submit' disabled={isSubmitting}>
         로그인하기
       </Button>
+      {errors.root?.serverError && (
+        <span className='mt-1 ml-4 text-red-700 text-xs sm:text-sm'>{errors.root?.serverError.message}</span>
+      )}
     </form>
   );
 };

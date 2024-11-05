@@ -11,7 +11,7 @@ import IconCheck from '@/public/icons/IconCheck';
 import SignupSuccessModal from './modal/SignupSuccessModal';
 import { useEmailValidation } from '@/lib/hooks/useEmailValidation';
 import { SignupFormRequest } from '@/lib/types/auth';
-import { parseSignupError } from '@/lib/utils/parseError';
+import { parseAuthError } from '@/lib/utils/parseError';
 
 const SignUpForm: React.FC = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -43,7 +43,7 @@ const SignUpForm: React.FC = () => {
       setIsSuccessModalOpen(true);
     } catch (error) {
       if (error instanceof Error) {
-        const { field, message } = parseSignupError(error);
+        const { field, message } = parseAuthError(error);
         setError(field, {
           type: 'manual',
           message,
