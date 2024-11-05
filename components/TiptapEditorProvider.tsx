@@ -1,7 +1,7 @@
 'use client';
 
 import { EditorOptions, EditorProvider } from '@tiptap/react';
-import { PropsWithChildren, ReactElement } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Highlight from '@tiptap/extension-highlight';
@@ -18,7 +18,7 @@ const TiptapEditorProvider = ({
 }: PropsWithChildren<{
   className?: string;
   content?: string;
-  slotBefore?: ReactElement;
+  slotBefore?: ReactNode;
   editorOptions?: Partial<EditorOptions>;
 }>) => {
   const options: Partial<EditorOptions> = {

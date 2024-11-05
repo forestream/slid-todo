@@ -2,7 +2,7 @@
 
 import { ModalClose, ModalContent, ModalProvider, ModalTrigger } from '@/components/common/Modal';
 import { memo } from 'react';
-import { SavedNote } from './NoteFormContent';
+import { SavedNote } from './NoteFormSection';
 import Button from '@/components/common/ButtonSlid';
 
 type ModalSavedNoteProps = {
@@ -13,12 +13,15 @@ type ModalSavedNoteProps = {
 const OpenSavedNoteModal = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps) => {
   return (
     <ModalProvider>
-      <ModalTrigger className='shrink-0 rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
+      <ModalTrigger
+        className='shrink-0 rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'
+        type='button'
+      >
         불러오기
       </ModalTrigger>
       <ModalContent className='max-w-[450px] flex flex-col items-center w-full'>
         <p className='font-medium mt-2'>
-          &apos;{savedNote && savedNote.title.length ? savedNote.title : '제목없음'}&apos;
+          &apos;{savedNote && savedNote.title?.length ? savedNote.title : '제목없음'}&apos;
         </p>
         <p className='font-medium mb-8'>제목의 노트를 불러오시겠어요?</p>
         <div className='flex gap-2'>

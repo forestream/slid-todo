@@ -1,9 +1,9 @@
-import NoteForm from '../_view/NoteForm';
+import NoteFormSections from '../_view/NoteFormSections';
 
 export default function Page() {
   return (
     <main className='lg:flex h-screen w-screen'>
-      <NoteForm />
+      <NoteFormSections />
     </main>
   );
 }

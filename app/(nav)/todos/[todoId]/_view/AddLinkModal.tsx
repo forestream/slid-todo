@@ -35,6 +35,7 @@ const AddLinkModal = ({ linkUrl, onSave }: AddLinkModalProps) => {
     const formData = new FormData(e.target as HTMLFormElement);
     onSave((formData.get('linkUrl') as string) ?? '');
     setIsOpen(false);
+    e.stopPropagation();
   };
 
   return (

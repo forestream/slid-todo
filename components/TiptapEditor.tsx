@@ -13,6 +13,7 @@ const TiptapEditor = ({ ...props }: PropsWithChildren) => {
       <div className='overflow-visible h-full'>
         <EditorContent editor={editor} {...props} />
         <div className='h-20'></div>
+        <input type='hidden' name='contentHTML' value={editor.getHTML()} />
       </div>
     </div>
   );
