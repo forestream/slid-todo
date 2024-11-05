@@ -64,6 +64,14 @@ const SignUpForm: React.FC = () => {
   useEffect(() => {
     const validateEmail = async (email: string) => {
       setIsEmailAvailable(false);
+      const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(email);
+      if (hasKorean) {
+        setError('email', {
+          type: 'manual',
+          message: '이메일에 한글을 포함할 수 없습니다.',
+        });
+        return;
+      }
       try {
         // 여기에 이메일 검증 API 호출
         const password = 'passwordToTestEmail';
@@ -75,18 +83,17 @@ const SignUpForm: React.FC = () => {
           },
         });
 
-        if (response.status === 404) {
-          setError('email', {
-            type: 'manual',
-            message: '',
-          });
-          setIsEmailAvailable(true);
-          return;
-        }
-
         if (!response.ok) {
           const error = await response.json();
           console.log(error.message);
+          if (error.message.includes('가입')) {
+            setError('email', {
+              type: 'manual',
+              message: '',
+            });
+            setIsEmailAvailable(true);
+            return;
+          }
           if (error.message.includes('비밀번호가 올바르지')) {
             setError('email', {
               type: 'manual',
