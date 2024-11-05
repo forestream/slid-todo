@@ -6,7 +6,15 @@ interface IconNoteWriteProps extends SVGProps<SVGSVGElement> {
 }
 
 const IconNoteWrite = ({ circleClassName, pathClassName, ...props }: IconNoteWriteProps) => (
-  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+  <svg
+    width='24'
+    height='24'
+    viewBox='0 0 24 24'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-labelledby='noteWriteTitle'
+    {...props}
+  >
     <title id='noteWriteTitle'>노트 수정하기&생성하기 </title>
     <circle className={circleClassName} cx='12' cy='12' r='12' fill='#FF9F43' />
     <path
