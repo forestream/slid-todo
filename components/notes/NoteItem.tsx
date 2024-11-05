@@ -39,7 +39,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   return (
     <>
       <div
-        className='p-6 bg-white flex flex-col space-y-4 rounded-xl group cursor-pointer'
+        className='p-6 bg-white flex flex-col space-y-4 rounded-xl group cursor-pointer hover:shadow-lg transition-all duration-200'
         onClick={handleClickTrigger}
       >
         <div className='flex justify-between items-center'>
