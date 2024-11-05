@@ -1,5 +1,4 @@
 'use client';
-
 import clsx from 'clsx';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import { IconArrowDown2 } from '@/public/icons/IconArrowDown2';
@@ -25,6 +24,9 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
       }
     });
   };
+
+  // todo, done 중 하나라도 hasNextPage가 있으면 표시.
+  const isMoreButtonVisible = useMemo(() => queries.some((query) => query.hasNextPage), [queries]);
 
   const containerClass = 'w-full h-auto flex flex-col min-h-[184px] gap-3 rounded-lg';
   const contentClass = (isEmpty: boolean) =>
@@ -65,16 +67,18 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
   return (
     <div className='flex flex-col w-full gap-4'>
       <div className='w-full h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>
-      <div className='w-full flex justify-center'>
-        <Button
-          onClick={handleMoreClick}
-          className='flex border-none gap-[2px] bg-white text-slate-700 hover:bg-blue-100
-          text-sm font-semibold rounded-2xl w-[120px] h-8 justify-center items-center'
-        >
-          <span>더보기</span>
-          <IconArrowDown2 />
-        </Button>
-      </div>
+      {isMoreButtonVisible && (
+        <div className='w-full flex justify-center'>
+          <Button
+            onClick={handleMoreClick}
+            className='flex border-none gap-[2px] bg-white text-slate-700 hover:bg-blue-100
+            text-sm font-semibold rounded-2xl w-[120px] h-8 justify-center items-center'
+          >
+            <span>더보기</span>
+            <IconArrowDown2 />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
