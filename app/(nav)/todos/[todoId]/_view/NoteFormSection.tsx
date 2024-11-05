@@ -129,7 +129,7 @@ const NoteFormSection = ({
       )}
       <hr />
       <div className='grow w-full relative flex flex-col'>
-        <div className='w-full relative h-7 my-3'>
+        <div className='w-full relative my-3 pr-10'>
           <NoteFormTitleInput initTitle={initTitle} onChangeTitleEmpty={handleTitleEmpty} />
         </div>
         <hr />
