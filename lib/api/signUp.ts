@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '@/constants';
-import { SignupFormData, SignupResponse } from '../types/auth';
+import { SignupFormRequest, SignupResponse } from '../types/auth';
 
-export const signUp = async (data: SignupFormData): Promise<SignupResponse> => {
+export const signUp = async (data: SignupFormRequest): Promise<SignupResponse> => {
   const response = await fetch(`${API_BASE_URL}/user`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
