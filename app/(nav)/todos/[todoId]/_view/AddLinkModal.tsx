@@ -43,7 +43,7 @@ const AddLinkModal = ({ linkUrl, onSave }: AddLinkModalProps) => {
       <ModalTrigger type='button'>
         <IconAddLink className='cursor-pointer hover:bg-slate-100' />
       </ModalTrigger>
-      <ModalContent className='w-full max-w-[520px] flex flex-col'>
+      <ModalContent className='w-full max-w-[520px] flex flex-col' overlayClassName='p-8'>
         <div className='flex justify-between mb-6'>
           <h1 className='text-lg font-bold'>링크 업로드</h1>
           <ModalClose />

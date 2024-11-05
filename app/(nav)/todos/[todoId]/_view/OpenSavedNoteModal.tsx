@@ -19,7 +19,7 @@ const OpenSavedNoteModal = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps
       >
         불러오기
       </ModalTrigger>
-      <ModalContent className='max-w-[450px] flex flex-col items-center w-full'>
+      <ModalContent className='max-w-[450px] flex flex-col items-center w-full' overlayClassName='p-8'>
         <p className='font-medium mt-2'>
           &apos;{savedNote && savedNote.title?.length ? savedNote.title : '제목없음'}&apos;
         </p>
