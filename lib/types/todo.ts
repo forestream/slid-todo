@@ -63,3 +63,9 @@ export type Note = {
   userId: number;
   teamId: string;
 };
+
+export type GetNotesResponse = {
+  notes: Note[];
+  totalCount: number;
+  nextCursor: number | null;
+};

@@ -1,11 +1,11 @@
 'use client';
 
-import baseFetch from '@/lib/api/baseFetch';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useNotesInfiniteQuery } from '@/lib/hooks/useNotesInfiniteQuery';
 import { useEffect, useState } from 'react';
 import NoteGoalTitle from './NoteGoalTitle';
 import NotesList from './NotesList';
+import baseFetch from '@/lib/api/baseFetch';
 
 interface NotesContentProps {
   goalId: string;
@@ -37,11 +37,12 @@ const NotesContent: React.FC<NotesContentProps> = ({ goalId }) => {
   });
 
   const notes = data?.pages.flatMap((page) => page.notes) ?? [];
+  const validNotes = notes.filter((note) => note !== undefined);
 
   return (
     <>
       <NoteGoalTitle goalTitle={goalTitle} link={`/goals/${goalId}`} />
-      <NotesList notes={notes} isFetching={isFetching} />
+      <NotesList notes={validNotes} isFetching={isFetching} />
       <div ref={loadMoreRef} className='h-10 flex items-center justify-center'>
         {isFetching && <div>불러오는 중...</div>}
       </div>
