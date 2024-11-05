@@ -14,6 +14,7 @@ import { SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { TABLET_BREAKPOINT } from '@/constants';
 
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
@@ -45,12 +46,14 @@ const NavBar = () => {
     }
   }, [isNavOpen, isSheetNavOpen]);
 
-  // 페이지 이동 시 nav를 닫음
+  // 페이지 이동 시
   useEffect(() => {
     // 첫 마운트 이후에만(페이지 이동시에만)실행
     if (hasMounted.current) {
-      setIsNavOpen(false);
-      setIsSheetNavOpen(false);
+      // 모바일, 태블릿에서 페이지 이동시 열려있던 nav를 닫음
+      if (window.innerWidth < TABLET_BREAKPOINT) {
+        setIsSheetNavOpen(false);
+      }
       setCurrentPageLabel(document.title.split('|')[0].trim());
     } else {
       hasMounted.current = true;
