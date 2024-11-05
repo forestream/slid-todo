@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import baseFetch from '../api/baseFetch';
+import { GetNotesResponse } from '../types/todo';
 
 interface NotesSearchParams {
   goalId?: number;
@@ -7,7 +8,7 @@ interface NotesSearchParams {
 }
 
 export const useNotesInfiniteQuery = (searchParams: NotesSearchParams = {}) => {
-  return useInfiniteQuery({
+  return useInfiniteQuery<GetNotesResponse>({
     queryKey: ['notes', searchParams],
     queryFn: ({ pageParam }) => {
       const stringifiedParams: Record<string, string> = {
