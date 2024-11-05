@@ -8,6 +8,7 @@ import {
   createContext,
   forwardRef,
   isValidElement,
+  memo,
   PropsWithChildren,
   Ref,
   useContext,
@@ -111,31 +112,33 @@ const ModalContent = ({
   );
 };
 
-const ModalClose = forwardRef(
-  (
-    { asChild = false, children, ...props }: ComponentPropsWithoutRef<'button'> & { asChild?: boolean },
-    ref: Ref<HTMLButtonElement>
-  ) => {
-    const { handleClose } = useModalContext();
+const ModalClose = memo(
+  forwardRef(
+    (
+      { asChild = false, children, ...props }: ComponentPropsWithoutRef<'button'> & { asChild?: boolean },
+      ref: Ref<HTMLButtonElement>
+    ) => {
+      const { handleClose } = useModalContext();
 
-    if (asChild && Children.count(children) === 1 && isValidElement(children)) {
-      return cloneElement(children, {
-        ...props,
-        ...children.props,
-        onClick: () => {
-          if (children.props.onClick) children.props.onClick();
-          handleClose();
-        },
-        ref,
-      });
+      if (asChild && Children.count(children) === 1 && isValidElement(children)) {
+        return cloneElement(children, {
+          ...props,
+          ...children.props,
+          onClick: () => {
+            if (children.props.onClick) children.props.onClick();
+            handleClose();
+          },
+          ref,
+        });
+      }
+
+      return (
+        <button onClick={handleClose} {...props} ref={ref}>
+          {children ? children : <IconModalClose />}
+        </button>
+      );
     }
-
-    return (
-      <button onClick={handleClose} {...props} ref={ref}>
-        {children ? children : <IconModalClose />}
-      </button>
-    );
-  }
+  )
 );
 
 ModalClose.displayName = 'ModalClose';

@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import NoteForm from '../../_view/NoteForm';
+import NoteFormSections from '../../_view/NoteFormSections';
 import { Note } from '@/lib/types/todo';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
@@ -14,8 +14,8 @@ export default async function Page({ params }: { params: { noteId: string } }) {
   const { title, content, linkUrl } = body;
 
   return (
-    <main className='lg:flex h-screen w-screen'>
-      <NoteForm title={title} content={content} linkUrl={linkUrl ?? ''} method='PATCH' noteId={noteId} />
+    <main className='lg:flex h-screen'>
+      <NoteFormSections title={title} content={content} linkUrl={linkUrl ?? ''} method='PATCH' noteId={noteId} />
     </main>
   );
 }

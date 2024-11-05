@@ -46,7 +46,11 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const handleDropdaownMenuClick = (item: string) => {
     if (item === '수정하기') {
       // 수정하기페이지로 이동
-      router.push(`/todos/${note?.todo.id}/note/${note?.id}?todo=${note?.todo.title}&goal=${note?.goal.title}`);
+      router.push(
+        `/todos/${note?.todo.id}/note/${note?.id}?todo=${note?.todo.title}&goal=${
+          note?.goal ? note?.goal.title : '목표 없음'
+        }`
+      );
     } else if (item === '삭제하기') {
       setIsDeleteModalOpen(true);
     }
