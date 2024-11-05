@@ -28,17 +28,19 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
         <SheetContent position='bottom' className='w-full h-auto'>
           <div className='flex flex-col space-y-6'>
             <h2 className='text-center text-xl font-bold'>{data.title}</h2>
-            <div className='flex justify-around'>
-              <Button className='text-slate-800' variant='outlined' onClick={() => setIsEditTodoModalOpen(true)}>
-                <IconEditTodo className='mr-1.5' />
+            <div className='flex justify-around gap-2'>
+              <Button
+                className='text-slate-800 flex-col w-full bg-slate-100'
+                onClick={() => setIsEditTodoModalOpen(true)}
+              >
+                <IconEditTodo className='mb-1' />
                 수정하기
               </Button>
               <Button
-                className='border-red-500 text-slate-800'
-                variant='outlined'
+                className='border-red-500 text-slate-800 flex-col w-full bg-slate-100'
                 onClick={() => setIsConfirmationModalOpen(true)}
               >
-                <IconTrash className='mr-1.5' />
+                <IconTrash className='mb-1' />
                 삭제하기
               </Button>
             </div>
