@@ -10,7 +10,7 @@ type ModalSavedNoteProps = {
   onOpenSaved: () => void;
 };
 
-const ModalSavedNote = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps) => {
+const OpenSavedNoteModal = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps) => {
   return (
     <ModalProvider>
       <ModalTrigger className='shrink-0 rounded-full bg-white border border-blue-500 text-blue-500 text-sm font-semibold py-2 px-4'>
@@ -38,6 +38,6 @@ const ModalSavedNote = memo(({ savedNote, onOpenSaved }: ModalSavedNoteProps) =>
   );
 });
 
-ModalSavedNote.displayName = 'ModalSavedNote';
+OpenSavedNoteModal.displayName = 'OpenSavedNoteModal';
 
-export default ModalSavedNote;
+export default OpenSavedNoteModal;

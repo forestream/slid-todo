@@ -47,7 +47,7 @@ const Content = ({ data }: { data: Todo }) => {
   const { data: goalData } = useInfiniteGoalsQuery(1000);
   const goals = goalData?.pages.map((page) => page.goals).flat();
   return (
-    <ModalContent className='sm:w-[520px] sm:h-[676px] w-full h-full p-4 sm:p-6 flex flex-col'>
+    <ModalContent className='sm:w-[520px] sm:h-[676px] w-full h-full p-4 sm:p-6 flex flex-col animate-slide-up sm:rounded-xl rounded-none'>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
         <div className='flex gap-2 flex-col'>
           <div className='flex justify-between items-center'>

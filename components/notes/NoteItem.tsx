@@ -1,11 +1,12 @@
 import { IconRectangle } from '@/public/icons/IconRectangle';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
-import { Note } from '@/app/(nav)/notes/[goalId]/page';
 import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { MouseEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteViewSheet from '../sheet/NoteViewSheet';
+import { Note } from '@/lib/types/todo';
+import ConfirmationModal from '../modal/ConfirmationModal';
 
 interface NoteItemProps {
   note: Note;
@@ -15,8 +16,8 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const deleteNote = useDeleteNoteMutation();
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDelete = () => {
-    // 삭제할지 모달을 띄워주면 좋겠음
     deleteNote.mutate({ noteId: note.id });
   };
 
@@ -25,7 +26,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       // 수정하기페이지로 이동
       router.push(`/todos/${note.todo.id}/note/${note.id}?todo=${note.todo.title}&goal=${note.goal.title}`);
     } else if (item === '삭제하기') {
-      handleDelete();
+      setIsDeleteModalOpen(true);
     }
   };
 
@@ -67,6 +68,12 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
         noteId={note.id}
         goal={note.goal}
         todoTitle={note.todo.title}
+      />
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onChangeIsOpen={setIsDeleteModalOpen}
+        onConfirm={handleDelete}
+        itemType='note'
       />
     </>
   );

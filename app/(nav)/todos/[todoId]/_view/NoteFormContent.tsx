@@ -31,11 +31,11 @@ import IconTextNumberPoint from '@/public/icons/IconTextNumberPoint';
 import IconTextUnderline from '@/public/icons/IconTextUnderline';
 import IconTextHighlight from '@/public/icons/IconTextHighlight';
 import Button from '@/components/common/ButtonSlid';
-import ModalSavedNote from './ModalSavedNote';
+import OpenSavedNoteModal from './OpenSavedNoteModal';
 import { afterNoteMutation } from '@/app/actions';
 import { useQueryClient } from '@tanstack/react-query';
 import SecondsTimer from './SecondsTimer';
-import NoteFormLinkModal from './NoteFormLinkModal';
+import AddLinkModal from './AddLinkModal';
 
 export type SavedNote = {
   title: string;
@@ -90,6 +90,7 @@ const NoteFormContent = memo(
       return note.savedAt;
     }, [savedNote, todoId]);
 
+    const handleSaveLinkUrl = (linkUrlValue: string) => onSaveLinkUrl(linkUrlValue);
     const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (e) => {
       setTitle(e.target.value.length > 30 ? e.target.value.slice(0, 30) : e.target.value);
     };
@@ -202,7 +203,7 @@ const NoteFormContent = memo(
               <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
             </button>
             <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
-            <ModalSavedNote onOpenSaved={onOpenSaved} savedNote={savedNote} />
+            <OpenSavedNoteModal onOpenSaved={onOpenSaved} savedNote={savedNote} />
           </div>
         )}
         <hr />
@@ -275,7 +276,7 @@ const NoteFormContent = memo(
               </label>
             </div>
             <div className='grow flex justify-end'>
-              <NoteFormLinkModal linkUrl={linkUrl} onSaveLinkUrl={onSaveLinkUrl} />
+              <AddLinkModal linkUrl={linkUrl} onSave={handleSaveLinkUrl} />
             </div>
           </div>
           {savedToast && (

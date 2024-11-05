@@ -9,6 +9,7 @@ import { useDeleteNoteMutation } from '@/lib/hooks/useDeleteNoteMutation';
 import { useRouter } from 'next/navigation';
 import { useSheetContext } from '../common/Sheet';
 import { useQueryClient } from '@tanstack/react-query';
+import ConfirmationModal from '../modal/ConfirmationModal';
 
 type NoteDetailProps = {
   id: number;
@@ -20,6 +21,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { data: note, isLoading } = useNoteQuery(id);
   const { handleClose } = useSheetContext();
   const queryClient = useQueryClient();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const createdAt = new Date(note?.createdAt ?? 0);
   const year = createdAt.getFullYear();
@@ -29,12 +31,12 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const router = useRouter();
 
   const handleDelete = () => {
-    // 삭제할지 모달을 띄워주면 좋겠음
     deleteNote.mutate(
       { noteId: id },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todos'] });
+          queryClient.removeQueries({ queryKey: ['notes', id] });
           handleClose();
         },
       }
@@ -50,7 +52,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
         }`
       );
     } else if (item === '삭제하기') {
-      handleDelete();
+      setIsDeleteModalOpen(true);
     }
   };
 
@@ -119,6 +121,12 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
           </div>
         </div>
       </section>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onChangeIsOpen={setIsDeleteModalOpen}
+        onConfirm={handleDelete}
+        itemType='note'
+      />
     </>
   );
 };

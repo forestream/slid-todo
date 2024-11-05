@@ -3,9 +3,10 @@ import clsx from 'clsx';
 import { IconPlusSmall } from '@/public/icons/IconPlusSmall';
 import { useInView } from 'react-intersection-observer';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TodoItem from '../common/todoItem';
 import { Todo } from '@/lib/types/todo';
+import TodoAddModal from '../modal/todoModal/TodoAddModal';
 
 const TODO_SECTIONS = [
   {
@@ -23,6 +24,7 @@ const TODO_SECTIONS = [
 ] as const;
 
 const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const todoRef = useInView({ threshold: 1 });
   const doneRef = useInView({ threshold: 1 });
   const views = useMemo(() => [todoRef, doneRef], [todoRef, doneRef]);
@@ -40,12 +42,11 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     });
   }, [views, queries]);
 
-  const baseContainerClasses =
-    'w-full h-auto flex flex-col min-h-[228px] max-h-[228px] sm:max-h-[228px] lg:max-h-[456px] p-4 gap-3';
+  const baseContainerClasses = 'h-auto flex flex-col flex-1 p-4 gap-3';
 
   const contentClass = (isEmpty: boolean) =>
     clsx(
-      'w-full flex overflow-y-auto min-h-[200px]',
+      'w-full flex overflow-y-auto min-h-[200px] max-h-[228px] lg:max-h-[456px]',
       isEmpty ? 'h-full flex-col sm:flex-col lg:flex-row justify-center items-center' : 'h-auto flex-col gap-2'
     );
 
@@ -59,7 +60,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
         <div className='flex w-full justify-between'>
           <p className='bold text-sm font-semibold'>{section.title}</p>
           {section.showAddTodo && (
-            <button className='flex gap-1 items-center text-blue-500'>
+            <button onClick={() => setIsModalOpen(true)} className='flex gap-1 items-center text-blue-500'>
               <IconPlusSmall stroke='#3b82f6' />
               <span>할일 추가</span>
             </button>
@@ -86,7 +87,12 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     );
   });
 
-  return <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>;
+  return (
+    <>
+      <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>
+      <TodoAddModal isOpen={isModalOpen} onChangeIsOpen={setIsModalOpen} goalId={goalId} />
+    </>
+  );
 };
 
 export default TodoItemsGoal;

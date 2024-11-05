@@ -11,6 +11,7 @@ import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
 import { useRouter } from 'next/navigation';
 import { MOBILE_BREAKPOINT } from '@/constants';
 import NoteViewSheet from '@/components/sheet/NoteViewSheet';
+import ConfirmationModal from '@/components/modal/ConfirmationModal';
 
 interface TodoIconProps {
   data: Todo;
@@ -22,12 +23,12 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const handleSheetOpen = (isOpen: boolean) => setIsSheetOpen(isOpen);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
 
   const handleDelete = () => {
     if (isMobile()) return;
-    // 삭제할지 모달을 띄워주면 좋겠음
     deleteTodo.mutate({ todoId: data.id });
   };
 
@@ -36,7 +37,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     if (item === '수정하기') {
       onChangeIsOpen(true);
     } else if (item === '삭제하기') {
-      handleDelete();
+      setIsDeleteModalOpen(true);
     }
   };
 
@@ -112,6 +113,12 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
         noteId={data.noteId}
         goal={data.goal}
         todoTitle={data.title}
+      />
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onChangeIsOpen={setIsDeleteModalOpen}
+        itemType='todo'
+        onConfirm={handleDelete}
       />
     </>
   );

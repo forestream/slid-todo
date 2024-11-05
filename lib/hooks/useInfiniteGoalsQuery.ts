@@ -2,9 +2,9 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Goals } from '../types/todo';
 import baseFetch from '../api/baseFetch';
 
-const useInfiniteGoalsQuery = (size: number = 3, sortOrder?: 'oldest' | 'newest') => {
+const useInfiniteGoalsQuery = (size: number = 3) => {
   return useInfiniteQuery<Goals>({
-    queryKey: ['goals', { size, sortOrder }],
+    queryKey: ['goals'],
     queryFn: ({ pageParam = null }) => {
       const params = new URLSearchParams({
         ...(pageParam !== null && { cursor: String(pageParam) }),
