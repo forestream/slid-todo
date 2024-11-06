@@ -18,7 +18,7 @@ const TodoTitle: React.FC<TodoTitleProps> = ({ data }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const router = useRouter();
   const handleLinkCreateNote = () => {
-    router.push(`/todos/${data.id}/note/create?todo=${data.title}&goal=${data.goal?.title ?? '목표 없음'}`);
+    router.push(`/todos/${data.id}/create?todo=${data.title}&goal=${data.goal?.title ?? '목표 없음'}`);
   };
   const handleTitleClick = () => {
     if (window.innerWidth >= MOBILE_BREAKPOINT) {
