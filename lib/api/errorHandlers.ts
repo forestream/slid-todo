@@ -31,6 +31,7 @@ export const handleHttpError = (data: Data, status: number, url: string) => {
   if (status === 500) {
     handleServerError(url);
   }
+
   throw new HttpError(status, message, url);
 };
 
@@ -39,7 +40,6 @@ const handle404Error = (url: string) => {
     window.location.href = '/404';
     return;
   }
-  throw new HttpError(404, '요청하신 페이지를 찾을 수 없습니다.', url);
 };
 
 const handleServerError = (url: string) => {

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { UseFormSetError } from 'react-hook-form';
 import { SignupFormData } from '../schemas/authSchemas';
 import { AUTH_ERROR_MESSAGES, EMAIL_VALIDATION_DELAY } from '@/constants';
+import baseFetch from '../api/baseFetch';
+import { HttpError } from '../api/errorHandlers';
 
 export const useEmailValidation = (email: string, setError: UseFormSetError<SignupFormData>) => {
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
@@ -20,17 +22,15 @@ export const useEmailValidation = (email: string, setError: UseFormSetError<Sign
 
   const checkEmailAvailability = async (email: string) => {
     try {
-      const response = await fetch('/4-4-dev/auth/login', {
+      await baseFetch('/4-4-dev/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password: 'passwordToTestEmail' }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-
+    } catch (error) {
+      if (error instanceof HttpError) {
         if (error.message.includes('가입')) {
           return null; // 사용 가능한 이메일
         }
@@ -43,17 +43,10 @@ export const useEmailValidation = (email: string, setError: UseFormSetError<Sign
         }
 
         return {
-          type: 'server',
-          message: error.message || AUTH_ERROR_MESSAGES.EMAIL_VALIDATION_FAILED,
+          type: 'manual',
+          message: error.message,
         };
       }
-
-      return {
-        type: 'invalid',
-        message: AUTH_ERROR_MESSAGES.EMAIL_VALIDATION_FAILED,
-      };
-    } catch (error) {
-      console.error(error);
       return {
         type: 'server',
         message: AUTH_ERROR_MESSAGES.SERVER_ERROR,
