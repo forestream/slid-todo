@@ -42,7 +42,7 @@ export type Goals = {
   nextCursor: number | null;
 };
 
-export type Note = {
+export type SingleNote = {
   todo: {
     done: boolean;
     fileUrl: string;
@@ -62,6 +62,10 @@ export type Note = {
   } | null;
   userId: number;
   teamId: string;
+};
+
+export type Note = Omit<SingleNote, 'linkUrl' | 'content' | 'todo'> & {
+  todo: { done: boolean; title: string; id: number };
 };
 
 export type GetNotesResponse = {
