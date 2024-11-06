@@ -91,6 +91,8 @@ const NoteFormSection = ({
     [content]
   );
 
+  const handleDeleteLinkUrl = () => onSaveLinkUrl('');
+
   return (
     <NoteForm
       method={method}
@@ -147,9 +149,13 @@ const NoteFormSection = ({
                     {linkUrl}
                   </p>
                   <input type='hidden' name='linkUrl' value={linkUrl} />
-                  <div className='w-6 h-6 rounded-full flex justify-center items-center'>
+                  <button
+                    className='w-6 h-6 rounded-full flex justify-center items-center'
+                    type='button'
+                    onClick={handleDeleteLinkUrl}
+                  >
                     <IconClose />
-                  </div>
+                  </button>
                 </div>
               )}
               <TiptapEditor />
