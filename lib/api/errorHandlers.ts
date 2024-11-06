@@ -20,6 +20,9 @@ export const handleHttpError = (data: Data, status: number, url: string) => {
   // slid 서버의 경우 { message: string } 형태로 에러 메시지를 전달하기 때문에 이와 같이 정의
 
   const message = data.message ?? getDefaultErrorMessage(status);
+  if (status === 400) {
+    handle404Error(url);
+  }
 
   if (status === 404) {
     handle404Error(url);
