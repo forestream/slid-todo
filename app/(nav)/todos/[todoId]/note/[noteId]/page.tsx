@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import NoteFormSections from '../../_view/NoteFormSections';
-import { Note } from '@/lib/types/todo';
+import { SingleNote } from '@/lib/types/todo';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
   const { noteId } = params;
@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { noteId: string } }) {
     headers: { Authorization: `Bearer ${accessToken?.value}` },
     cache: 'no-store',
   });
-  const body: Partial<Note> = await response.json();
+  const body: Partial<SingleNote> = await response.json();
   const { title, content, linkUrl } = body;
 
   return (
