@@ -91,6 +91,8 @@ const NoteFormSection = ({
     [content]
   );
 
+  const handleDeleteLinkUrl = () => onSaveLinkUrl('');
+
   return (
     <NoteForm
       method={method}
@@ -147,32 +149,38 @@ const NoteFormSection = ({
                     {linkUrl}
                   </p>
                   <input type='hidden' name='linkUrl' value={linkUrl} />
-                  <div className='w-6 h-6 rounded-full flex justify-center items-center'>
+                  <button
+                    className='w-6 h-6 rounded-full flex justify-center items-center'
+                    type='button'
+                    onClick={handleDeleteLinkUrl}
+                  >
                     <IconClose />
-                  </div>
+                  </button>
                 </div>
               )}
               <TiptapEditor />
-              <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white flex gap-2 md:gap-4 overflow-auto scrollbar-width-none'>
-                <NoteFormEditorButtons />
-                <div className='grow flex justify-end'>
-                  <AddLinkModal linkUrl={linkUrl} onSave={onSaveLinkUrl} />
+              <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white scrollbar-width-none overflow-visible'>
+                <div className='flex gap-2 md:gap-4 w-full overflow-auto scrollbar-width-none'>
+                  <NoteFormEditorButtons />
+                  <div className='grow flex justify-end'>
+                    <AddLinkModal linkUrl={linkUrl} onSave={onSaveLinkUrl} />
+                  </div>
                 </div>
+                {savedToast && (
+                  <div className='max-w-[768px] absolute -top-2 left-0 right-0 -translate-y-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
+                    <IconCheck />
+                    <p className='font-semibold text-sm'>
+                      임시 저장이 완료되었습니다{' '}
+                      <span className='text-xs pointerfont-medium'>
+                        ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
+                      </span>
+                    </p>
+                  </div>
+                )}
               </div>
             </>
           }
         />
-        {savedToast && (
-          <div className='max-w-[768px] fixed lg:sticky bottom-0 left-4 right-4 -translate-y-[155%] bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
-            <IconCheck />
-            <p className='font-semibold text-sm'>
-              임시 저장이 완료되었습니다{' '}
-              <span className='text-xs pointerfont-medium'>
-                ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
-              </span>
-            </p>
-          </div>
-        )}
       </div>
     </NoteForm>
   );
