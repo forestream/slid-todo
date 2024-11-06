@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import NoteGoalTitle from './NoteGoalTitle';
 import NotesList from './NotesList';
 import baseFetch from '@/lib/api/baseFetch';
+import { HttpError } from '@/lib/api/errorHandlers';
 
 interface NotesContentProps {
   goalId: string;
@@ -22,7 +23,9 @@ const NotesContent: React.FC<NotesContentProps> = ({ goalId }) => {
         const goalData = await baseFetch(`/4-4-dev/goals/${goalId}`);
         setGoalTitle(goalData.title);
       } catch (error) {
-        console.error('Error fetching goal title:', error);
+        if (error instanceof HttpError) {
+          console.error('Error fetching goal title:', error.message);
+        }
       }
     };
 

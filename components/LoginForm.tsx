@@ -8,6 +8,7 @@ import { LoginFormData, loginSchema } from '@/lib/schemas/authSchemas';
 import { login } from '@/lib/api/login';
 import { setUserToStorage } from '@/lib/utils/auth';
 import { parseAuthError } from '@/lib/utils/parseError';
+import { HttpError } from '@/lib/api/errorHandlers';
 
 const LoginForm: React.FC = () => {
   const {
@@ -26,7 +27,7 @@ const LoginForm: React.FC = () => {
       setUserToStorage(response.user);
       window.location.href = '/dashboard';
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof HttpError) {
         const { field, message } = parseAuthError(error);
         setError(field, {
           type: 'manual',

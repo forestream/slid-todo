@@ -12,6 +12,7 @@ import SignupSuccessModal from './modal/SignupSuccessModal';
 import { useEmailValidation } from '@/lib/hooks/useEmailValidation';
 import { SignupFormRequest } from '@/lib/types/auth';
 import { parseAuthError } from '@/lib/utils/parseError';
+import { HttpError } from '@/lib/api/errorHandlers';
 
 const SignUpForm: React.FC = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -42,7 +43,7 @@ const SignUpForm: React.FC = () => {
       console.log(response);
       setIsSuccessModalOpen(true);
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof HttpError) {
         const { field, message } = parseAuthError(error);
         setError(field, {
           type: 'manual',
