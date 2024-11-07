@@ -50,7 +50,7 @@ const SheetProvider = ({
       onChangeIsOpen?.(false);
       setIsOpen(false);
       setWillBeClosed(false);
-    }, 500);
+    }, 300);
   };
 
   return (
@@ -151,13 +151,13 @@ const SheetContent = ({
         createPortal(
           <div className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
             <div
-              className='absolute inset-0 bg-black opacity-0 transition-opacity duration-500'
+              className='absolute inset-0 bg-black opacity-0 transition-opacity duration-300'
               onClick={handleClickOverlay}
               ref={overlayRef}
             ></div>
             <div
               className={twMerge(
-                'absolute p-6 bg-white z-10 transition-transform duration-300',
+                'absolute p-6 bg-white z-10 transition-transform duration-150',
                 variants[position],
                 className
               )}
