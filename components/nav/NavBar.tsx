@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { TABLET_BREAKPOINT } from '@/constants';
+import clsx from 'clsx';
 
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
@@ -62,7 +63,12 @@ const NavBar = () => {
 
   // 기본(데스크탑) nav
   const NavContent = () => (
-    <div className='flex-shrink-0 flex-col sm:w-[280px] h-screen divide-slate-200 sm:border-r-[1px]'>
+    <div
+      className={clsx(
+        'flex-shrink-0 flex-col sm:w-[280px] h-screen divide-slate-200 sm:border-r-[1px] transition-transform duration-300',
+        isNavOpen ? 'transform translate-x-0' : 'transform -translate-x-full'
+      )}
+    >
       <nav className='flex-col w-full h-full'>
         <div className='flex justify-between items-center p-4'>
           <Link className='py-2 px-[5px]' href='/dashboard'>
