@@ -6,7 +6,10 @@ const ProgressBar = ({ percentage, className }: { percentage: number; className?
   return (
     <div className={progressBarClass}>
       <div className='relative w-full bg-slate-100 rounded-full h-1'>
-        <div className='absolute top-0 left-0 bg-slate-900 h-1 rounded-full' style={{ width: `${percentage}%` }}></div>
+        <div
+          className='absolute top-0 left-0 bg-slate-900 h-1 rounded-full transition-all ease-in-out duration-1000'
+          style={{ width: `${percentage}%` }}
+        ></div>
       </div>
       <div className='flex ml-auto text-xs font-semibold'>
         <span>{percentage}%</span>
