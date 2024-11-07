@@ -1,4 +1,5 @@
-import NavBar from '@/components/nav/NavBar';
+// import NavBar from '@/components/nav/NavBar';
+import NavBarTemp from '@/components/nav/NavBarTemp';
 
 export default function NavLayout({
   children,
@@ -7,7 +8,7 @@ export default function NavLayout({
 }>) {
   return (
     <div className='flex flex-col h-screen sm:flex-row lg:flex-row'>
-      <NavBar />
+      <NavBarTemp />
       <div className='flex-1'>{children}</div>
     </div>
   );
