@@ -11,9 +11,10 @@ import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputSlid from './InputSlid';
+import { Goal } from '@/lib/types/todo';
 
-const GoalTitleWithProgress = ({ goalId }: { goalId: number }) => {
-  const { data: goal } = useGoalQuery(goalId);
+const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initialGoal: Goal }) => {
+  const { data: goal } = useGoalQuery(goalId, initialGoal);
   const progress = useTodoProgressQuery(goalId).data?.progress || 0;
   const deleteGoal = useDeleteGoalMutation();
   const updateGoal = useUpdateGoalMutation();
