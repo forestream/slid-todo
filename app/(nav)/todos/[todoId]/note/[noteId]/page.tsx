@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import NoteFormSections from '../../_view/NoteFormSections';
 import { SingleNote } from '@/lib/types/todo';
 import baseFetch from '@/lib/api/baseFetch';
+import { notFound } from 'next/navigation';
 
 export default async function Page({ params }: { params: { noteId: string } }) {
   const { noteId } = params;
@@ -11,6 +12,10 @@ export default async function Page({ params }: { params: { noteId: string } }) {
     headers: { Authorization: `Bearer ${accessToken?.value}` },
     cache: 'no-store',
   });
+
+  if (!response) {
+    notFound();
+  }
 
   const { title, content, linkUrl } = response;
   return (
