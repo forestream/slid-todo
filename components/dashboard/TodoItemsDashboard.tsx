@@ -28,7 +28,7 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
   // todo, done 중 하나라도 hasNextPage가 있으면 표시.
   const isMoreButtonVisible = useMemo(() => queries.some((query) => query.hasNextPage), [queries]);
 
-  const containerClass = 'w-full h-auto flex flex-col min-h-[184px] gap-3 rounded-lg';
+  const containerClass = 'w-full h-auto flex flex-col flex-1 min-h-[184px] gap-3 rounded-lg basis-0';
   const contentClass = (isEmpty: boolean) =>
     clsx(
       'w-full flex',
@@ -66,7 +66,7 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
 
   return (
     <div className='flex flex-col w-full gap-4'>
-      <div className='w-full h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>
+      <div className='w-full h-auto grid grid-cols-1 lg:grid-cols-2 gap-6'>{todoLists}</div>
       {isMoreButtonVisible && (
         <div className='w-full flex justify-center'>
           <Button
