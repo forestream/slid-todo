@@ -25,7 +25,7 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
   return (
     <>
       <SheetProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
-        <SheetContent position='bottom' className='w-full h-auto rounded-t-xl'>
+        <SheetContent position='bottom' className='w-full h-auto rounded-t-xl animate-slide-up'>
           <div className='flex flex-col space-y-6'>
             <h2 className='text-center text-xl font-bold'>{data.title}</h2>
             <div className='flex justify-around gap-2'>

@@ -29,7 +29,7 @@ export default async function GoalDetailPage({ params }: { params: { goalId: str
       <article className='flex-col'>
         <GoalTitleProgress goalId={+params.goalId} initialGoal={initialGoal} />
       </article>
-      <div className='bg-blue-100 rounded-xl'>
+      <div className='bg-blue-100 rounded-xl hover:shadow-lg transition-all duration-200'>
         <Link href={`/notes/${params.goalId}`} className='flex px-6 py-4 gap-2 items-center'>
           <div className='flex-shrink-0'>
             <IconNoteAll />
