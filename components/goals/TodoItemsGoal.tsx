@@ -89,7 +89,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
 
   return (
     <>
-      <div className='w-full h-full lg:h-auto flex flex-col sm:flex-col lg:flex-row gap-6'>{todoLists}</div>
+      <div className='w-full h-full lg:h-auto grid grid-cols-1 lg:grid-cols-2 gap-6'>{todoLists}</div>
       <TodoAddModal isOpen={isModalOpen} onChangeIsOpen={setIsModalOpen} goalId={goalId} />
     </>
   );
