@@ -20,7 +20,9 @@ import TodoAddModal from '../modal/todoModal/TodoAddModal';
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
 const NavBarTemp = () => {
-  const [isNavOpen, setIsNavOpen] = useState(true); //데스크탑 기본 nav 열림 여부
+  const [isNavOpen, setIsNavOpen] = useState(true); //데스크탑 기본 nav 열림 여부 true
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false); // 모바일 기본 nav 열림 여부 false
+  const [isOpen, setIsOpen] = useState(false); // 어떤 nav든 열리면 true
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false); // 할 일 모달 열림 여부
   const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
   const pathname = usePathname();
@@ -32,13 +34,16 @@ const NavBarTemp = () => {
   };
 
   const handleNavButtonClick = (widthType?: widthType) => {
-    if (widthType === 'desktop' || widthType === 'mobile') {
+    if (widthType === 'desktop') {
       setIsNavOpen(!isNavOpen);
+    }
+    if (widthType === 'mobile') {
+      setIsMobileNavOpen(!isMobileNavOpen);
     }
   };
 
   useEffect(() => {
-    if (isNavOpen) {
+    if (isMobileNavOpen) {
       // nav open시 스크롤 막음
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -52,10 +57,10 @@ const NavBarTemp = () => {
       document.body.style.overflow = 'auto';
       document.documentElement.style.overflow = 'auto';
     };
-  }, [isNavOpen]);
+  }, [isMobileNavOpen]);
 
   useEffect(() => {
-    if (isNavOpen) {
+    if (isOpen) {
       const timer = setTimeout(() => {
         setIsFullyOpen(true);
       }, 100);
@@ -63,7 +68,21 @@ const NavBarTemp = () => {
     } else {
       setIsFullyOpen(false);
     }
-  }, [isNavOpen]);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (window.innerWidth < TABLET_BREAKPOINT) {
+      setIsMobileNavOpen(true);
+      setIsNavOpen(false);
+    }
+    if (hasMounted.current) {
+      if (isNavOpen || isMobileNavOpen) setIsOpen(!isOpen);
+    } else {
+      hasMounted.current = true;
+    }
+    // isOpen은 의존성 배열에 넣지 않습니다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNavOpen, isMobileNavOpen]);
 
   // 페이지 이동 시
   useEffect(() => {
@@ -85,7 +104,7 @@ const NavBarTemp = () => {
         className={twMerge(
           clsx(
             'flex border-r-[1px]',
-            isNavOpen
+            isOpen
               ? 'h-screen flex-col flex-shrink-0 sm:w-[280px] divide-slate-200'
               : 'flex-row sm:flex-col lg:flex-col p-4 px-[14px] items-center sm:w-16 lg:w-16',
             isFullyOpen ? 'transition-all ease-in-out duration-1000' : 'transition-all ease-in-out duration-1000'
@@ -99,9 +118,7 @@ const NavBarTemp = () => {
         {/* 로고 및 접기 버튼 영역 */}
         {/* close 시에만 보이는 nav */}
         <div
-          className={`${
-            isNavOpen ? 'hidden' : 'flex flex-row sm:flex-col lg:flex-col justify-center items-center gap-4'
-          }`}
+          className={`${isOpen ? 'hidden' : 'flex flex-row sm:flex-col lg:flex-col justify-center items-center gap-4'}`}
         >
           <Link href='/dashboard' className='hidden sm:flex lg:flex'>
             <ImageLogo />
@@ -130,7 +147,7 @@ const NavBarTemp = () => {
         {/* Open 시에만 보이는 nav */}
         <div
           className={`${
-            isNavOpen
+            isOpen
               ? 'flex flex-row justify-between items-center p-4'
               : 'hidden flex-row sm:flex-col lg:flex-col justify-center items-center space-y-4'
           }`}
@@ -140,7 +157,7 @@ const NavBarTemp = () => {
             className={clsx(
               'flex items-center transition-opacity duration-1000',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
-              isNavOpen ? 'visible' : 'invisible'
+              isOpen ? 'visible' : 'invisible'
             )}
           >
             <ImageLogoWithText />
@@ -152,14 +169,14 @@ const NavBarTemp = () => {
               'block sm:hidden lg:hidden',
               'transition-opacity duration-1000',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
-              isNavOpen ? 'visible' : 'invisible'
+              isOpen ? 'visible' : 'invisible'
             )}
           >
             <Button
               className='grid place-content-center w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
               onClick={() => handleNavButtonClick('mobile')}
             >
-              <IconFold isFold={!isNavOpen} />
+              <IconFold isFold={!isOpen} />
             </Button>
           </div>
           {/* 데스크탑에서만 작동하는 닫기 버튼 */}
@@ -168,14 +185,14 @@ const NavBarTemp = () => {
               'hidden sm:hidden lg:block',
               'transition-opacity duration-1000',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
-              isNavOpen ? 'visible' : 'invisible'
+              isOpen ? 'visible' : 'invisible'
             )}
           >
             <Button
               className='grid place-content-center w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
               onClick={() => handleNavButtonClick('desktop')}
             >
-              <IconFold isFold={!isNavOpen} />
+              <IconFold isFold={!isOpen} />
             </Button>
           </div>
         </div>
@@ -184,7 +201,7 @@ const NavBarTemp = () => {
           className={clsx(
             'transition-opacity duration-1000',
             isFullyOpen ? 'opacity-100' : 'opacity-0',
-            isNavOpen ? 'visible' : 'invisible w-0 h-0 lg:h-full'
+            isOpen ? 'visible' : 'invisible w-0 h-0 lg:h-full'
           )}
         >
           {/* 유저 프로필 */}
