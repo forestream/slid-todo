@@ -6,24 +6,24 @@ export const fadeInUp = {
 export const fadeInLeft = {
   initial: {
     opacity: 0,
-    x: -50,
+    x: -70,
   },
   animate: {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.6,
+      duration: 1,
     },
   },
 };
 
 export const fadeInRight = {
-  initial: { opacity: 0, x: 50 },
+  initial: { opacity: 0, x: 70 },
   animate: {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.6,
+      duration: 1,
     },
   },
 };
