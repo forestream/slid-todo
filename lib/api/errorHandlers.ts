@@ -1,9 +1,4 @@
-import { REDIRECT_ON_404_PATHS } from '@/constants';
 import getDefaultErrorMessage from '../utils/getDefaultErrorMessage';
-
-const shouldRedirectOn404 = (url: string) => {
-  return REDIRECT_ON_404_PATHS.some((path) => url.includes(path));
-};
 
 export class HttpError extends Error {
   constructor(public status: number, message: string, public url: string) {
@@ -20,26 +15,12 @@ export const handleHttpError = (data: Data, status: number, url: string) => {
   // slid 서버의 경우 { message: string } 형태로 에러 메시지를 전달하기 때문에 이와 같이 정의
 
   const message = data.message ?? getDefaultErrorMessage(status);
-  if (status === 400) {
-    handle404Error(url);
-  }
-
-  if (status === 404) {
-    handle404Error(url);
-  }
 
   if (status === 500) {
     handleServerError(url);
   }
 
   throw new HttpError(status, message, url);
-};
-
-const handle404Error = (url: string) => {
-  if (shouldRedirectOn404(url)) {
-    window.location.href = '/404';
-    return;
-  }
 };
 
 const handleServerError = (url: string) => {
