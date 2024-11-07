@@ -9,6 +9,8 @@ import {
   PropsWithChildren,
   Ref,
   useContext,
+  useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -16,7 +18,14 @@ import { createPortal } from 'react-dom';
 import { twMerge } from 'tailwind-merge';
 
 const SheetContext = createContext<
-  { isOpen: boolean; handleOpen: () => void; handleClose: () => void; beforeClose?: () => void } | undefined
+  | {
+      isOpen: boolean;
+      handleOpen: () => void;
+      handleClose: () => void;
+      beforeClose?: () => void;
+      willBeClosed: boolean;
+    }
+  | undefined
 >(undefined);
 
 const SheetProvider = ({
@@ -26,6 +35,7 @@ const SheetProvider = ({
   children,
 }: PropsWithChildren<{ isOpen?: boolean; onChangeIsOpen?: (isOpen: boolean) => void; beforeClose?: () => void }>) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [willBeClosed, setWillBeClosed] = useState(false);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -33,13 +43,18 @@ const SheetProvider = ({
   };
 
   const handleClose = () => {
-    beforeClose?.();
-    onChangeIsOpen?.(false);
-    setIsOpen(false);
+    setWillBeClosed(true);
+
+    setTimeout(() => {
+      beforeClose?.();
+      onChangeIsOpen?.(false);
+      setIsOpen(false);
+      setWillBeClosed(false);
+    }, 300);
   };
 
   return (
-    <SheetContext.Provider value={{ isOpen: initIsOpen ?? isOpen, handleOpen, handleClose }}>
+    <SheetContext.Provider value={{ isOpen: initIsOpen ?? isOpen, handleOpen, handleClose, willBeClosed }}>
       {children}
     </SheetContext.Provider>
   );
@@ -79,16 +94,27 @@ const SheetContent = ({
   position: 'top' | 'bottom' | 'right' | 'left';
   closeOnClickOverlay?: boolean;
 }) => {
+  const { isOpen, handleClose, willBeClosed } = useSheetContext();
+
+  const transformProperties = useMemo(
+    () => ({
+      top: '-translate-y-full',
+      bottom: 'translate-y-full',
+      right: 'translate-x-full',
+      left: '-translate-x-full',
+    }),
+    []
+  );
+
   const variants = {
-    top: 'top-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px]',
-    bottom: 'bottom-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px]',
-    right: 'right-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px]',
-    left: 'left-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px]',
+    top: 'top-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px] -translate-y-full',
+    bottom: 'bottom-0 left-0 right-0 h-full md:max-h-[512px] lg:max-h-[800px] translate-y-full',
+    right: 'right-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px] translate-x-full',
+    left: 'left-0 top-0 bottom-0 w-full md:max-w-[512px] lg:max-w-[800px] -translate-x-full',
   };
 
-  const { isOpen, handleClose } = useSheetContext();
-
   const ref = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOverlay = () => {
     if (!closeOnClickOverlay) return;
@@ -100,13 +126,44 @@ const SheetContent = ({
     else document.body.style.overflow = '';
   }
 
+  useEffect(() => {
+    if (!ref.current || !overlayRef.current) return;
+
+    if (isOpen && !willBeClosed) {
+      setTimeout(() => {
+        if (!ref.current || !overlayRef.current) return;
+        ref.current.classList.remove(transformProperties[position]);
+        overlayRef.current.classList.remove('opacity-0');
+        overlayRef.current.classList.add('opacity-50');
+      }, 0);
+    }
+
+    if (willBeClosed) {
+      ref.current.classList.add(transformProperties[position]);
+      overlayRef.current.classList.remove('opacity-50');
+      overlayRef.current.classList.add('opacity-0');
+    }
+  }, [isOpen, position, transformProperties, willBeClosed]);
+
   return (
     <>
       {isOpen &&
         createPortal(
           <div className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
-            <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
-            <div className={twMerge('absolute p-6 bg-white z-10', variants[position], className)} ref={ref} {...props}>
+            <div
+              className='absolute inset-0 bg-black opacity-0 transition-opacity duration-300'
+              onClick={handleClickOverlay}
+              ref={overlayRef}
+            ></div>
+            <div
+              className={twMerge(
+                'absolute p-6 bg-white z-10 transition-transform duration-150',
+                variants[position],
+                className
+              )}
+              ref={ref}
+              {...props}
+            >
               {children}
             </div>
           </div>,

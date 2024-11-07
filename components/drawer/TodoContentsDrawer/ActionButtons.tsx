@@ -26,8 +26,7 @@ const ActionButtons = ({ data, onNoteView }: TodoActionButtonsProps) => {
   };
 
   const handleGetNoteUrl = (type: 'create' | 'edit') => {
-    const baseUrl =
-      type === 'create' ? `/todos/${data.id}/${data.noteId}/create` : `/todos/${data.id}/note/${data.noteId}`;
+    const baseUrl = type === 'create' ? `/todos/${data.id}/create` : `/todos/${data.id}/note/${data.noteId}`;
     const params = new URLSearchParams({
       todo: data.title,
       goal: data.goal?.title ?? '목표 없음',
