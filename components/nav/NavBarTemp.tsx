@@ -27,7 +27,7 @@ const NavBarTemp = () => {
   const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
   const pathname = usePathname();
   const hasMounted = useRef(false);
-  const [isFullyOpen, setIsFullyOpen] = useState(false);
+  const [isFullyOpen, setIsFullyOpen] = useState(true);
 
   const handleTodoModalOpen = () => {
     setIsTodoModalOpen(true);
@@ -105,9 +105,8 @@ const NavBarTemp = () => {
           clsx(
             'flex border-r-[1px]',
             isOpen
-              ? 'h-screen flex-col flex-shrink-0 sm:w-[280px] divide-slate-200'
-              : 'flex-row sm:flex-col lg:flex-col p-4 px-[14px] items-center sm:w-16 lg:w-16',
-            isFullyOpen ? 'transition-all ease-in-out duration-1000' : 'transition-all ease-in-out duration-1000'
+              ? 'h-screen flex-col flex-shrink-0 sm:w-[280px] divide-slate-200 transition-all ease-in-out duration-500'
+              : 'flex-row sm:flex-col lg:flex-col p-4 px-[14px] items-center sm:w-16 lg:w-16'
           )
         )}
         style={{
@@ -137,7 +136,7 @@ const NavBarTemp = () => {
 
           {/* 데스크탑에서만 작동하는 열기 버튼 */}
           <div
-            className='hidden sm:grid lg:grid  place-content-center w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
+            className='hidden sm:grid lg:grid place-content-center hover:cursor-pointer w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
             onClick={() => handleNavButtonClick('desktop')}
           >
             <IconFold isFold={true} />
@@ -155,7 +154,7 @@ const NavBarTemp = () => {
           <Link
             href='/dashboard'
             className={clsx(
-              'flex items-center transition-opacity duration-1000',
+              'flex items-center transition-opacity duration-500',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
               isOpen ? 'visible' : 'invisible'
             )}
@@ -167,7 +166,7 @@ const NavBarTemp = () => {
           <div
             className={clsx(
               'block sm:hidden lg:hidden',
-              'transition-opacity duration-1000',
+              'transition-opacity duration-500',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
               isOpen ? 'visible' : 'invisible'
             )}
@@ -183,7 +182,7 @@ const NavBarTemp = () => {
           <div
             className={clsx(
               'hidden sm:hidden lg:block',
-              'transition-opacity duration-1000',
+              'transition-opacity duration-500',
               isFullyOpen ? 'opacity-100' : 'opacity-0',
               isOpen ? 'visible' : 'invisible'
             )}
@@ -199,7 +198,7 @@ const NavBarTemp = () => {
         {/* 메뉴 영역(접힌 nav에서는 안보이는 영역) */}
         <div
           className={clsx(
-            'transition-opacity duration-1000',
+            'transition-opacity duration-500',
             isFullyOpen ? 'opacity-100' : 'opacity-0',
             isOpen ? 'visible' : 'invisible w-0 h-0 lg:h-full'
           )}

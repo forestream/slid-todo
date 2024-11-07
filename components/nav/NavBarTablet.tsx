@@ -17,6 +17,7 @@ import { SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
 const NavBarTablet = () => {
   const [isSheetNavOpen, setIsSheetNavOpen] = useState(false); // 모바일, 태블릿 nav 왼쪽 시트 열림 여부
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false); // 할 일 모달 열림 여부
+
   const handleNavButtonClick = () => {
     setIsSheetNavOpen(!isSheetNavOpen);
   };
@@ -29,18 +30,10 @@ const NavBarTablet = () => {
     <>
       <SheetProvider isOpen={isSheetNavOpen} onChangeIsOpen={setIsSheetNavOpen}>
         <SheetTrigger>
-          <div
-            className={`${
-              isSheetNavOpen
-                ? 'flex flex-row justify-between items-center p-4'
-                : 'hidden sm:flex lg:flex flex-col justify-center items-center space-y-4 p-4'
-            }`}
-          >
-            <Link href='/dashboard' className={`${isSheetNavOpen ? 'py-2 px-[5px]' : 'flex items-center'}`}>
-              {isSheetNavOpen ? <ImageLogoWithText /> : <ImageLogo />}
-            </Link>
+          <div className={'flex flex-col justify-center items-center space-y-4 p-4'}>
+            <Link href='/dashboard'>{<ImageLogo />}</Link>
             <div
-              className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
+              className='grid place-content-center hover:cursor-pointer w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
               onClick={handleNavButtonClick}
             >
               <IconFold isFold={!isSheetNavOpen} />
@@ -52,7 +45,7 @@ const NavBarTablet = () => {
             className={twMerge(
               clsx(
                 'flex flex-col border-r-[1px] h-screen transition-all ease-out duration-300',
-                isSheetNavOpen ? 'flex-shrink-0 sm:w-[280px] divide-slate-200' : 'p-4 px-[14px] items-center'
+                isSheetNavOpen ? 'flex-shrink-0 sm:w-[280px] divide-slate-200' : 'opacity-0 w-0 h-0'
               )
             )}
           >
@@ -61,18 +54,12 @@ const NavBarTablet = () => {
               className={`${
                 isSheetNavOpen
                   ? 'flex flex-row justify-between items-center p-4'
-                  : 'hidden sm:flex lg:flex flex-col justify-center items-center space-y-4'
+                  : 'opacity-0 w-0 h-0 sm:flex lg:flex flex-col justify-center items-center space-y-4'
               }`}
             >
-              <Link href='/dashboard' className={`${isSheetNavOpen ? 'py-2 px-[5px]' : 'flex items-center'}`}>
-                {isSheetNavOpen ? <ImageLogoWithText /> : <ImageLogo />}
+              <Link href='/dashboard' className={`${isSheetNavOpen ? 'py-2 px-[5px]' : 'hidden'}`}>
+                <ImageLogoWithText />
               </Link>
-              <div
-                className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
-                onClick={handleNavButtonClick}
-              >
-                <IconFold isFold={!isSheetNavOpen} />
-              </div>
             </div>
             {/* 메뉴 영역(접힌 nav에서는 안보이는 영역) */}
             <div className={isSheetNavOpen ? '' : 'opacity-0 w-0 h-0'}>
