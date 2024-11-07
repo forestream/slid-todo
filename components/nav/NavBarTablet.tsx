@@ -67,8 +67,9 @@ const NavBarTablet = () => {
               <Link href='/dashboard' className={`${isSheetNavOpen ? 'py-2 px-[5px]' : 'flex items-center'}`}>
                 {isSheetNavOpen ? <ImageLogoWithText /> : <ImageLogo />}
               </Link>
+              {/* 데스크탑에서만 작동하는 열기 버튼 */}
               <div
-                className='flex justify-center items-center sm:block w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
+                className='hidden sm:grid lg:grid place-content-center hover:cursor-pointer w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400'
                 onClick={handleNavButtonClick}
               >
                 <IconFold isFold={!isSheetNavOpen} />
