@@ -133,7 +133,7 @@ const ModalClose = memo(
       }
 
       return (
-        <button onClick={handleClose} {...props} ref={ref}>
+        <button type='button' onClick={handleClose} {...props} ref={ref}>
           {children ? children : <IconModalClose />}
         </button>
       );
