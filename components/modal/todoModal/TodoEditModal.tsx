@@ -63,6 +63,7 @@ const Content = ({ data }: { data: Todo }) => {
           label='제목'
           placeholder='할 일의 제목을 적어주세요'
           error={errors.title?.message}
+          labelClassName="relative after:content-['*'] after:ml-0.5 after:text-red-500"
           {...register('title')}
         />
         <InputSlid
