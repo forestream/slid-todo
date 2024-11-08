@@ -28,7 +28,6 @@ const areEqual = (prevProps: TodoItemProps, nextProps: TodoItemProps) => {
 };
 
 const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal }) => {
-  console.log('TodoItem render', data.id);
   return (
     <div className='text-sm'>
       <div className='flex justify-between items-center'>
