@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { Todo } from '@/lib/types/todo';
 import CheckIcon from './CheckIcon';
 import TodoIcon from './TodoIcon';
@@ -11,7 +12,22 @@ interface TodoItemProps {
   viewGoal?: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
+// 메모이제이션을 위한 비교 함수
+const areEqual = (prevProps: TodoItemProps, nextProps: TodoItemProps) => {
+  return (
+    prevProps.data.id === nextProps.data.id &&
+    prevProps.data.done === nextProps.data.done &&
+    prevProps.data.title === nextProps.data.title &&
+    prevProps.data.noteId === nextProps.data.noteId &&
+    prevProps.data.fileUrl === nextProps.data.fileUrl &&
+    prevProps.data.linkUrl === nextProps.data.linkUrl &&
+    prevProps.viewGoal === nextProps.viewGoal &&
+    prevProps.data.goal?.id === nextProps.data.goal?.id &&
+    prevProps.data.goal?.title === nextProps.data.goal?.title
+  );
+};
+
+const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal }) => {
   return (
     <div className='text-sm'>
       <div className='flex justify-between items-center'>
@@ -26,6 +42,8 @@ const TodoItem: React.FC<TodoItemProps> = ({ data, viewGoal }) => {
       {viewGoal && data.goal?.id && <GoalTitle goal={data.goal} />}
     </div>
   );
-};
+}, areEqual);
+
+TodoItem.displayName = 'TodoItem';
 
 export default TodoItem;
