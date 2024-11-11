@@ -66,7 +66,19 @@ const NoteFormSection = ({
     return note.savedAt;
   }, [savedNote, todoId]);
 
-  const handleCloseOpenSavedToast = () => onChangeOpenSavedToast(false);
+  const handleCloseOpenSavedToast = () => {
+    if (openSavedToast) {
+      setTimeout(() => {
+        if (!openSavedToastRef.current) return;
+        openSavedToastRef.current.classList.remove('h-[82px]');
+        openSavedToastRef.current.classList.add('h-0');
+      }, 0);
+    }
+
+    setTimeout(() => {
+      onChangeOpenSavedToast(false);
+    }, 1000);
+  };
 
   const [titleEmpty, setTitleEmpty] = useState(true);
   const [contentEmpty, setContentEmpty] = useState(true);
@@ -98,7 +110,7 @@ const NoteFormSection = ({
     if (savedToast) {
       setTimeout(() => {
         if (!savedToastRef.current) return;
-        savedToastRef.current?.classList.remove('translate-y-full');
+        savedToastRef.current.classList.remove('translate-y-full');
       }, 0);
       setTimeout(() => {
         if (!savedToastRef.current) return;
@@ -106,6 +118,17 @@ const NoteFormSection = ({
       }, 1000 * 4);
     }
   }, [savedToast]);
+
+  const openSavedToastRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (openSavedToast) {
+      setTimeout(() => {
+        if (!openSavedToastRef.current) return;
+        openSavedToastRef.current.classList.remove('h-0');
+        openSavedToastRef.current.classList.add('h-[82px]');
+      }, 0);
+    }
+  }, [openSavedToast]);
 
   return (
     <NoteForm
@@ -135,12 +158,17 @@ const NoteFormSection = ({
         <p className='text-sm font-normal text-slate-700'>{todoTitle}</p>
       </div>
       {openSavedToast && (
-        <div className='w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-3 flex gap-4 items-center mb-6'>
-          <button onClick={handleCloseOpenSavedToast}>
-            <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
-          </button>
-          <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
-          <OpenSavedNoteModal onOpenSaved={onOpenSaved} savedNote={savedNote} />
+        <div
+          ref={openSavedToastRef}
+          className='relative shrink-0 transition-[height] duration-1000 h-0 overflow-hidden'
+        >
+          <div className='absolute bottom-0 w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-3 flex gap-4 items-center mb-6'>
+            <button onClick={handleCloseOpenSavedToast} type='button'>
+              <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
+            </button>
+            <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
+            <OpenSavedNoteModal onOpenSaved={onOpenSaved} savedNote={savedNote} />
+          </div>
         </div>
       )}
       <hr />
