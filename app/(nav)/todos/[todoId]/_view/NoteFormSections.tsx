@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import IconModalClose from '@/public/icons/IconModalClose';
 import NoteFormSection, { SavedNote } from './NoteFormSection';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 type NoteFormSectionsProps = {
   title?: string;
@@ -27,6 +28,7 @@ const NoteFormSections = ({
   const [content, setContent] = useState(initContent);
   const [openSavedToast, setOpenSavedToast] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
+  const [linkUrlEmbeddable, setLinkUrlEmbeddable] = useState(true);
 
   const handleChangeOpenSavedToast = (status: boolean) => setOpenSavedToast(status);
   const handleChangeSavedToast = (status: boolean) => setSavedToast(status);
@@ -57,6 +59,17 @@ const NoteFormSections = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        await fetch(linkUrl, { method: 'HEAD' });
+        setLinkUrlEmbeddable(true);
+      } catch {
+        setLinkUrlEmbeddable(false);
+      }
+    })();
+  }, [linkUrl]);
+
   return (
     <>
       {linkUrl && isEmbedOpen && (
@@ -66,8 +79,20 @@ const NoteFormSections = ({
               <IconModalClose />
             </button>
           </div>
-          <div className='h-full pt-10 bg-blue-50'>
-            <iframe src={linkUrl} className='h-full w-full' />
+          <div className='h-full pt-10 bg-blue-50 flex flex-col justify-center items-center'>
+            {linkUrlEmbeddable ? (
+              <iframe src={linkUrl} className='h-full w-full' />
+            ) : (
+              <>
+                <p>임베드할 수 없는 링크입니다.</p>
+                <p>
+                  <Link href={linkUrl} target='_blank' className='underline hover:opacity-70'>
+                    {linkUrl}
+                  </Link>
+                  으로 이동
+                </p>
+              </>
+            )}
           </div>
         </section>
       )}

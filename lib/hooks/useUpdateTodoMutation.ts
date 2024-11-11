@@ -2,6 +2,7 @@ import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query
 import baseFetch from '../api/baseFetch';
 import { findMatchingTodoQueries, isTodosQueryKey } from '../utils/findMatchingTodoQueries';
 import { GetTodosResponse } from '../types/todo';
+import useToast from '@/components/common/toast/useToast';
 
 export interface UpdateTodoInput {
   id: number;
@@ -16,6 +17,7 @@ export interface UpdateTodoInput {
 
 export const useUpdateTodoMutation = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   return useMutation({
     mutationFn: async ({ id, updates }: UpdateTodoInput) => {
@@ -50,21 +52,29 @@ export const useUpdateTodoMutation = () => {
 
       return { previousTodos };
     },
+    onSuccess: (data) => {
+      toast.toast({
+        title: '할 일이 수정되었습니다.',
+        variant: 'success',
+        description: data.title,
+      });
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['GoalProgress'] });
+    },
     // onError: 요청이 실패했을 때 호출되는 함수
     // 이 함수에서는 이전 상태로 되돌리는 작업을 수행한다
     // 고로 낙관적 업데이트를 취소하는 역할을 한다
-    onError: (_, __, context) => {
+    onError: (error, __, context) => {
       if (context?.previousTodos) {
         context.previousTodos.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data);
         });
       }
-    },
-    // onSettled: 요청이 성공하거나 실패했을 때 호출되는 함수
-    // 이 함수에서는 캐시된 데이터를 무효화한다
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-      queryClient.invalidateQueries({ queryKey: ['GoalProgress'] });
+      toast.toast({
+        title: '할 일 수정에 실패했습니다.',
+        variant: 'error',
+        description: error.message,
+      });
     },
   });
 };

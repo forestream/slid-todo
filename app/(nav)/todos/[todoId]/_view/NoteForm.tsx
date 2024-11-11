@@ -1,4 +1,5 @@
 import { afterNoteMutation } from '@/app/actions';
+import useToast from '@/components/common/toast/useToast';
 import useNoteMutation from '@/lib/hooks/useNoteMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -24,6 +25,7 @@ const NoteForm = ({
   const { todoId } = useParams();
   const { mutate } = useNoteMutation(todoId as string);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const toast = useToast();
 
   const handleSave = useCallback(
     (todoId: string, title: string, content: string, linkUrl: string, savedAt: Date) => {
@@ -94,7 +96,19 @@ const NoteForm = ({
           afterNoteMutation(Array.isArray(todoId) ? todoId[0] : todoId, noteId ?? '0');
           queryClient.invalidateQueries({ queryKey: ['notes'] });
           queryClient.invalidateQueries({ queryKey: ['todos'] });
+          toast.toast({
+            variant: 'success',
+            title: noteId ? '노트가 수정되었습니다.' : '노트가 추가되었습니다.',
+            description: note.title,
+          });
           router.back();
+        },
+        onError: (error) => {
+          toast.toast({
+            variant: 'error',
+            title: noteId ? '노트 수정에 실패했습니다.' : '노트 추가에 실패했습니다.',
+            description: error.message,
+          });
         },
       }
     );
