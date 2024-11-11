@@ -93,6 +93,20 @@ const NoteFormSection = ({
 
   const handleDeleteLinkUrl = () => onSaveLinkUrl('');
 
+  const savedToastRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (savedToast) {
+      setTimeout(() => {
+        if (!savedToastRef.current) return;
+        savedToastRef.current?.classList.remove('translate-y-full');
+      }, 0);
+      setTimeout(() => {
+        if (!savedToastRef.current) return;
+        savedToastRef.current.classList.add('translate-y-full');
+      }, 1000 * 4);
+    }
+  }, [savedToast]);
+
   return (
     <NoteForm
       method={method}
@@ -167,14 +181,19 @@ const NoteFormSection = ({
                   </div>
                 </div>
                 {savedToast && (
-                  <div className='max-w-[768px] absolute -top-2 left-0 right-0 -translate-y-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
-                    <IconCheck />
-                    <p className='font-semibold text-sm'>
-                      임시 저장이 완료되었습니다{' '}
-                      <span className='text-xs pointerfont-medium'>
-                        ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
-                      </span>
-                    </p>
+                  <div className='lg:max-w-[768px] h-12 absolute -top-2 left-0 right-0 overflow-hidden -translate-y-full'>
+                    <div
+                      ref={savedToastRef}
+                      className='absolute bottom-0 w-full translate-y-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center transition-transform duration-500'
+                    >
+                      <IconCheck />
+                      <p className='font-semibold text-sm'>
+                        임시 저장이 완료되었습니다{' '}
+                        <span className='text-xs pointerfont-medium'>
+                          ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
