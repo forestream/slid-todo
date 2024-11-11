@@ -2,6 +2,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Metadata } from 'next';
 import './globals.css';
 import QueryClientProviderWrapper from './_view/QueryClientProvider';
+import Toaster from '@/components/common/toast/toaster';
 
 export const metadata: Metadata = {
   title: {
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body>
         <QueryClientProviderWrapper>
           {children}
+          <Toaster />
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProviderWrapper>
       </body>
