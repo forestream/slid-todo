@@ -1,7 +1,7 @@
 import useNoteQuery from '@/lib/hooks/useNoteQuery';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import TiptapEditorProvider from '../TiptapEditorProvider';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useSheetContext } from '../common/Sheet';
 import { useQueryClient } from '@tanstack/react-query';
 import ConfirmationModal from '../modal/ConfirmationModal';
+import Link from 'next/link';
 
 type NoteDetailProps = {
   id: number;
@@ -22,6 +23,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
   const { handleClose } = useSheetContext();
   const queryClient = useQueryClient();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [linkUrlEmbeddable, setLinkUrlEmbeddable] = useState(true);
 
   const createdAt = new Date(note?.createdAt ?? 0);
   const year = createdAt.getFullYear();
@@ -64,14 +66,38 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
     return <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }} />;
   }, [note?.content]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!note?.linkUrl) return;
+        await fetch(note?.linkUrl, { method: 'HEAD' });
+        setLinkUrlEmbeddable(true);
+      } catch {
+        setLinkUrlEmbeddable(false);
+      }
+    })();
+  }, [note]);
+
   if (isLoading) return;
 
   return (
     <>
       {note?.linkUrl && isEmbedOpen && (
         <section className='h-[385px] lg:h-full w-full lg:w-[543px] overflow-auto relative mb-4 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:-translate-x-full'>
-          <div className='h-full bg-blue-50'>
-            <iframe src={note?.linkUrl} className='h-full w-full' />
+          <div className='h-full bg-blue-50 flex flex-col justify-center items-center'>
+            {linkUrlEmbeddable ? (
+              <iframe src={note.linkUrl} className='h-full w-full' />
+            ) : (
+              <>
+                <p>임베드할 수 없는 링크입니다.</p>
+                <p>
+                  <Link href={note.linkUrl} target='_blank' className='hover:underline'>
+                    {note.linkUrl}
+                  </Link>
+                  으로 이동
+                </p>
+              </>
+            )}
           </div>
         </section>
       )}
