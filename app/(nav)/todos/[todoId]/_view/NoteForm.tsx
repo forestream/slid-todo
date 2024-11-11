@@ -103,6 +103,13 @@ const NoteForm = ({
           });
           router.back();
         },
+        onError: (error) => {
+          toast.toast({
+            variant: 'error',
+            title: noteId ? '노트 수정에 실패했습니다.' : '노트 추가에 실패했습니다.',
+            description: error.message,
+          });
+        },
       }
     );
   };
