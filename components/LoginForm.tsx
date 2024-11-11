@@ -9,6 +9,8 @@ import { login } from '@/lib/api/login';
 import { setUserToStorage } from '@/lib/utils/auth';
 import { parseAuthError } from '@/lib/utils/parseError';
 import { HttpError } from '@/lib/api/errorHandlers';
+import { useRouter } from 'next/navigation';
+import useToast from './common/toast/useToast';
 
 const LoginForm: React.FC = () => {
   const {
@@ -20,12 +22,17 @@ const LoginForm: React.FC = () => {
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
   });
-
+  const router = useRouter();
+  const toast = useToast();
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       const response = await login(data);
       setUserToStorage(response.user);
-      window.location.href = '/dashboard';
+      toast.toast({
+        title: '로그인 성공',
+        variant: 'success',
+      });
+      router.replace('/dashboard');
     } catch (error) {
       if (error instanceof HttpError) {
         const { field, message } = parseAuthError(error);
