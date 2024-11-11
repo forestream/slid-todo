@@ -91,7 +91,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
               <>
                 <p>임베드할 수 없는 링크입니다.</p>
                 <p>
-                  <Link href={note.linkUrl} target='_blank' className='hover:underline'>
+                  <Link href={note.linkUrl} target='_blank' className='underline hover:opacity-70'>
                     {note.linkUrl}
                   </Link>
                   으로 이동
