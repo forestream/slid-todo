@@ -5,7 +5,7 @@ export interface Toast {
   title?: string;
   description?: string;
   duration?: number;
-  variant?: 'default' | 'success' | 'error' | 'warning';
+  variant?: 'default' | 'success' | 'error';
 }
 
 interface ToastStore {
