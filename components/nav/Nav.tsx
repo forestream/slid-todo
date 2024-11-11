@@ -32,12 +32,6 @@ const Nav = () => {
     }
   };
 
-  useEffect(() => {
-    if (!isDesktopNavOpen || !isSheetOpen) {
-      setIsFullyOpen(false);
-    }
-  }, [isDesktopNavOpen, isSheetOpen]);
-
   // 페이지 이동 시
   useEffect(() => {
     // 첫 마운트 이후에만(페이지 이동시에만)실행
@@ -65,7 +59,7 @@ const Nav = () => {
               handleNavToggleButtonClick={handleNavToggleButtonClick}
             />
           </SheetTrigger>
-          <SheetContent position='left' className={twMerge(clsx('sm:w-[280px] p-0'))}>
+          <SheetContent position={'left'} className={twMerge(clsx('sm:w-[280px] p-0'))}>
             <NavHeader
               isDesktopNavOpen={isDesktopNavOpen}
               isSheetOpen={isSheetOpen}

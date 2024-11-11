@@ -5,6 +5,7 @@ import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import Link from 'next/link';
+import IconModalClose from '@/public/icons/IconModalClose';
 
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
@@ -114,13 +115,8 @@ const NavHeader = ({ isDesktopNavOpen, isSheetOpen, handleNavToggleButtonClick, 
 
       {/* 모바일 */}
       <NavSection className='flex sm:hidden lg:hidden flex-row px-[14px] py-4 justify-normal'>
-        <IconHamburger onClick={() => handleNavToggleButtonClick('mobile')} />
+        <IconModalClose onClick={() => handleNavToggleButtonClick('mobile')} className='hover:cursor-pointer' />
         <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
-        <NavButton
-          className='ml-auto'
-          onClick={() => handleNavToggleButtonClick('mobile')}
-          icon={<IconFold isFold={!isSheetOpen} />}
-        />
       </NavSection>
     </>
   );
