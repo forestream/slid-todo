@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
         title: '로그인 성공',
         variant: 'success',
       });
-      router.replace('/dashboard');
+      router.refresh();
     } catch (error) {
       if (error instanceof HttpError) {
         const { field, message } = parseAuthError(error);
