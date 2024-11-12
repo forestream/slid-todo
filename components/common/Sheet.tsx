@@ -149,7 +149,7 @@ const SheetContent = ({
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
+          <div role='dialog' aria-modal='true' className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
             <div
               className='absolute inset-0 bg-black opacity-0 transition-opacity duration-300'
               onClick={handleClickOverlay}

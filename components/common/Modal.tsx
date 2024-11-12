@@ -98,6 +98,8 @@ const ModalContent = ({
       {isOpen &&
         createPortal(
           <div
+            role='dialog'
+            aria-modal='true'
             className={twMerge('fixed inset-0 flex justify-center items-center', overlayClassName)}
             onClick={(e) => e.stopPropagation()}
           >
