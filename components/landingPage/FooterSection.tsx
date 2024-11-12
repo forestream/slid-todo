@@ -8,7 +8,7 @@ interface FooterSectionProps {
 const FooterSection: React.FC<FooterSectionProps> = ({ index }) => {
   return (
     <footer style={{ top: `${index * 100}vh` }} className='w-full absolute h-full bg-gray-100'>
-      <div className='container mx-auto px-4 py-16 h-full'>
+      <div className=' mx-auto lg:max-w-[1024px] px-10 py-20 h-full'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 h-full'>
           <div className='space-y-6'>
             <div className='space-y-2'>
