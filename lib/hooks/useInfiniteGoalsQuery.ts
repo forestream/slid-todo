@@ -4,7 +4,7 @@ import baseFetch from '../api/baseFetch';
 
 const useInfiniteGoalsQuery = (size: number = 3) => {
   return useInfiniteQuery<Goals>({
-    queryKey: ['goals'],
+    queryKey: ['goals', size],
     queryFn: ({ pageParam = null }) => {
       const params = new URLSearchParams({
         ...(pageParam !== null && { cursor: String(pageParam) }),
