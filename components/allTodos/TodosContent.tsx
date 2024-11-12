@@ -1,5 +1,3 @@
-'use client';
-
 import Filters from './Filters';
 import AllTodoList from './AllTodoList';
 import { Suspense } from 'react';

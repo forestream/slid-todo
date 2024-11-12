@@ -3,7 +3,7 @@ import { SVGProps } from 'react';
 
 const MainLogo = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg width='245' height='49' viewBox='0 0 245 49' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+    <svg width='245' height='49' viewBox='0 0 245 55' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
       <style>
         {`
           @keyframes wave {
