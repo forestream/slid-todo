@@ -6,6 +6,7 @@ import { useTodoContext } from './TodosContext';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useEffect } from 'react';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
+import Loading from '@/app/loading';
 
 const AllTodoList: React.FC = () => {
   const { setTotalCount } = useTodoContext();
@@ -43,8 +44,8 @@ const AllTodoList: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div ref={loadMoreRef} className='h-10 flex items-center justify-center'>
-        {isFetching && <div>불러오는 중...</div>}
+      <div ref={loadMoreRef} className='min-h-10 flex items-center justify-center'>
+        {isFetching && <Loading />}
       </div>
     </>
   );
