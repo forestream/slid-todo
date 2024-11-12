@@ -7,7 +7,13 @@ import Profile from './NavProfile';
 
 const NavContent = ({ handleTodoModalOpen }: { handleTodoModalOpen: () => void }) => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className='w-full'
+    >
       {/* 유저 프로필 */}
       <Profile className='sm:border-none lg:border-none' />
       <div className='flex flex-col divide-y divide-slate-200'>
