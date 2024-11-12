@@ -6,6 +6,7 @@ import FirstSection from '@/components/landingPage/FirstSection';
 import SecondSection from '@/components/landingPage/SecondSection';
 import ThirdSection from '@/components/landingPage/ThirdSection';
 import FourthSection from '@/components/landingPage/FourthSection';
+import FooterSection from '@/components/landingPage/FooterSection';
 
 export interface SectionProps {
   isVisible: boolean;
@@ -13,7 +14,7 @@ export interface SectionProps {
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(0);
-  const pageCount = 4;
+  const pageCount = 5;
   const throttleDelay = 500;
   const lastScrollTime = useRef(0);
 
@@ -64,6 +65,7 @@ export default function Home() {
         <SectionContainer index={3}>
           <FourthSection isVisible={currentPage === 3} />
         </SectionContainer>
+        <FooterSection index={4} />
 
         {/* 나머지 섹션들도 비슷한 방식으로 구현... */}
       </div>
