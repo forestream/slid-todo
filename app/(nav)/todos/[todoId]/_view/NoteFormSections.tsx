@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import IconModalClose from '@/public/icons/IconModalClose';
 import NoteFormSection, { SavedNote } from './NoteFormSection';
 import { useParams } from 'next/navigation';
@@ -37,7 +37,16 @@ const NoteFormSections = ({
   const handleSaveLinkUrl = useCallback((linkUrlValue: string) => setLinkUrl(linkUrlValue), []);
 
   const handleOpenEmbed = useCallback(() => setIsEmbedOpen(true), []);
-  const handleCloseEmbed = () => setIsEmbedOpen(false);
+  const handleCloseEmbed = () => {
+    if (embedRef.current) {
+      embedRef.current.classList.remove('h-full', 'w-full');
+      embedRef.current.classList.add('h-0', 'w-0');
+    }
+
+    setTimeout(() => {
+      setIsEmbedOpen(false);
+    }, 1000);
+  };
 
   const savedNote = useMemo<SavedNote>(() => {
     if (!globalThis.window) return;
@@ -70,11 +79,25 @@ const NoteFormSections = ({
     })();
   }, [linkUrl]);
 
+  const embedRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (isEmbedOpen) {
+      setTimeout(() => {
+        if (!embedRef.current) return;
+        embedRef.current.classList.remove('h-0', 'w-0');
+        embedRef.current.classList.add('h-full', 'w-full');
+      }, 0);
+    }
+  }, [isEmbedOpen]);
+
   return (
     <>
       {linkUrl && isEmbedOpen && (
-        <section className='max-h-[385px] md:max-h-[522px] lg:max-h-none h-full w-full lg:w-[543px] overflow-auto relative'>
-          <div className='absolute top-0 w-full h-10 flex justify-end items-center bg-white'>
+        <section
+          ref={embedRef}
+          className='max-h-[385px] md:max-h-[522px] lg:max-h-none lg:max-w-[543px] h-0 w-0 overflow-auto relative transition-[height] lg:transition-[width] duration-500 lg:duration-500'
+        >
+          <div className='absolute top-0 w-full h-10 flex justify-end items-center bg-white z-10'>
             <button className='mr-3' onClick={handleCloseEmbed}>
               <IconModalClose />
             </button>

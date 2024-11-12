@@ -66,7 +66,19 @@ const NoteFormSection = ({
     return note.savedAt;
   }, [savedNote, todoId]);
 
-  const handleCloseOpenSavedToast = () => onChangeOpenSavedToast(false);
+  const handleCloseOpenSavedToast = () => {
+    if (openSavedToast) {
+      setTimeout(() => {
+        if (!openSavedToastRef.current) return;
+        openSavedToastRef.current.classList.remove('h-[82px]');
+        openSavedToastRef.current.classList.add('h-0');
+      }, 0);
+    }
+
+    setTimeout(() => {
+      onChangeOpenSavedToast(false);
+    }, 1000);
+  };
 
   const [titleEmpty, setTitleEmpty] = useState(true);
   const [contentEmpty, setContentEmpty] = useState(true);
@@ -92,6 +104,31 @@ const NoteFormSection = ({
   );
 
   const handleDeleteLinkUrl = () => onSaveLinkUrl('');
+
+  const savedToastRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (savedToast) {
+      setTimeout(() => {
+        if (!savedToastRef.current) return;
+        savedToastRef.current.classList.remove('translate-y-full');
+      }, 0);
+      setTimeout(() => {
+        if (!savedToastRef.current) return;
+        savedToastRef.current.classList.add('translate-y-full');
+      }, 1000 * 4);
+    }
+  }, [savedToast]);
+
+  const openSavedToastRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (openSavedToast) {
+      setTimeout(() => {
+        if (!openSavedToastRef.current) return;
+        openSavedToastRef.current.classList.remove('h-0');
+        openSavedToastRef.current.classList.add('h-[82px]');
+      }, 0);
+    }
+  }, [openSavedToast]);
 
   return (
     <NoteForm
@@ -121,12 +158,17 @@ const NoteFormSection = ({
         <p className='text-sm font-normal text-slate-700'>{todoTitle}</p>
       </div>
       {openSavedToast && (
-        <div className='w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-3 flex gap-4 items-center mb-6'>
-          <button onClick={handleCloseOpenSavedToast}>
-            <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
-          </button>
-          <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
-          <OpenSavedNoteModal onOpenSaved={onOpenSaved} savedNote={savedNote} />
+        <div
+          ref={openSavedToastRef}
+          className='relative shrink-0 transition-[height] duration-1000 h-0 overflow-hidden'
+        >
+          <div className='absolute bottom-0 w-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-3 flex gap-4 items-center mb-6'>
+            <button onClick={handleCloseOpenSavedToast} type='button'>
+              <IconClose circleFill='fill-blue-500' className='cursor-pointer' />
+            </button>
+            <p className='font-semibold text-sm grow'>임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?</p>
+            <OpenSavedNoteModal onOpenSaved={onOpenSaved} savedNote={savedNote} />
+          </div>
         </div>
       )}
       <hr />
@@ -167,14 +209,19 @@ const NoteFormSection = ({
                   </div>
                 </div>
                 {savedToast && (
-                  <div className='max-w-[768px] absolute -top-2 left-0 right-0 -translate-y-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center'>
-                    <IconCheck />
-                    <p className='font-semibold text-sm'>
-                      임시 저장이 완료되었습니다{' '}
-                      <span className='text-xs pointerfont-medium'>
-                        ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
-                      </span>
-                    </p>
+                  <div className='lg:max-w-[768px] h-12 absolute -top-2 left-0 right-0 overflow-hidden -translate-y-full'>
+                    <div
+                      ref={savedToastRef}
+                      className='absolute bottom-0 w-full translate-y-full bg-blue-50 text-blue-500 rounded-full py-2.5 px-6 flex gap-2 items-center transition-transform duration-500'
+                    >
+                      <IconCheck />
+                      <p className='font-semibold text-sm'>
+                        임시 저장이 완료되었습니다{' '}
+                        <span className='text-xs pointerfont-medium'>
+                          ㆍ <SecondsTimer at={new Date(savedAt ?? 0)} />초 전
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
