@@ -1,3 +1,5 @@
+'use client';
+
 import IconArrowRight from '@/public/icons/IconArrowRight';
 import { IconTodoRecently } from '@/public/icons/IconTodoRecently';
 import TodoItem from '../common/todoItem';
