@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import { usePathname } from 'next/navigation';
-import { SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
+import { SheetClose, SheetContent, SheetProvider, SheetTrigger } from '../common/Sheet';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
-import NavHeader, { MobileTriggerNavHeader, TabletTriggerNavHeader } from './NavHeader';
+import NavHeader from './NavHeader';
 import NavContent from './NavContent';
 
 type widthType = 'mobile' | 'tablet' | 'desktop';
@@ -14,7 +14,7 @@ type widthType = 'mobile' | 'tablet' | 'desktop';
 const Nav = () => {
   const [isDesktopNavOpen, setIsDesktopNavOpen] = useState(true); // 데스크탑용 nav 열림 여부
   const [isSheetOpen, setIsSheetOpen] = useState(false); // 모바일, 태블릿용 sheet nav 열림 여부
-  const [isFullyOpen, setIsFullyOpen] = useState(true);
+  const [isFullyOpen, setIsFullyOpen] = useState(true); // 데스브탑에서 nav가 충분히 열린 후에 컨텐츠 보이게 하기 위한 변수
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false); // 할 일 모달 열림 여부
   const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
   const pathname = usePathname();
@@ -36,6 +36,7 @@ const Nav = () => {
   useEffect(() => {
     // 첫 마운트 이후에만(페이지 이동시에만)실행
     if (hasMounted.current) {
+      setIsSheetOpen(false); // 모바일/데스크탑일 경우 페이지 이동시 nav 접기
       setCurrentPageLabel(document.title.split('|')[0].trim());
     } else {
       hasMounted.current = true;
@@ -45,27 +46,27 @@ const Nav = () => {
   return (
     <>
       {/* 모바일/태블릿용 sheet nav */}
-      <section
-        className={clsx(
-          'flex sm:flex lg:hidden flex-col border-r-[1px] flex-shrink-0 divide-slate-200',
-          isSheetOpen ? 'h-screen' : 'h-auto'
-        )}
-      >
+      <section className={clsx('flex sm:flex lg:hidden flex-col border-r-[1px] flex-shrink-0 divide-slate-200')}>
         <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={setIsSheetOpen}>
           <SheetTrigger>
-            <TabletTriggerNavHeader isSheetOpen={isSheetOpen} handleNavToggleButtonClick={handleNavToggleButtonClick} />
-            <MobileTriggerNavHeader
-              currentPageLabel={currentPageLabel}
+            <NavHeader
+              isDesktopNavOpen={isDesktopNavOpen}
+              isSheetOpen={false}
               handleNavToggleButtonClick={handleNavToggleButtonClick}
+              currentPageLabel={currentPageLabel}
             />
           </SheetTrigger>
-          <SheetContent position={'left'} className={twMerge(clsx('sm:w-[280px] p-0'))}>
+
+          {/* 태블릿 */}
+          <SheetContent position={'left'} className={'sm:w-[280px] p-0'}>
             <NavHeader
               isDesktopNavOpen={isDesktopNavOpen}
               isSheetOpen={isSheetOpen}
               handleNavToggleButtonClick={handleNavToggleButtonClick}
               currentPageLabel={currentPageLabel}
-            />
+            >
+              <SheetClose />
+            </NavHeader>
             <NavContent handleTodoModalOpen={handleTodoModalOpen} />
           </SheetContent>
         </SheetProvider>

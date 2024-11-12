@@ -5,15 +5,15 @@ import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import Link from 'next/link';
-import IconModalClose from '@/public/icons/IconModalClose';
 
 type widthType = 'mobile' | 'tablet' | 'desktop';
 
 type NavHeaderProps = {
   isDesktopNavOpen: boolean;
   isSheetOpen: boolean;
-  handleNavToggleButtonClick: (widthType: widthType) => void;
+  handleNavToggleButtonClick: (widthType?: widthType) => void;
   currentPageLabel?: string;
+  children?: React.ReactNode;
 };
 
 type NavSectionProps = {
@@ -46,41 +46,13 @@ const NavSection = ({ children, className }: NavSectionProps) => (
   <div className={twMerge('w-full justify-center items-center gap-4', className)}>{children}</div>
 );
 
-// SheetTrigger에 들어갈 mobile header
-export const MobileTriggerNavHeader = ({
-  currentPageLabel,
-  handleNavToggleButtonClick,
-}: {
-  currentPageLabel: string;
-  handleNavToggleButtonClick: (widthType: widthType) => void;
-}) => {
-  return (
-    <NavSection className='flex sm:hidden lg:hidden flex-row px-[14px] py-4 justify-start'>
-      <IconHamburger onClick={() => handleNavToggleButtonClick('mobile')} />
-      <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
-    </NavSection>
-  );
-};
-
-// SheetTrigger에 들어갈 tablet header
-export const TabletTriggerNavHeader = ({
+const NavHeader = ({
+  isDesktopNavOpen,
   isSheetOpen,
   handleNavToggleButtonClick,
-}: {
-  isSheetOpen: boolean;
-  handleNavToggleButtonClick: (widthType: widthType) => void;
-}) => {
-  return (
-    <NavSection className={'hidden sm:flex lg:hidden flex-col p-4'}>
-      <Link href='/dashboard'>
-        <ImageLogo />
-      </Link>
-      <NavButton onClick={() => handleNavToggleButtonClick('tablet')} icon={<IconFold isFold={!isSheetOpen} />} />
-    </NavSection>
-  );
-};
-
-const NavHeader = ({ isDesktopNavOpen, isSheetOpen, handleNavToggleButtonClick, currentPageLabel }: NavHeaderProps) => {
+  currentPageLabel,
+  children,
+}: NavHeaderProps) => {
   return (
     <>
       {/* 데스크탑 */}
@@ -115,8 +87,19 @@ const NavHeader = ({ isDesktopNavOpen, isSheetOpen, handleNavToggleButtonClick, 
 
       {/* 모바일 */}
       <NavSection className='flex sm:hidden lg:hidden flex-row px-[14px] py-4 justify-normal'>
-        <IconModalClose onClick={() => handleNavToggleButtonClick('mobile')} className='hover:cursor-pointer' />
-        <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
+        {isSheetOpen ? (
+          <>
+            <IconHamburger />
+            <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
+            <div className='ml-auto flex justify-center items-center'>{children}</div>
+          </>
+        ) : (
+          <>
+            <IconHamburger onClick={() => handleNavToggleButtonClick('mobile')} className='hover:cursor-pointer' />
+
+            <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
+          </>
+        )}
       </NavSection>
     </>
   );
