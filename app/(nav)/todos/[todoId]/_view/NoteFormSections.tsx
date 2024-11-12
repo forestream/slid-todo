@@ -39,10 +39,8 @@ const NoteFormSections = ({
   const handleOpenEmbed = useCallback(() => setIsEmbedOpen(true), []);
   const handleCloseEmbed = () => {
     if (embedRef.current) {
-      embedRef.current.classList.remove('h-full');
-      embedRef.current.classList.add('h-0');
-      embedRef.current.classList.remove('w-full');
-      embedRef.current.classList.add('w-0');
+      embedRef.current.classList.remove('h-full', 'w-full');
+      embedRef.current.classList.add('h-0', 'w-0');
     }
 
     setTimeout(() => {
@@ -86,10 +84,8 @@ const NoteFormSections = ({
     if (isEmbedOpen) {
       setTimeout(() => {
         if (!embedRef.current) return;
-        embedRef.current.classList.remove('h-0');
-        embedRef.current.classList.add('h-full');
-        embedRef.current.classList.remove('w-0');
-        embedRef.current.classList.add('w-full');
+        embedRef.current.classList.remove('h-0', 'w-0');
+        embedRef.current.classList.add('h-full', 'w-full');
       }, 0);
     }
   }, [isEmbedOpen]);

@@ -1,7 +1,7 @@
 import useNoteQuery from '@/lib/hooks/useNoteQuery';
 import IconEmbed from '@/public/icons/IconEmbed';
 import IconFlag from '@/public/icons/IconFlag';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import TiptapEditorProvider from '../TiptapEditorProvider';
 import DropdownMenu from '../common/DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
@@ -60,7 +60,21 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
 
   const [isEmbedOpen, setIsEmbedOpen] = useState(false);
 
-  const handleToggleEmbed = () => setIsEmbedOpen(!isEmbedOpen);
+  const handleToggleEmbed = () => {
+    if (isEmbedOpen) {
+      if (embedRef.current) {
+        embedRef.current.classList.remove('h-full', 'w-full');
+        embedRef.current.classList.add('h-0', 'w-0');
+        embedRef.current.firstElementChild?.classList.add('lg:translate-x-full');
+      }
+
+      setTimeout(() => {
+        setIsEmbedOpen(false);
+      }, 500);
+    } else {
+      setIsEmbedOpen(true);
+    }
+  };
 
   const TiptapProviderOnContentChange = useCallback(() => {
     return <TiptapEditorProvider content={note?.content} editorOptions={{ editable: false }} />;
@@ -78,31 +92,48 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
     })();
   }, [note]);
 
+  const embedRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (isEmbedOpen) {
+      setTimeout(() => {
+        if (!embedRef.current) return;
+        embedRef.current.classList.remove('h-0', 'w-0');
+        embedRef.current.classList.add('h-full', 'w-full');
+        embedRef.current.firstElementChild?.classList.remove('lg:translate-x-full');
+      }, 0);
+    }
+  }, [isEmbedOpen]);
+
   if (isLoading) return;
 
   return (
     <>
       {note?.linkUrl && isEmbedOpen && (
-        <section className='h-[385px] lg:h-full w-full lg:w-[543px] overflow-auto relative mb-4 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:-translate-x-full'>
-          <div className='h-full bg-blue-50 flex flex-col justify-center items-center'>
-            {linkUrlEmbeddable ? (
-              <iframe src={note.linkUrl} className='h-full w-full' />
-            ) : (
-              <>
-                <p>임베드할 수 없는 링크입니다.</p>
-                <p>
-                  <Link href={note.linkUrl} target='_blank' className='underline hover:opacity-70'>
-                    {note.linkUrl}
-                  </Link>
-                  으로 이동
-                </p>
-              </>
-            )}
+        <section
+          ref={embedRef}
+          className='max-h-[385px] lg:max-h-none h-0 w-0 lg:w-[543px] overflow-hidden relative mb-4 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:-translate-x-full transition-[height] lg:transition-none duration-500'
+        >
+          <div className='w-full h-full lg:transition-transform lg:translate-x-full lg:duration-500'>
+            <div className='h-full bg-blue-50 flex flex-col justify-center items-center '>
+              {linkUrlEmbeddable ? (
+                <iframe src={note.linkUrl} className='h-full w-full' />
+              ) : (
+                <>
+                  <p>임베드할 수 없는 링크입니다.</p>
+                  <p>
+                    <Link href={note.linkUrl} target='_blank' className='underline hover:opacity-70'>
+                      {note.linkUrl}
+                    </Link>
+                    으로 이동
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </section>
       )}
 
-      <section className='lg:max-w-[800px] w-full flex flex-col grow '>
+      <section className='lg:max-w-[800px] w-full flex flex-col grow'>
         <div className='flex w-full gap-1.5 mb-3'>
           <div className='flex justify-center items-center rounded-md bg-slate-800 w-6 h-6'>
             <IconFlag />
