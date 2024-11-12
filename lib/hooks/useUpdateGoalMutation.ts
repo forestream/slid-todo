@@ -23,7 +23,8 @@ export const useUpdateGoalMutation = () => {
         title: '목표가 수정되었습니다.',
         variant: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      queryClient.invalidateQueries({ queryKey: ['goals'], refetchType: 'all' });
+
     },
     onError: (error) => {
       toast.toast({
