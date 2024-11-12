@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef, ComponentType, SVGProps } from 'react';
 import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 interface DropdownProps {
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
@@ -66,24 +67,31 @@ const DropdownMenu = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const dropdownClassNames = clsx(
-    'z-10 absolute mt-2 bg-white rounded-xl text-slate-700 max-h-64 sm:max-h-32 lg:max-h-32 overflow-y-auto',
-    dropdownAlign === 'right' ? 'right-0 shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)]' : 'w-full shadow-lg left-0'
+  const baseClassNames = twMerge(
+    clsx('flex-col justify-center items-center relative inline-block text-nowrap space-y-2', className)
   );
 
-  const dropdownMenuListClassNames = clsx(
-    'flex flex-col text-nowrap text-sm sm:text-lg lg:text-lg justify-center items-center text-center',
-    dropdownListClassName
+  const dropdownClassNames = twMerge(
+    clsx(
+      'z-10 absolute bg-white rounded-xl text-slate-700 max-h-64 sm:max-h-32 lg:max-h-32 overflow-y-auto',
+      dropdownAlign === 'right' ? 'right-0 shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)]' : 'w-full shadow-lg left-0'
+    )
   );
 
-  const dropdownMenuItemClassNames = clsx(
-    'w-full flex max-h-[100px] overflow-y-auto',
-    'px-4 pt-2 pb-[6px] hover:bg-gray-100 cursor-pointer first:rounded-t-xl last:rounded-b-xl',
-    dropdownItemClassName
+  const dropdownMenuListClassNames = twMerge(
+    clsx('flex flex-col text-nowrap text-lg justify-center items-center text-center', dropdownListClassName)
+  );
+
+  const dropdownMenuItemClassNames = twMerge(
+    clsx(
+      'w-full flex max-h-[100px] overflow-y-auto',
+      'px-4 pt-2 pb-[6px] hover:bg-gray-100 cursor-pointer first:rounded-t-xl last:rounded-b-xl',
+      dropdownItemClassName
+    )
   );
 
   return (
-    <div className={`flex-col justify-center items-center relative inline-block text-nowrap ${className}`}>
+    <div className={baseClassNames}>
       <button
         ref={iconButtonRef}
         type='button'
