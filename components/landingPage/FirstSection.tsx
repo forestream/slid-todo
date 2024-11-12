@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 import Button from '@/components/common/ButtonSlid';
 import Link from 'next/link';
-import { fadeInRight, fadeInUp, staggerChildren } from '@/lib/animations/variants';
+import { fadeInUp, staggerChildren } from '@/lib/animations/variants';
 import { SectionProps } from '@/app/page';
 
 const FirstSection = ({ isVisible }: SectionProps) => {
@@ -34,14 +34,6 @@ const FirstSection = ({ isVisible }: SectionProps) => {
             </Button>
           </Link>
         </motion.div>
-      </motion.div>
-      <motion.div
-        initial='initial'
-        animate={isVisible ? 'animate' : 'initial'}
-        variants={fadeInRight}
-        className='w-[500px] h-full flex justify-center items-center'
-      >
-        이미지 위치
       </motion.div>
     </>
   );

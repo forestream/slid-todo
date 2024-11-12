@@ -55,7 +55,7 @@ export default function Home() {
         <SectionContainer index={0}>
           <FirstSection isVisible={currentPage === 0} />
         </SectionContainer>
-        <SectionContainer index={1}>
+        <SectionContainer index={1} classNameDiv='flex-col sm:flex-col items-center'>
           <SecondSection isVisible={currentPage === 1} />
         </SectionContainer>
         <SectionContainer index={2}>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeInRight, fadeInUp, staggerChildren } from '@/lib/animations/variants';
 import { SectionProps } from '@/app/page';
+import Image from 'next/image';
 
 const ThirdSection = ({ isVisible }: SectionProps) => {
   return (
@@ -23,9 +24,16 @@ const ThirdSection = ({ isVisible }: SectionProps) => {
         initial={'initial'}
         animate={isVisible ? 'animate' : 'initial'}
         variants={fadeInRight}
-        className='w-[500px] h-full flex justify-center items-center'
+        className='w-full md:max-w-[800px] h-full flex justify-center items-center relative px-4 md:px-0'
       >
-        이미지 위치
+        <Image
+          src='/images/ImageGoalDoughnut.png'
+          alt='달성률 도넛 차트 이미지'
+          width={800}
+          height={800}
+          className='w-full h-auto rounded-lg shadow-lg object-cover'
+          priority
+        />
       </motion.div>
     </>
   );

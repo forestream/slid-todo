@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeInLeft, fadeInUp, staggerChildren } from '@/lib/animations/variants';
 import { SectionProps } from '@/app/page';
+import Image from 'next/image';
 
 const FourthSection = ({ isVisible }: SectionProps) => {
   return (
@@ -10,9 +11,16 @@ const FourthSection = ({ isVisible }: SectionProps) => {
         initial='initial'
         animate={isVisible ? 'animate' : 'initial'}
         variants={fadeInLeft}
-        className='w-[500px] h-full flex justify-center items-center'
+        className='w-full md:w-[800px] h-full flex justify-center items-center relative px-4 md:px-0'
       >
-        이미지 위치
+        <Image
+          src='/images/ImageEmbed.png'
+          alt='할 일 임베드 기능 소개 이미지'
+          width={800}
+          height={800}
+          className='w-full h-auto rounded-lg shadow-lg object-cover'
+          priority
+        />
       </motion.div>
       <motion.div
         initial='initial'
