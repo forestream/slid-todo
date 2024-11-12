@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const Loading = () => {
   return (
-    <div className='flex items-center justify-center bg-white'>
+    <div className='flex items-center justify-center w-full h-full mt-10'>
       <div className='flex flex-col items-center'>
         <div className='relative w-24 h-24 mb-8'>
           <Image
