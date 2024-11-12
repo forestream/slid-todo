@@ -28,6 +28,30 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // /todos 하위 경로 접근 시 액세스토큰이 만료되었을 때
+  if (pathname.startsWith('/todos') && !accessToken && refreshToken) {
+    const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
+
+    const response = new NextResponse();
+
+    response.cookies.set('accessToken', data.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60,
+      path: '/',
+    });
+    response.cookies.set('refreshToken', data.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60,
+      path: '/',
+    });
+
+    return NextResponse.redirect(request.url, { headers: response.headers });
+  }
+
   if (pathname.startsWith('/4-4-dev')) {
     if (!accessToken && refreshToken) {
       const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
