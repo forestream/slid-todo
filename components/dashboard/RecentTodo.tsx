@@ -33,7 +33,7 @@ const RecentTodo = () => {
         )}
         <ul className='flex flex-col gap-2'>
           {recentTodos?.todos.map((todo) => (
-            <li>
+            <li key={todo.id}>
               <TodoItem data={todo} key={todo.id} viewGoal />
             </li>
           ))}
