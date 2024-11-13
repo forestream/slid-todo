@@ -10,9 +10,11 @@ interface PageContainerProps {
 
 const PageContainer = ({ children, className = '', containerClassName = '' }: PageContainerProps) => {
   return (
-    <div className={twMerge(clsx('bg-slate-100 w-full h-screen overflow-auto', containerClassName))}>
-      <div className={twMerge(clsx('lg:px-20 sm:px-6 px-4 py-6 max-w-[792px] h-full', className))}>{children}</div>
-    </div>
+    <main className={twMerge(clsx('bg-slate-100 w-full h-screen overflow-auto', containerClassName))}>
+      <section className={twMerge(clsx('lg:px-20 sm:px-6 px-4 py-6 max-w-[792px] h-full', className))}>
+        {children}
+      </section>
+    </main>
   );
 };
 
