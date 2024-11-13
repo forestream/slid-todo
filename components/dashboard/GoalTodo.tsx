@@ -23,7 +23,7 @@ const GoalTodo = () => {
           <div className='w-10 h-10 flex-shrink-0 bg-orange-500 rounded-[15px] grid place-content-center'>
             <IconDashboardFlag />
           </div>
-          <p className='text-slate-800 text-lg font-semibold'>목표 별 할 일</p>
+          <h2 className='text-slate-800 text-lg font-semibold'>목표 별 할 일</h2>
         </div>
         {data?.pages[0].totalCount === 0 && (
           <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm text-slate-500'>
@@ -32,7 +32,7 @@ const GoalTodo = () => {
         )}
         <div className='flex-col mt-6 space-y-4 '>
           {data?.pages.map((page, idx) => (
-            <div key={page.nextCursor || idx} className='flex-col mt-6 space-y-4'>
+            <div key={page.nextCursor || idx} className='flex flex-col mt-6 gap-4'>
               {page.goals.map((goal: Goal) => (
                 <div key={goal.id} className='flex min-h-[352px] h-auto p-6 bg-blue-50 rounded-[32px]'>
                   <GoalTodoCard goal={goal} />

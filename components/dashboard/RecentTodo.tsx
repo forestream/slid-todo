@@ -19,7 +19,7 @@ const RecentTodo = () => {
         <div className='w-10 h-10 flex-shrink-0 bg-blue-500 rounded-[15px] grid place-content-center'>
           <IconTodoRecently />
         </div>
-        <p className='text-slate-800 text-lg font-semibold text-nowrap'>최근 등록한 할 일</p>
+        <h2 className='text-slate-800 text-lg font-semibold text-nowrap'>최근 등록한 할 일</h2>
         <Link href='/todos' className='flex last:ml-auto text-slate-600 text-sm font-medium leading-tight text-nowrap'>
           <span className='flex items-center'>모두 보기</span>
           <IconArrowRight />
@@ -31,9 +31,13 @@ const RecentTodo = () => {
             최근에 등록한 할 일이 없어요
           </span>
         )}
-        {recentTodos?.todos.map((todo) => (
-          <TodoItem data={todo} key={todo.id} viewGoal />
-        ))}
+        <ul className='flex flex-col gap-2'>
+          {recentTodos?.todos.map((todo) => (
+            <li>
+              <TodoItem data={todo} key={todo.id} viewGoal />
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
