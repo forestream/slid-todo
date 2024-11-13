@@ -9,6 +9,9 @@ import { useAddTodoMutation } from '@/lib/hooks/useAddTodoMutation';
 import { TodoAddFormData, todoAddSchema } from '@/lib/schemas/todosSchemas';
 import cleanedFormData from '@/lib/utils/cleanedFormData';
 import GoalSelector from './GoalSelector';
+import { useEffect, useState } from 'react';
+import isValidImageUrl from '@/lib/utils/isValidImageUrl';
+import Image from 'next/image';
 
 interface TodoAddModalProps {
   goalId?: number;
@@ -17,6 +20,7 @@ interface TodoAddModalProps {
 }
 
 const Content = ({ goalId }: { goalId?: number }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { handleClose } = useModalContext();
   const addTodo = useAddTodoMutation();
   const {
@@ -26,6 +30,7 @@ const Content = ({ goalId }: { goalId?: number }) => {
     setValue,
     watch,
     reset,
+    getValues,
   } = useForm<TodoAddFormData>({
     resolver: zodResolver(todoAddSchema),
     defaultValues: {
@@ -42,12 +47,18 @@ const Content = ({ goalId }: { goalId?: number }) => {
     reset();
     handleClose();
   };
-
+  const fileUrl = getValues('fileUrl');
+  useEffect(() => {
+    setImageUrl('');
+    if (isValidImageUrl(fileUrl)) {
+      setImageUrl(fileUrl as string);
+    }
+  }, [fileUrl]);
   const { data: goalData } = useInfiniteGoalsQuery(1000);
   const goals = goalData?.pages.map((page) => page.goals).flat();
 
   return (
-    <ModalContent className='sm:w-[520px] sm:h-[676px] w-full h-full p-4 sm:p-6 flex flex-col animate-slide-up sm:rounded-xl rounded-none'>
+    <ModalContent className='sm:w-[520px] sm:h-auto w-full h-full p-4 sm:p-6 flex flex-col animate-slide-up sm:rounded-xl rounded-none'>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full'>
         <div className='flex gap-2 flex-col'>
           <div className='flex justify-between items-center'>
@@ -74,6 +85,7 @@ const Content = ({ goalId }: { goalId?: number }) => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
+        {imageUrl && <Image src={imageUrl} alt='미리보기' width={100} height={100} unoptimized />}
         <GoalSelector
           label='목표'
           placeholder='목표를 선택해주세요'
