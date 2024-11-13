@@ -41,7 +41,7 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
 
     return (
       <div key={section.title} className={containerClass}>
-        <h3 className='bold text-sm font-semibold'>{section.title}</h3>
+        <h4 className='bold text-sm font-semibold'>{section.title}</h4>
         <div className={contentClass(isEmpty)}>
           {isEmpty ? (
             <span className='text-sm text-center font-normal text-slate-500'>{section.emptyMessage}</span>
