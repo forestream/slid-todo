@@ -9,6 +9,7 @@ interface DropdownProps {
   text?: string;
   dropdownList: string[];
   dropdownAlign?: 'center' | 'right';
+  dropdownPosition?: 'top' | 'bottom';
   onItemClick: (item: string) => void;
   className?: string;
   iconClassName?: string;
@@ -23,6 +24,7 @@ const DropdownMenu = ({
   text,
   dropdownList,
   dropdownAlign = 'right',
+  dropdownPosition = 'bottom',
   onItemClick,
   className,
   iconClassName,
@@ -52,6 +54,17 @@ const DropdownMenu = ({
   const closeDropdown = () => setDropdownOpen(false);
 
   useEffect(() => {
+    if (isDropdownOpen && dropdownRef.current) {
+      // 드롭다운이 열릴 때 자동으로 스크롤해 메뉴가 화면에 모두 보이도록
+      dropdownRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  }, [isDropdownOpen]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (
@@ -74,7 +87,8 @@ const DropdownMenu = ({
   const dropdownClassNames = twMerge(
     clsx(
       'z-10 absolute bg-white rounded-xl text-slate-700 max-h-64 sm:max-h-32 lg:max-h-32 overflow-y-auto',
-      dropdownAlign === 'right' ? 'right-0 shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)]' : 'w-full shadow-lg left-0'
+      dropdownAlign === 'right' ? 'right-0 shadow-[4px_4px_10px_-2px_rgba(0,0,0,0.05)]' : 'w-full shadow-lg left-0',
+      dropdownPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
     )
   );
 
