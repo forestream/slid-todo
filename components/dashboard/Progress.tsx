@@ -1,3 +1,5 @@
+'use client';
+
 import { ImageProgress } from '@/public/images/ImageProgress';
 import { ImageProgressMobile } from '@/public/images/ImageProgressMobile';
 import { ImageProgressTablet } from '@/public/images/ImageProgressTablet';

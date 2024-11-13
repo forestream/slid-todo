@@ -3,7 +3,7 @@ import { TodosProvider } from '@/components/allTodos/TodosContext';
 import TodosHeader from '@/components/allTodos/TodosHeader';
 import PageContainer from '@/components/common/pageLayout/PageContainer';
 
-export default function Alltodos() {
+export default async function Alltodos() {
   return (
     <PageContainer>
       <TodosProvider>

@@ -1,4 +1,3 @@
-'use client';
 import PageContainer from '@/components/common/pageLayout/PageContainer';
 import PageHeader from '@/components/common/pageLayout/PageHeader';
 import GoalTodo from '@/components/dashboard/GoalTodo';
