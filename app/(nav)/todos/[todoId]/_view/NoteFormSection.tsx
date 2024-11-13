@@ -187,13 +187,18 @@ const NoteFormSection = ({
             <>
               <TiptapCharacterCount />
               {linkUrl && (
-                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4 cursor-pointer'>
+                <div
+                  className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4 cursor-pointer'
+                  onClick={onOpenEmbed}
+                  tabIndex={0}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') onOpenEmbed();
+                  }}
+                >
                   <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                     <IconEmbed />
                   </div>
-                  <p className='grow text-base font-normal text-slate-800' onClick={onOpenEmbed}>
-                    {linkUrl}
-                  </p>
+                  <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
                   <input type='hidden' name='linkUrl' value={linkUrl} />
                   <button
                     className='w-6 h-6 rounded-full flex justify-center items-center'
