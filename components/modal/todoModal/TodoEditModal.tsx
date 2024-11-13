@@ -11,6 +11,9 @@ import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
 import { useUpdateTodoMutation } from '@/lib/hooks/useUpdateTodoMutation';
 import cleanedFormData from '@/lib/utils/cleanedFormData';
 import GoalSelector from './GoalSelector';
+import isValidImageUrl from '@/lib/utils/isValidImageUrl';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface TodoEditModalProps {
   data: Todo;
@@ -19,6 +22,7 @@ interface TodoEditModalProps {
 }
 
 const Content = ({ data }: { data: Todo }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { handleClose } = useModalContext();
   const editTodo = useUpdateTodoMutation();
   const {
@@ -27,6 +31,7 @@ const Content = ({ data }: { data: Todo }) => {
     formState: { errors },
     setValue,
     watch,
+    getValues,
   } = useForm<TodoEditFormData>({
     resolver: zodResolver(todoEditSchema),
     defaultValues: {
@@ -43,7 +48,13 @@ const Content = ({ data }: { data: Todo }) => {
     editTodo.mutate({ id: Number(data.id), updates: cleanedData });
     handleClose();
   };
-
+  const fileUrl = getValues('fileUrl');
+  useEffect(() => {
+    setImageUrl('');
+    if (isValidImageUrl(fileUrl)) {
+      setImageUrl(fileUrl as string);
+    }
+  }, [fileUrl]);
   const { data: goalData } = useInfiniteGoalsQuery(1000);
   const goals = goalData?.pages.map((page) => page.goals).flat();
   return (
@@ -78,6 +89,7 @@ const Content = ({ data }: { data: Todo }) => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
+        {imageUrl && <Image src={imageUrl} alt='image' width={100} height={100} />}
         <GoalSelector
           label='목표'
           placeholder='목표를 선택해주세요'
@@ -85,7 +97,6 @@ const Content = ({ data }: { data: Todo }) => {
           onSelect={(goalId) => setValue('goalId', goalId)}
           selectedGoalId={watch('goalId')}
         />
-
         <div className='mt-10'>
           <Button type='submit' className='w-full'>
             확인
