@@ -4,37 +4,38 @@ import Button from '@/components/common/ButtonSlid';
 import MainLogo from '@/public/images/MainLogo';
 import { useRouter } from 'next/navigation';
 
-export default function NotFound() {
+export default function Error() {
   const router = useRouter();
 
   const handleGoHome = () => {
     router.push('/');
   };
+
   const handleGoBack = () => {
     router.back();
   };
+
   return (
-    <div className='min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 flex flex-col items-center justify-center p-4'>
-      <MainLogo className={`mb-[60px]`} />
+    <main
+      className='min-h-screen bg-gradient-to-b from-red-100 to-orange-100 flex flex-col items-center justify-center p-4'
+      role='main'
+      aria-labelledby='error-heading'
+    >
+      <MainLogo className='mb-[60px]' aria-hidden='true' />
       <div className='bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center'>
-        {/* <Image
-          src='/'
-          alt=' 404 이미지'
-          className='mx-auto mb-6 rounded-full'
-          width={200}
-          height={200}
-        /> */}
-        <h2 className='text-2xl font-semibold text-gray-800 mb-4'>앗! 페이지를 찾을 수 없어요</h2>
-        <p className='text-gray-600 mb-8'>찾으시는 페이지가 사라졌거나 잘못된 주소를 입력하셨어요.</p>
+        <h1 id='error-heading' className='text-2xl font-semibold text-gray-800 mb-4'>
+          오류가 발생했어요!
+        </h1>
+        <p className='text-gray-600 mb-8'>예기치 않은 문제가 발생했어요. 홈으로 돌아가거나 다시 시도해 주세요.</p>
         <div className='flex flex-col sm:flex-row justify-center gap-4'>
           <Button onClick={handleGoBack} className='flex items-center justify-center'>
-            뒤로 가기
+            다시 시도
           </Button>
           <Button onClick={handleGoHome} className='flex items-center justify-center' variant='outlined'>
             홈으로 가기
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
