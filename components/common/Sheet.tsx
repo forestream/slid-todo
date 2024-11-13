@@ -145,6 +145,16 @@ const SheetContent = ({
     }
   }, [isOpen, position, transformProperties, willBeClosed]);
 
+  useEffect(() => {
+    const handleKeyUpOnBody = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+
+    if (isOpen) document.body.addEventListener('keyup', handleKeyUpOnBody);
+
+    return () => document.body.removeEventListener('keyup', handleKeyUpOnBody);
+  }, [handleClose, isOpen]);
+
   return (
     <>
       {isOpen &&
