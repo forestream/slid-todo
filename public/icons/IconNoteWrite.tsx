@@ -15,7 +15,7 @@ const IconNoteWrite = ({ circleClassName, pathClassName, ...props }: IconNoteWri
     aria-labelledby='noteWriteTitle'
     {...props}
   >
-    <title id='noteWriteTitle'>노트 수정하기&생성하기 </title>
+    <title id='noteWriteTitle'>노트 작성하기 </title>
     <circle className={circleClassName} cx='12' cy='12' r='12' fill='#FF9F43' />
     <path
       className={pathClassName}
