@@ -11,6 +11,7 @@ const ThirdSection = ({ isVisible }: SectionProps) => {
         animate={isVisible ? 'animate' : 'initial'}
         variants={staggerChildren}
         className='w-full h-full flex flex-col justify-center'
+        aria-label='목표 달성 현황 소개'
       >
         <motion.h2 variants={fadeInUp} className='text-4xl font-bold'>
           목표 달성 현황

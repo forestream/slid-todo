@@ -13,6 +13,7 @@ const SectionContainer: React.FC<SectionContainerProps> = ({ children, className
     <section
       className={twMerge(clsx('absolute h-screen w-full flex flex-col', classNameSection))}
       style={{ top: `${index * 100}vh` }}
+      aria-label={`섹션 ${index + 1}`}
     >
       <div
         className={twMerge(
