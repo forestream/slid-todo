@@ -12,6 +12,7 @@ import {
   PropsWithChildren,
   Ref,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -92,6 +93,16 @@ const ModalContent = ({
     if (isOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
   }
+
+  useEffect(() => {
+    const handleKeyUpOnBody = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+
+    if (isOpen) document.body.addEventListener('keyup', handleKeyUpOnBody);
+
+    return () => document.body.removeEventListener('keyup', handleKeyUpOnBody);
+  }, [handleClose, isOpen]);
 
   return (
     <>
