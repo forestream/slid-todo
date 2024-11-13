@@ -17,19 +17,20 @@ import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import ConfirmationModal from '../modal/ConfirmationModal';
 
 const DEFAULT_INPUT_VALUE = '· ';
-const NavGoal = ({ className }: { className?: string }) => {
-  const [isGoalInputVisible, setIsGoalInputVisible] = useState(false);
-  const [goalInputValue, setGoalInputValue] = useState('');
-  const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
-  const [kebabClickedGoal, setKebabClickedGoal] = useState<Goal>();
-  const deleteGoal = useDeleteGoalMutation();
-  const updateGoal = useUpdateGoalMutation();
 
+const NavGoal = ({ className }: { className?: string }) => {
+  const [isNewGoalInputVisible, setIsNewGoalInputVisible] = useState(false);
+  const [newGoalInputValue, setNewGoalInputValue] = useState(''); // 새롭게 생성할 목표의 input값
+  const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
+  const [existingGoalInputValue, setExistingGoalInputValue] = useState(''); // 기존에 있던 목표의 input값
+  const [kebabClickedGoal, setKebabClickedGoal] = useState<Goal>(); // 케밥 아이콘을 클릭한 목표 정보 저장
   const [isEditFocused, setIsEditFocused] = useState(false);
   const [editingGoalId, setEditingGoalId] = useState(-1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const addGoal = useAddGoalMutation();
+  const deleteGoal = useDeleteGoalMutation();
+  const updateGoal = useUpdateGoalMutation();
 
   const { ref, inView } = useInView({ threshold: 0.1 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
@@ -40,38 +41,37 @@ const NavGoal = ({ className }: { className?: string }) => {
     }
   }, [inView, fetchNextPage]);
 
-  const handleGoalClick = (goalId: number) => {
-    setSelectedGoalId(goalId);
+  // 목표 추가
+  // 새 목표 input change handler
+  const handleNewGoalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    // 유저가 `·` 기호를 지우지 못하게 항상 앞에 추가
+    if (!inputValue.startsWith(DEFAULT_INPUT_VALUE)) {
+      setNewGoalInputValue(`${DEFAULT_INPUT_VALUE}${inputValue.replace(/^·\s*/, '')}`);
+    } else {
+      setNewGoalInputValue(inputValue);
+    }
   };
 
   const handleAddGoalButtonClick = () => {
     // 펼쳐진 상태 && 내용이 입력된 상태에서 추가 한 번 더 누르면 제출되도록 하기
-    if (isGoalInputVisible && goalInputValue !== DEFAULT_INPUT_VALUE) {
+    if (isNewGoalInputVisible && newGoalInputValue !== DEFAULT_INPUT_VALUE) {
       handleGoalSubmit();
     }
 
-    setIsGoalInputVisible(!isGoalInputVisible);
-    setGoalInputValue(DEFAULT_INPUT_VALUE);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    // 유저가 `·` 기호를 지우지 못하게 항상 앞에 추가
-    if (!inputValue.startsWith(DEFAULT_INPUT_VALUE)) {
-      setGoalInputValue(`${DEFAULT_INPUT_VALUE}${inputValue.replace(/^·\s*/, '')}`);
-    } else {
-      setGoalInputValue(inputValue);
-    }
+    setIsNewGoalInputVisible(!isNewGoalInputVisible);
+    setNewGoalInputValue(DEFAULT_INPUT_VALUE);
   };
 
   const handleGoalSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    const trimmedGoalValue = goalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
+    const trimmedGoalValue = newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
     addGoal.mutate({ updates: { title: trimmedGoalValue } });
-    setIsGoalInputVisible(false);
-    setGoalInputValue('· ');
+    setIsNewGoalInputVisible(false);
+    setNewGoalInputValue('· ');
   };
 
+  // 목표 수정 및 삭제
   const handleDropdownMenuClick = (item: string) => {
     if (item === '수정하기') {
       setIsEditFocused(true);
@@ -80,23 +80,27 @@ const NavGoal = ({ className }: { className?: string }) => {
     }
   };
 
+  const handleGoalClick = (goalId: number) => {
+    setSelectedGoalId(goalId);
+  };
+
   const handleNavGoalKebabClick = (goal: Goal) => {
     setKebabClickedGoal(goal);
     setEditingGoalId(goal.id);
   };
 
-  const handleGoalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGoalInputValue(e.target.value);
+  const handleExistingGoalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExistingGoalInputValue(e.target.value);
   };
 
   // 수정
   const handleGoalEditSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     updateGoal.mutate(
-      { id: kebabClickedGoal?.id ?? -1, updates: { title: goalInputValue.trim() } },
+      { id: kebabClickedGoal?.id ?? -1, updates: { title: newGoalInputValue.trim() } },
       {
         onSuccess: (data) => {
-          setGoalInputValue(data.title);
+          setNewGoalInputValue(data.title);
           setIsEditFocused(false);
         },
       }
@@ -133,13 +137,14 @@ const NavGoal = ({ className }: { className?: string }) => {
                   {/* kebab에서 수정하기를 클릭하면 Input, 그 외에는 일반 Link로 goal list */}
                   {isEditFocused && editingGoalId === goal.id ? (
                     <form onSubmit={handleGoalEditSubmit} className='w-full h-auto m-0'>
+                      {/* 목표 수정 클릭시 생성되는 input */}
                       <InputSlid
                         type='text'
                         placeholder={goal?.title}
                         className='my-0 mx-2'
                         inputClassName='flex-grow py-1 px-2 text-xs font-medium rounded-lg'
-                        value={goalInputValue}
-                        onChange={handleGoalInputChange}
+                        value={existingGoalInputValue}
+                        onChange={handleExistingGoalInputChange}
                         autoFocus
                         onBlur={(e) => {
                           if (!e.currentTarget.contains(e.relatedTarget)) {
@@ -183,15 +188,15 @@ const NavGoal = ({ className }: { className?: string }) => {
         </div>
 
         {/* 새 목표 클릭시 생성되는 인풋 */}
-        {isGoalInputVisible && (
+        {isNewGoalInputVisible && (
           <div className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
             <form onSubmit={handleGoalSubmit} className='w-full h-auto m-0'>
               <InputSlid
                 type='text'
                 className='m-0'
                 inputClassName='flex-grow p-2 m-0 text-sm font-medium bg-white rounded-lg border-2 border-blue-200'
-                value={goalInputValue}
-                onChange={handleInputChange}
+                value={newGoalInputValue}
+                onChange={handleNewGoalInputChange}
                 autoFocus
               />
             </form>
