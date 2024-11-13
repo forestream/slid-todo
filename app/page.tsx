@@ -45,7 +45,7 @@ export default function Home() {
   }, [handleScroll, throttleDelay]);
 
   return (
-    <div className='relative h-screen w-full overflow-hidden'>
+    <main className='relative h-screen w-full overflow-hidden'>
       <div
         style={{
           transform: `translateY(-${currentPage * 100}vh)`,
@@ -71,15 +71,17 @@ export default function Home() {
       </div>
 
       {/* Page Indicator */}
-      <div className='absolute top-1/2 right-4 flex-col space-y-2'>
+      <nav className='absolute top-1/2 right-4 flex-col space-y-2' role='navigation' aria-label='페이지 네비게이션'>
         {Array.from({ length: pageCount }, (_, i) => (
           <div
             onClick={() => setCurrentPage(i)}
             key={i}
             className={`h-3 w-3 rounded-full ${i === currentPage ? 'bg-black' : 'bg-gray-400'}`}
+            aria-label={`${i + 1}번째 페이지로 이동`}
+            aria-current={i === currentPage ? 'page' : undefined}
           />
         ))}
-      </div>
-    </div>
+      </nav>
+    </main>
   );
 }

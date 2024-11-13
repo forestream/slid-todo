@@ -12,6 +12,7 @@ const FourthSection = ({ isVisible }: SectionProps) => {
         animate={isVisible ? 'animate' : 'initial'}
         variants={fadeInLeft}
         className='w-full md:w-[800px] h-full flex justify-center items-center relative px-4 md:px-0'
+        aria-label='할 일 임베드 기능 소개'
       >
         <Image
           src='/images/ImageEmbed.png'
