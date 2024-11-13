@@ -13,6 +13,7 @@ const FirstSection = ({ isVisible }: SectionProps) => {
         animate={isVisible ? 'animate' : 'initial'}
         variants={staggerChildren}
         className='w-full h-full flex flex-col justify-center'
+        aria-label='메인 소개'
       >
         <motion.h1 variants={fadeInUp} className='lg:text-6xl text-4xl font-bold mb-10'>
           당신의 동료 SlidToDo

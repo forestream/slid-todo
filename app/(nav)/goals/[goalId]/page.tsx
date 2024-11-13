@@ -1,4 +1,4 @@
-import GoalTitleProgress from '@/components/common/GoalTitleWithProgress';
+import GoalTitleProgress from '@/components/goals/GoalTitleWithProgress';
 import PageContainer from '@/components/common/pageLayout/PageContainer';
 import PageHeader from '@/components/common/pageLayout/PageHeader';
 import TodoItemsGoal from '@/components/goals/TodoItemsGoal';

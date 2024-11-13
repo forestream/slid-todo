@@ -36,12 +36,14 @@ const TodoTitle: React.FC<TodoTitleProps> = ({ data }) => {
 
   return (
     <>
-      <div
+      <button
         onClick={handleTitleClick}
-        className={twMerge(clsx('truncate hover:text-link cursor-pointer', data.done && 'line-through'))}
+        className={twMerge(clsx('truncate hover:text-link text-left', data.done && 'line-through'))}
+        aria-label={`${data.title} ${data.done ? '(완료됨)' : ''}`}
+        aria-expanded={isOpenDrawer || isNoteViewOpen}
       >
         {data.title}
-      </div>
+      </button>
       <TodoContentsDrawer isOpen={isOpenDrawer} onChangeIsOpen={setIsOpenDrawer} data={data} />
       <NoteViewSheet
         isSheetOpen={isNoteViewOpen}

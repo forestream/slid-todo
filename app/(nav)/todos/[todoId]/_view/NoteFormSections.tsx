@@ -34,7 +34,10 @@ const NoteFormSections = ({
   const handleChangeSavedToast = (status: boolean) => setSavedToast(status);
   const handleChangeContent = (newContent: string) => setContent(newContent);
 
-  const handleSaveLinkUrl = useCallback((linkUrlValue: string) => setLinkUrl(linkUrlValue), []);
+  const handleSaveLinkUrl = useCallback((linkUrlValue: string) => {
+    setLinkUrl(linkUrlValue);
+    if (linkUrlValue === '') setIsEmbedOpen(false);
+  }, []);
 
   const handleOpenEmbed = useCallback(() => setIsEmbedOpen(true), []);
   const handleCloseEmbed = () => {

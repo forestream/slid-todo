@@ -1,7 +1,7 @@
 'use client';
 import IconFlag from '@/public/icons/IconFlag';
-import DropdownMenu from './DropdownMenu';
-import ProgressBar from './ProgressBar';
+import DropdownMenu from '../common/DropdownMenu';
+import ProgressBar from '../common/ProgressBar';
 import useGoalQuery from '@/lib/hooks/useGoalQuery';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 import { IconKebab } from '@/public/icons/IconKebab';
@@ -10,7 +10,7 @@ import { useDeleteGoalMutation } from '@/lib/hooks/useDeleteGoalMutation';
 import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import InputSlid from './InputSlid';
+import InputSlid from '../common/InputSlid';
 import { Goal } from '@/lib/types/todo';
 
 const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initialGoal: Goal }) => {
@@ -25,7 +25,7 @@ const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initia
 
   const router = useRouter();
 
-  const handleDropdaownMenuClick = (item: string) => {
+  const handleDropdownMenuClick = (item: string) => {
     if (item === '수정하기') {
       setIsEditClicked(true);
     } else if (item === '삭제하기') {
@@ -82,7 +82,7 @@ const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initia
             <DropdownMenu
               icon={IconKebab}
               dropdownList={['수정하기', '삭제하기']}
-              onItemClick={handleDropdaownMenuClick}
+              onItemClick={handleDropdownMenuClick}
             />
           </div>
         </div>

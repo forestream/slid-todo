@@ -35,15 +35,15 @@ const AllTodoList: React.FC = () => {
 
   return (
     <>
-      <div>
-        <ul className='flex flex-col gap-y-2'>
+      <article>
+        <ul className='flex flex-col gap-y-2' role='list' aria-label='할 일 목록'>
           {todos.map((todo) => (
-            <li key={todo.id}>
+            <li key={todo.id} role='listitem'>
               <TodoItem data={todo} viewGoal />
             </li>
           ))}
         </ul>
-      </div>
+      </article>
       <div ref={loadMoreRef} className='min-h-10 flex items-center justify-center'>
         {isFetching && <Loading />}
       </div>

@@ -45,7 +45,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
     );
   };
 
-  const handleDropdaownMenuClick = (item: string) => {
+  const handleDropdownMenuClick = (item: string) => {
     if (item === '수정하기') {
       // 수정하기페이지로 이동
       router.push(
@@ -143,7 +143,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
             <DropdownMenu
               icon={IconKebabWithCircle}
               dropdownList={['수정하기', '삭제하기']}
-              onItemClick={handleDropdaownMenuClick}
+              onItemClick={handleDropdownMenuClick}
               buttonClassName='focus:outline focus:outline-2'
             />
           </div>

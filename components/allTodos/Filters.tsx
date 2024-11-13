@@ -18,30 +18,31 @@ const Filters: React.FC = () => {
     router.push(`?${params.toString()}`);
   };
 
+  const filters = [
+    { value: 'all', label: '전체' },
+    { value: 'in-progress', label: '진행중' },
+    { value: 'completed', label: '완료' },
+  ];
+
   return (
-    <div className='flex gap-2'>
-      <Button
-        variant={status === 'all' ? 'filled' : 'outlined'}
-        className='text-sm rounded-[17px] px-3 py-1'
-        onClick={() => handleFilterClick('all')}
-      >
-        전체
-      </Button>
-      <Button
-        variant={status === 'in-progress' ? 'filled' : 'outlined'}
-        className='text-sm rounded-[17px] px-3 py-1'
-        onClick={() => handleFilterClick('in-progress')}
-      >
-        진행중
-      </Button>
-      <Button
-        variant={status === 'completed' ? 'filled' : 'outlined'}
-        className='text-sm rounded-[17px] px-3 py-1'
-        onClick={() => handleFilterClick('completed')}
-      >
-        완료
-      </Button>
-    </div>
+    <nav className='flex gap-2' aria-label='할 일 필터'>
+      <ul className='flex gap-2' role='tablist'>
+        {filters.map((filter) => (
+          <li key={filter.value} role='presentation'>
+            <Button
+              variant={status === filter.value ? 'filled' : 'outlined'}
+              className='text-sm rounded-[17px] px-3 py-1'
+              onClick={() => handleFilterClick(filter.value)}
+              role='tab'
+              aria-selected={status === filter.value}
+              aria-controls={`${filter.value}-todos`}
+            >
+              {filter.label}
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 
