@@ -9,7 +9,7 @@ const Toaster = () => {
   const removeToast = useToastStore((state) => state.removeToast);
 
   return (
-    <div className='fixed top-4 right-4 z-50 flex flex-col gap-2' role='status' ria-live='polite'>
+    <div className='fixed top-4 right-4 z-50 flex flex-col gap-2' role='status' aria-live='polite'>
       {toasts.map((toast) => (
         <div key={toast.id} className='animate-slide-in-right' aria-labelledby={`toast-title-${toast.id}`}>
           <div className={`bg-white p-4 rounded-lg shadow-lg min-w-[300px] space-y-1`}>
