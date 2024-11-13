@@ -33,7 +33,7 @@ const ConfirmationModal = ({
       <ModalContent closeOnClickOverlay={false} className='sm:w-[450px]'>
         <div className='flex flex-col items-center gap-4'>
           <h1 className='text-lg font-bold'>{title}</h1>
-          <p className='text-center whitespace-pre-line'>{itemTitle ? `${itemTitle} ${message}` : message}</p>
+          <p className='text-center whitespace-pre-line'>{itemTitle ? `'${itemTitle}' ${message}` : message}</p>
           <div className='flex gap-4'>
             <Button className={cancelButtonClassName} variant='outlined' onClick={() => onChangeIsOpen(false)}>
               {cancelText}
