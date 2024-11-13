@@ -143,7 +143,11 @@ const NoteFormSection = ({
         <button id='saveNote' className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' ref={saveButtonRef}>
           임시저장
         </button>
-        <Button id='submitButton' disabled={titleEmpty || contentEmpty} className='py-2 px-4 md:py-3 md:px-6'>
+        <Button
+          id='submitButton'
+          disabled={titleEmpty || contentEmpty}
+          className='py-2 px-4 md:py-3 md:px-6 focus:outline focus:outline-2'
+        >
           작성 완료
         </Button>
       </div>
@@ -183,11 +187,11 @@ const NoteFormSection = ({
             <>
               <TiptapCharacterCount />
               {linkUrl && (
-                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
+                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4 cursor-pointer'>
                   <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                     <IconEmbed />
                   </div>
-                  <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={onOpenEmbed}>
+                  <p className='grow text-base font-normal text-slate-800' onClick={onOpenEmbed}>
                     {linkUrl}
                   </p>
                   <input type='hidden' name='linkUrl' value={linkUrl} />
