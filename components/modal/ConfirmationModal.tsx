@@ -7,6 +7,7 @@ interface ConfirmationModalProps {
   onChangeIsOpen: (value: boolean) => void;
   onConfirm: () => void;
   itemType: keyof typeof CONFIRMATION_ITEM_TEXTS;
+  itemTitle?: string;
   cancelText?: string;
   confirmText?: string;
   confirmButtonVariant?: 'filled' | 'outlined';
@@ -19,6 +20,7 @@ const ConfirmationModal = ({
   onChangeIsOpen,
   onConfirm,
   itemType,
+  itemTitle,
   cancelText = '취소',
   confirmText = '확인',
   confirmButtonVariant = 'filled',
@@ -31,7 +33,7 @@ const ConfirmationModal = ({
       <ModalContent closeOnClickOverlay={false} className='sm:w-[450px]'>
         <div className='flex flex-col items-center gap-4'>
           <h1 className='text-lg font-bold'>{title}</h1>
-          <p className='text-center whitespace-pre-line'>{message}</p>
+          <p className='text-center whitespace-pre-line'>{itemTitle ? `${itemTitle} ${message}` : message}</p>
           <div className='flex gap-4'>
             <Button className={cancelButtonClassName} variant='outlined' onClick={() => onChangeIsOpen(false)}>
               {cancelText}

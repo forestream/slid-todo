@@ -32,7 +32,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     deleteTodo.mutate({ todoId: data.id });
   };
 
-  const handleDropdaownMenuClick = (item: string) => {
+  const handleDropdownMenuClick = (item: string) => {
     if (isMobile()) return;
     if (item === '수정하기') {
       onChangeIsOpen(true);
@@ -101,7 +101,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           <DropdownMenu
             icon={IconKebabWithCircle}
             dropdownList={['수정하기', '삭제하기']}
-            onItemClick={handleDropdaownMenuClick}
+            onItemClick={handleDropdownMenuClick}
             iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
             aria-label='할 일 관리 메뉴'
           />

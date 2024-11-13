@@ -14,6 +14,7 @@ const SecondSection = ({ isVisible }: SectionProps) => {
         animate={isVisible ? 'animate' : 'initial'}
         variants={staggerChildren}
         className='w-full h-full flex flex-col justify-center'
+        aria-label='할 일 기능 소개'
       >
         <motion.h2 variants={fadeInUp} className='text-4xl font-bold'>
           할 일 기능
