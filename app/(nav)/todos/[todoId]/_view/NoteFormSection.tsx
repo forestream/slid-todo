@@ -200,7 +200,7 @@ const NoteFormSection = ({
                   </button>
                 </div>
               )}
-              <TiptapEditor />
+              <TiptapEditor role='textbox' aria-multiline='true' />
               <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white scrollbar-width-none overflow-visible'>
                 <div className='flex gap-2 md:gap-4 w-full overflow-auto scrollbar-width-none'>
                   <NoteFormEditorButtons />
