@@ -97,10 +97,10 @@ const NavGoal = ({ className }: { className?: string }) => {
   const handleGoalEditSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     updateGoal.mutate(
-      { id: kebabClickedGoal?.id ?? -1, updates: { title: newGoalInputValue.trim() } },
+      { id: kebabClickedGoal?.id ?? -1, updates: { title: existingGoalInputValue.trim() } },
       {
         onSuccess: (data) => {
-          setNewGoalInputValue(data.title);
+          setExistingGoalInputValue(data.title);
           setIsEditFocused(false);
         },
       }
