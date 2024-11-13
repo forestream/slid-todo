@@ -144,6 +144,7 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
               icon={IconKebabWithCircle}
               dropdownList={['수정하기', '삭제하기']}
               onItemClick={handleDropdaownMenuClick}
+              buttonClassName='focus:outline focus:outline-2'
             />
           </div>
         </div>
@@ -158,17 +159,22 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
         <hr />
         <div className='w-full relative flex flex-col'>
           <div className='w-full relative my-3'>
-            <div className='w-full text-lg font-medium focus-visible:outline-none'>{note?.title}</div>
+            <div className='w-full text-lg font-medium'>{note?.title}</div>
           </div>
           <hr className='mb-3' />
           {note?.linkUrl && (
-            <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
+            <div
+              onKeyUp={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleToggleEmbed();
+              }}
+              onClick={handleToggleEmbed}
+              tabIndex={1}
+              className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4 cursor-pointer'
+            >
               <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                 <IconEmbed />
               </div>
-              <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={handleToggleEmbed}>
-                {note?.linkUrl}
-              </p>
+              <p className='grow text-base font-normal text-slate-800'>{note?.linkUrl}</p>
             </div>
           )}
           <div className='lg:relative'>
