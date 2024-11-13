@@ -85,7 +85,7 @@ const Content = ({ goalId }: { goalId?: number }) => {
           watch={watch}
           error={errors.fileUrl?.message}
         />
-        {imageUrl && <Image src={imageUrl} alt='image' width={100} height={100} />}
+        {imageUrl && <Image src={imageUrl} alt='미리보기' width={100} height={100} unoptimized />}
         <GoalSelector
           label='목표'
           placeholder='목표를 선택해주세요'
