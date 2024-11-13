@@ -167,7 +167,7 @@ const NavGoal = ({ className }: { className?: string }) => {
                         {`${DEFAULT_INPUT_VALUE}${goal.title}`}
                       </Link>
                       <div
-                        className='items-center justify-center ml-auto hidden sm:flex lg:hidden group-hover:flex'
+                        className='items-center justify-center ml-auto flex lg:hidden group-hover:flex'
                         onClick={() => handleNavGoalKebabClick(goal)}
                       >
                         <DropdownMenu
