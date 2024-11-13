@@ -1,10 +1,8 @@
 'use client';
-
 import { ImageProgress } from '@/public/images/ImageProgress';
 import { ImageProgressMobile } from '@/public/images/ImageProgressMobile';
 import { ImageProgressTablet } from '@/public/images/ImageProgressTablet';
 import { IconProgress } from '@/public/icons/IconProgress';
-import ProgressText from './ProgressText';
 import { CircleProgressBar } from './CircleProgressBar';
 import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 
@@ -16,7 +14,13 @@ const Progress = () => {
         <div className='w-10 h-10 bg-slate-900 rounded-[15px] grid place-content-center'>
           <IconProgress />
         </div>
-        <ProgressText percentage={data?.progress || 0} />
+        <div className='flex-col mt-4'>
+          <h2 className='text-white text-lg font-semibold'>내 진행 상황</h2>
+          <span className='flex mt-1 items-center gap-1 text-nowrap'>
+            <p className='text-white text-3xl font-bold'>{data?.progress || 0}</p>
+            <p className='text-white text-base font-semibold'>%</p>
+          </span>
+        </div>
       </div>
       <div className='flex flex-grow relative'>
         <div className='absolute right-0 bottom-0 '>
