@@ -30,7 +30,7 @@ const NotesContent: React.FC<NotesContentProps> = ({ goalId, goalData }) => {
     <>
       <NoteGoalTitle goalTitle={goalData.title} link={`/goals/${goalId}`} />
       <NotesList notes={validNotes} isFetching={isFetching} />
-      <div ref={loadMoreRef} className='h-10 flex items-center justify-center'>
+      <div ref={loadMoreRef} className='h-10 flex items-center justify-center' aria-live='polite'>
         {isFetching && <div>불러오는 중...</div>}
       </div>
     </>

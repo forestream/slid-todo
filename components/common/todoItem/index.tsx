@@ -29,7 +29,7 @@ const areEqual = (prevProps: TodoItemProps, nextProps: TodoItemProps) => {
 
 const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal }) => {
   return (
-    <article className='text-sm'>
+    <article className='text-sm' aria-label={`todo-${data.title}`}>
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-x-2 min-w-0 flex-1'>
           <CheckIcon done={data.done} id={data.id} />
