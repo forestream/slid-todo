@@ -17,13 +17,14 @@ const CheckIcon: React.FC<CheckIconProps> = ({ done, id }) => {
     });
   };
   return (
-    <div onClick={handleToggle}>
-      {done ? (
-        <IconStateActive className='cursor-pointer shrink-0' />
-      ) : (
-        <IconInactive className='cursor-pointer shrink-0' />
-      )}
-    </div>
+    <button
+      onClick={handleToggle}
+      aria-label={done ? '할 일 완료 취소하기' : '할 일 완료하기'}
+      aria-pressed={done}
+      className='shrink-0'
+    >
+      {done ? <IconStateActive aria-hidden='true' /> : <IconInactive aria-hidden='true' />}
+    </button>
   );
 };
 

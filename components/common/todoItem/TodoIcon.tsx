@@ -69,7 +69,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
 
   return (
     <>
-      <div className='flex items-center gap-x-2'>
+      <div className='flex items-center gap-x-2' role='toolbar' aria-label='할 일 관리 도구'>
         {data.fileUrl && (
           <IconFile
             className='sm:cursor-pointer group'
@@ -103,6 +103,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
             dropdownList={['수정하기', '삭제하기']}
             onItemClick={handleDropdaownMenuClick}
             iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
+            aria-label='할 일 관리 메뉴'
           />
         </div>
       </div>

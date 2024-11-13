@@ -15,7 +15,7 @@ const IconLink = ({ circleClassName, pathClassName, ...props }: IconLinkProps) =
     aria-labelledby='linkTitle'
     {...props}
   >
-    <title id='linkTitle'>링크 들어가기</title>
+    <title id='linkTitle'>링크 열기</title>
     <circle className={circleClassName} cx='12' cy='12' r='12' fill='#60A5FA' />
     <path
       className={pathClassName}
