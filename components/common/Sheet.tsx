@@ -145,11 +145,21 @@ const SheetContent = ({
     }
   }, [isOpen, position, transformProperties, willBeClosed]);
 
+  useEffect(() => {
+    const handleKeyUpOnBody = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+
+    if (isOpen) document.body.addEventListener('keyup', handleKeyUpOnBody);
+
+    return () => document.body.removeEventListener('keyup', handleKeyUpOnBody);
+  }, [handleClose, isOpen]);
+
   return (
     <>
       {isOpen &&
         createPortal(
-          <div className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
+          <div role='dialog' aria-modal='true' className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
             <div
               className='absolute inset-0 bg-black opacity-0 transition-opacity duration-300'
               onClick={handleClickOverlay}

@@ -12,6 +12,7 @@ import {
   PropsWithChildren,
   Ref,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -93,11 +94,23 @@ const ModalContent = ({
     else document.body.style.overflow = '';
   }
 
+  useEffect(() => {
+    const handleKeyUpOnBody = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+
+    if (isOpen) document.body.addEventListener('keyup', handleKeyUpOnBody);
+
+    return () => document.body.removeEventListener('keyup', handleKeyUpOnBody);
+  }, [handleClose, isOpen]);
+
   return (
     <>
       {isOpen &&
         createPortal(
           <div
+            role='dialog'
+            aria-modal='true'
             className={twMerge('fixed inset-0 flex justify-center items-center', overlayClassName)}
             onClick={(e) => e.stopPropagation()}
           >

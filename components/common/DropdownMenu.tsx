@@ -111,7 +111,7 @@ const DropdownMenu = ({
         type='button'
         onClick={toggleDropdown}
         onMouseOut={handleMouseOut}
-        className={`rounded focus:outline-none flex w-full justify-between items-center ${buttonClassName}`}
+        className={twMerge(`rounded focus:outline-none flex w-full justify-between items-center`, buttonClassName)}
       >
         {Icon ? <Icon width={24} height={24} className={iconClassName} /> : <div>{text}</div>}
         {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}

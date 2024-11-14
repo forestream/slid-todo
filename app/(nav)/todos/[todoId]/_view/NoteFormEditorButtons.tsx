@@ -60,11 +60,14 @@ const NoteFormEditorButtons = () => {
         <button type='button' onClick={handleOrderedList}>
           <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <label htmlFor='textHighlight' className='relative'>
+        <label
+          htmlFor='textHighlight'
+          className='relative focus-within:outline focus-within:outline-2 -outline-offset-1'
+        >
           <input id='textHighlight' type='color' className='w-0 h-0 absolute' onChange={handleChangeHighlight} />
           <IconTextHighlight className='cursor-pointer hover:bg-slate-100' />
         </label>
-        <label htmlFor='textColor' className='relative'>
+        <label htmlFor='textColor' className='relative focus-within:outline focus-within:outline-2 -outline-offset-1'>
           <input id='textColor' type='color' className='w-0 h-0 absolute' onChange={handleChangeColor} />
           <IconTextColor className='cursor-pointer hover:bg-slate-100' />
         </label>

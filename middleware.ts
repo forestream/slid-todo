@@ -28,6 +28,15 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // /todos 하위 경로 접근 시 액세스토큰이 만료되었을 때
+  if (pathname.startsWith('/todos') && !accessToken && refreshToken) {
+    const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
+
+    const response = setAuthCookies(new NextResponse(), data.accessToken, data.refreshToken);
+
+    return NextResponse.redirect(request.url, { headers: response.headers });
+  }
+
   if (pathname.startsWith('/4-4-dev')) {
     if (!accessToken && refreshToken) {
       const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
