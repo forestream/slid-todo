@@ -6,10 +6,16 @@ const baseFields = {
   fileUrl: z.string().optional(),
   linkUrl: z
     .string()
-    .optional()
-    .transform((value) => (value === '' ? null : value))
-    .refine((value) => !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value), {
-      message: '유효한 URL을 입력해주세요',
+    .refine((url) => {
+      try {
+        new URL(url.startsWith('http://') || url.startsWith('https://') ? url : 'https://' + url);
+        return true;
+      } catch {
+        return false;
+      }
+    }, '유효한 URL을 입력해주세요')
+    .transform((url) => {
+      return url.startsWith('http://') || url.startsWith('https://') ? url : 'https://' + url;
     }),
   goalId: z
     .preprocess((value) => {
