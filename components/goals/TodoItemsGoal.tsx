@@ -56,9 +56,16 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     const isEmpty = data?.pages[0]?.todos.length === 0;
 
     return (
-      <div key={section.title} className={clsx(baseContainerClasses, section.containerClass)}>
+      <div
+        key={section.title}
+        className={clsx(baseContainerClasses, section.containerClass)}
+        role='region'
+        aria-labelledby={`${section.title}-header`}
+      >
         <div className='flex w-full justify-between'>
-          <p className='bold text-sm font-semibold'>{section.title}</p>
+          <p id={`${section.title}-header`} className='bold text-sm font-semibold'>
+            {section.title}
+          </p>
           {section.showAddTodo && (
             <button onClick={() => setIsModalOpen(true)} className='flex gap-1 items-center text-blue-500'>
               <IconPlusSmall stroke='#3b82f6' />
