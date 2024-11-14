@@ -71,41 +71,38 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
     <>
       <div className='flex items-center gap-x-2' role='toolbar' aria-label='할 일 관리 도구'>
         {data.fileUrl && (
-          <IconFile
-            className='sm:cursor-pointer group'
-            circleClassName='sm:group-hover:fill-blue-200'
-            onClick={() => handleDownloadFile(data.fileUrl)}
-          />
+          <button>
+            <IconFile
+              className='group'
+              circleClassName='sm:group-hover:fill-blue-200'
+              onClick={() => handleDownloadFile(data.fileUrl)}
+            />
+          </button>
         )}
         {data.linkUrl && (
-          <IconLink
-            className='sm:cursor-pointer group'
-            circleClassName='sm:group-hover:fill-blue-200 '
-            onClick={() => handleOpenLink(data?.linkUrl)}
-          />
+          <button>
+            <IconLink
+              className='group'
+              circleClassName='sm:group-hover:fill-blue-200 '
+              onClick={() => handleOpenLink(data?.linkUrl)}
+            />
+          </button>
         )}
         {data.noteId && (
-          <IconNoteView
-            className='sm:cursor-pointer cursor-default group'
-            circleClassName='sm:group-hover:fill-orange-200'
-            onClick={handleSheet}
-          />
+          <button>
+            <IconNoteView className='group' circleClassName='sm:group-hover:fill-orange-200' onClick={handleSheet} />
+          </button>
         )}
         <button onClick={handleClickMutateNote}>
-          <IconNoteWrite
-            className='sm:cursor-pointer w-0 sm:w-auto group'
-            circleClassName='sm:group-hover:fill-orange-200'
-          />
+          <IconNoteWrite className='w-0 sm:w-auto group' circleClassName='sm:group-hover:fill-orange-200' />
         </button>
-        <div className='flex justify-center items-center'>
-          <DropdownMenu
-            icon={IconKebabWithCircle}
-            dropdownList={['수정하기', '삭제하기']}
-            onItemClick={handleDropdownMenuClick}
-            iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
-            aria-label='할 일 관리 메뉴'
-          />
-        </div>
+        <DropdownMenu
+          icon={IconKebabWithCircle}
+          dropdownList={['수정하기', '삭제하기']}
+          onItemClick={handleDropdownMenuClick}
+          iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
+          aria-label='할 일 관리 메뉴'
+        />
       </div>
       <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />
       <NoteViewSheet
