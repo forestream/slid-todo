@@ -29,6 +29,8 @@ const NoteFormTitleInput = ({
         placeholder='노트의 제목을 입력해주세요'
         value={title}
         onChange={handleChangeTitle}
+        aria-required='true'
+        aria-placeholder='노트의 제목을 입력해주세요'
       />
       <p className='absolute right-0 top-0 text-slate-800 font-medium text-xs'>
         {title.length}/<span className='text-blue-500'>30</span>

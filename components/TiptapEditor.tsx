@@ -1,9 +1,8 @@
 'use client';
 
-import { EditorContent, useCurrentEditor } from '@tiptap/react';
-import { PropsWithChildren } from 'react';
+import { EditorContent, EditorContentProps, useCurrentEditor } from '@tiptap/react';
 
-const TiptapEditor = ({ ...props }: PropsWithChildren) => {
+const TiptapEditor = ({ ...props }: Omit<EditorContentProps, 'ref' | 'editor'>) => {
   const { editor } = useCurrentEditor();
 
   const handleClick = () => editor?.chain().focus().run();
@@ -13,7 +12,7 @@ const TiptapEditor = ({ ...props }: PropsWithChildren) => {
       <div className='overflow-visible h-full'>
         <EditorContent editor={editor} {...props} />
         <div className='h-20'></div>
-        <input type='hidden' name='contentHTML' value={editor?.getHTML()} />
+        <input type='hidden' name='contentHTML' value={editor?.getHTML()} aria-hidden='true' />
       </div>
     </div>
   );

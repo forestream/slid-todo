@@ -143,7 +143,11 @@ const NoteFormSection = ({
         <button id='saveNote' className='py-3 px-5 text-blue-500 font-semibold text-sm mr-2' ref={saveButtonRef}>
           임시저장
         </button>
-        <Button id='submitButton' disabled={titleEmpty || contentEmpty} className='py-2 px-4 md:py-3 md:px-6'>
+        <Button
+          id='submitButton'
+          disabled={titleEmpty || contentEmpty}
+          className='py-2 px-4 md:py-3 md:px-6 focus:outline focus:outline-2'
+        >
           작성 완료
         </Button>
       </div>
@@ -183,13 +187,18 @@ const NoteFormSection = ({
             <>
               <TiptapCharacterCount />
               {linkUrl && (
-                <div className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4'>
+                <div
+                  className='w-full rounded-full bg-slate-200 p-1 flex items-center gap-2 mb-4 cursor-pointer'
+                  onClick={onOpenEmbed}
+                  tabIndex={0}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') onOpenEmbed();
+                  }}
+                >
                   <div className='w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center'>
                     <IconEmbed />
                   </div>
-                  <p className='grow text-base font-normal text-slate-800 cursor-pointer' onClick={onOpenEmbed}>
-                    {linkUrl}
-                  </p>
+                  <p className='grow text-base font-normal text-slate-800'>{linkUrl}</p>
                   <input type='hidden' name='linkUrl' value={linkUrl} />
                   <button
                     className='w-6 h-6 rounded-full flex justify-center items-center'
@@ -200,7 +209,7 @@ const NoteFormSection = ({
                   </button>
                 </div>
               )}
-              <TiptapEditor />
+              <TiptapEditor role='textbox' aria-multiline='true' />
               <div className='lg:max-w-[768px] border border-slate-200 rounded-full py-2.5 px-4 sticky bottom-4 left-4 right-4 bg-white scrollbar-width-none overflow-visible'>
                 <div className='flex gap-2 md:gap-4 w-full overflow-auto scrollbar-width-none'>
                   <NoteFormEditorButtons />
