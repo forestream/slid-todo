@@ -44,7 +44,7 @@ const Nav = () => {
   }, [pathname]);
 
   return (
-    <>
+    <nav aria-label='사이드바 네비게이션 메뉴'>
       {/* 모바일/태블릿용 sheet nav */}
       <section className={clsx('flex sm:flex lg:hidden flex-col border-r-[1px] flex-shrink-0 divide-slate-200')}>
         <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={setIsSheetOpen}>
@@ -106,7 +106,7 @@ const Nav = () => {
         )}
       </motion.section>
       <TodoAddModal isOpen={isTodoModalOpen} onChangeIsOpen={setIsTodoModalOpen} />
-    </>
+    </nav>
   );
 };
 
