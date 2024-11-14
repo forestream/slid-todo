@@ -1,4 +1,5 @@
 import { Todo } from '@/lib/types/todo';
+import openExternalSite from '@/lib/utils/openExternalSite';
 import IconFile from '@/public/icons/IconFile';
 import IconLink from '@/public/icons/IconLink';
 import IconNoteView from '@/public/icons/IconNoteView';
@@ -22,7 +23,7 @@ const ActionButtons = ({ data, onNoteView }: TodoActionButtonsProps) => {
 
   const handleExternalLink = (url: string | null) => {
     if (!url) return;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    openExternalSite(url);
   };
 
   const handleGetNoteUrl = (type: 'create' | 'edit') => {
