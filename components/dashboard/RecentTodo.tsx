@@ -16,7 +16,10 @@ const RecentTodo = () => {
     '
     >
       <div className='flex items-center w-full gap-2'>
-        <div className='w-10 h-10 flex-shrink-0 bg-blue-500 rounded-[15px] grid place-content-center'>
+        <div
+          className='w-10 h-10 flex-shrink-0 bg-blue-500 rounded-[15px] grid place-content-center'
+          aria-hidden='true'
+        >
           <IconTodoRecently />
         </div>
         <h2 className='text-slate-800 text-lg font-semibold text-nowrap'>최근 등록한 할 일</h2>

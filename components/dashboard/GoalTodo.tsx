@@ -20,7 +20,10 @@ const GoalTodo = () => {
     <section className='flex mt-6 w-full pb-16 flex-grow' aria-labelledby='goal-todo-heading' role='region'>
       <div className='flex-col px-6 py-4 w-full h-auto bg-white rounded-xl border border-slate-100 relative'>
         <div className='flex items-center gap-2'>
-          <div className='w-10 h-10 flex-shrink-0 bg-orange-500 rounded-[15px] grid place-content-center'>
+          <div
+            className='w-10 h-10 flex-shrink-0 bg-orange-500 rounded-[15px] grid place-content-center'
+            aria-hidden='true'
+          >
             <IconDashboardFlag />
           </div>
           <h2 className='text-slate-800 text-lg font-semibold'>목표 별 할 일</h2>
