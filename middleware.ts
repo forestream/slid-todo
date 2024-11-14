@@ -32,22 +32,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/todos') && !accessToken && refreshToken) {
     const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
 
-    const response = new NextResponse();
-
-    response.cookies.set('accessToken', data.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60,
-      path: '/',
-    });
-    response.cookies.set('refreshToken', data.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60,
-      path: '/',
-    });
+    const response = setAuthCookies(new NextResponse(), data.accessToken, data.refreshToken);
 
     return NextResponse.redirect(request.url, { headers: response.headers });
   }
