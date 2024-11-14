@@ -43,7 +43,7 @@ const GoalSelector = ({ label, placeholder, goals, onSelect, selectedGoalId }: G
   const isPlaceholder = !selectedGoal;
   const dropdownText = selectedGoal ? selectedGoal.title : placeholder;
   const goalClass = clsx(
-    'w-full px-6 py-3 rounded-xl',
+    'flex w-full px-6 py-3 rounded-xl',
     'focus:outline-none focus:ring-1 focus:ring-blue-500',
     'bg-gray-50',
     'text-sm sm:text-base',
