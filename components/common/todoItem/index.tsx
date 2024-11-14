@@ -78,6 +78,7 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
             height={0}
             sizes='100vw'
             className='w-full h-auto rounded-lg'
+            unoptimized
           />
         </div>
       )}
