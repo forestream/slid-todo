@@ -70,7 +70,7 @@ const DropdownMenu = ({
 
   const handleButtonKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
-      toggleDropdown();
+      closeDropdown();
       event.preventDefault();
     } else if (event.key === 'Escape') {
       closeDropdown();
@@ -128,11 +128,7 @@ const DropdownMenu = ({
         closeDropdown();
       }
     };
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    document.removeEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
 
@@ -192,9 +188,10 @@ const DropdownMenu = ({
                 role='menuitem'
                 tabIndex={0}
                 className={dropdownMenuItemClassNames}
-                onClick={() => {
-                  onItemClick(listItem);
+                onClick={(event) => {
+                  event.stopPropagation();
                   closeDropdown();
+                  onItemClick(listItem);
                 }}
                 onKeyDown={handleListKeyDown}
               >
