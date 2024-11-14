@@ -8,7 +8,7 @@ const baseFields = {
     .string()
     .optional()
     .transform((value) => (value === '' ? null : value))
-    .refine((value) => !value || /^(https?:\/\/)/.test(value), {
+    .refine((value) => !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value), {
       message: '유효한 URL을 입력해주세요',
     }),
   goalId: z

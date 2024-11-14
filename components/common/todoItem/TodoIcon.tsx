@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { MOBILE_BREAKPOINT } from '@/constants';
 import NoteViewSheet from '@/components/sheet/NoteViewSheet';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
+import openExternalSite from '@/lib/utils/openExternalSite';
 
 interface TodoIconProps {
   data: Todo;
@@ -44,13 +45,13 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   const handleDownloadFile = (fileUrl: string | null) => {
     if (isMobile()) return;
     if (!fileUrl) return;
-    window.open(fileUrl, '_blank', 'noopener,noreferrer');
+    openExternalSite(fileUrl, '_blank');
   };
 
   const handleOpenLink = (linkUrl: string | null) => {
     if (isMobile()) return;
     if (!linkUrl) return;
-    window.open(linkUrl, '_blank', 'noopener,noreferrer');
+    openExternalSite(linkUrl);
   };
 
   const handleClickMutateNote = () => {
