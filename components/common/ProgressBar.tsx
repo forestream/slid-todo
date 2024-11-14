@@ -16,13 +16,20 @@ const ProgressBar = ({ percentage: initialPercentage, className }: { percentage:
 
   return (
     <div className={progressBarClass}>
-      <div className='relative w-full bg-slate-100 rounded-full h-1'>
+      <div
+        className='relative w-full bg-slate-100 rounded-full h-1'
+        role='progressbar'
+        aria-valuenow={percentage}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-labelledby='progress-bar-label'
+      >
         <div
           className='absolute top-0 left-0 bg-slate-900 h-1 rounded-full transition-all ease-in-out duration-1000'
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
-      <div className='flex ml-auto text-xs font-semibold'>
+      <div id='progress-bar-label' className='flex ml-auto text-xs font-semibold'>
         <span>{percentage}%</span>
       </div>
     </div>
