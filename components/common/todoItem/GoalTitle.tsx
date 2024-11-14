@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const GoalTitle = ({ goal }: { goal: GoalInTodo }) => {
   return (
-    <Link href={`/goals/${goal.id}`} className='group flex gap-x-1.5 ml-8 hover:text-link items-center w-fit'>
+    <Link href={`/goals/${goal.id}`} className='group flex gap-x-1.5 hover:text-link items-center w-fit'>
       <IconGoal circleClassName='group-hover:fill-slate-200' />
       <span className='truncate'>{goal.title}</span>
     </Link>
