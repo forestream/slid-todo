@@ -56,11 +56,13 @@ const DropdownMenu = ({
   useEffect(() => {
     if (isDropdownOpen && dropdownRef.current) {
       // 드롭다운이 열릴 때 자동으로 스크롤해 메뉴가 화면에 모두 보이도록
-      dropdownRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
+      setTimeout(() => {
+        dropdownRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest',
+        });
+      }, 0);
     }
   }, [isDropdownOpen]);
 
@@ -74,6 +76,7 @@ const DropdownMenu = ({
     }
   };
 
+  // 키보드 접근성
   const handleListKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
     const target = event.target as HTMLLIElement;
 
@@ -123,9 +126,13 @@ const DropdownMenu = ({
         closeDropdown();
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isDropdownOpen]);
 
   const baseClassNames = twMerge(clsx('relative inline-block text-nowrap', className));
 
