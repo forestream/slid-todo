@@ -44,13 +44,13 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
   const layoutClasses = {
     article: twMerge(
       'text-sm grid gap-x-2 items-center',
-      variant === 'default' ? 'grid-cols-[auto_1fr_auto] gap-y-1' : 'grid-cols-[auto_1fr_auto_auto] gap-y-1'
+      variant === 'default' ? 'grid-cols-[auto_1fr_auto]' : 'grid-cols-[auto_1fr_auto_auto]'
     ),
     checkIcon: 'row-start-1 col-start-1 h-6',
     title: twMerge('row-start-1 col-start-2 line-clamp-1'),
-    goal: twMerge('row-start-2 col-start-2', variant === 'detailed' && 'row-start-1 col-start-3'),
+    goal: twMerge('row-start-2 col-start-2', variant === 'detailed' && 'row-start-2 col-start-2'),
     todoIcon: twMerge('row-start-1 col-start-3', variant === 'detailed' && 'col-start-4'),
-    image: 'row-start-2 col-span-full w-full mt-2',
+    image: 'row-start-3 col-span-full w-full mt-2',
   };
 
   return (
