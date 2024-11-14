@@ -27,7 +27,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
               href={`/goals/${goal.id.toString()}`}
             >
               <h3>{goal.title || '목표이름'}</h3>
-              <div className='group-hover:translate-x-1 transition-all'>
+              <div className='group-hover:translate-x-1 transition-all' aria-hidden='true'>
                 <IconArrowRight />
               </div>
             </Link>

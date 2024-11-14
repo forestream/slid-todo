@@ -13,9 +13,10 @@ interface DropdownProps {
   onItemClick: (item: string) => void;
   className?: string;
   iconClassName?: string;
-  buttonClassName?: string;
   dropdownListClassName?: string;
   dropdownItemClassName?: string;
+  labelledById?: string;
+  tooltipText?: string;
 }
 
 const DropdownMenu = ({
@@ -28,9 +29,10 @@ const DropdownMenu = ({
   onItemClick,
   className,
   iconClassName,
-  buttonClassName,
   dropdownListClassName,
   dropdownItemClassName,
+  labelledById,
+  tooltipText = '메뉴',
 }: DropdownProps) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,30 +41,80 @@ const DropdownMenu = ({
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
     if (!isDropdownOpen) {
-      iconButtonRef.current?.focus();
-    } else {
-      iconButtonRef.current?.blur();
+      setTimeout(() => {
+        const firstItem = dropdownRef.current?.querySelector('li');
+        if (firstItem) {
+          (firstItem as HTMLLIElement).focus();
+        }
+      }, 0);
     }
   };
 
-  const handleMouseOut = () => {
-    if (!isDropdownOpen) {
-      closeDropdown();
-    }
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+    iconButtonRef.current?.focus();
   };
-
-  const closeDropdown = () => setDropdownOpen(false);
 
   useEffect(() => {
     if (isDropdownOpen && dropdownRef.current) {
       // 드롭다운이 열릴 때 자동으로 스크롤해 메뉴가 화면에 모두 보이도록
-      dropdownRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
+      setTimeout(() => {
+        dropdownRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest',
+        });
+      }, 0);
     }
   }, [isDropdownOpen]);
+
+  const handleButtonKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      toggleDropdown();
+      event.preventDefault();
+    } else if (event.key === 'Escape') {
+      closeDropdown();
+      event.preventDefault();
+    }
+  };
+
+  // 키보드 접근성
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
+    const target = event.target as HTMLLIElement;
+
+    if (event.key === 'ArrowDown') {
+      const nextElement = target.nextElementSibling as HTMLLIElement | null;
+      if (nextElement) {
+        nextElement.focus();
+        event.preventDefault();
+      } else {
+        const firstElement = dropdownRef.current?.querySelector('li');
+        if (firstElement) {
+          (firstElement as HTMLLIElement).focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === 'ArrowUp') {
+      const prevElement = target.previousElementSibling as HTMLLIElement | null;
+      if (prevElement) {
+        prevElement.focus();
+        event.preventDefault();
+      } else {
+        const lastElement = dropdownRef.current?.querySelector('li:last-of-type');
+        if (lastElement) {
+          (lastElement as HTMLLIElement).focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === 'Escape') {
+      closeDropdown();
+      event.preventDefault();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      onItemClick(target.textContent || '');
+      closeDropdown();
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,12 +128,16 @@ const DropdownMenu = ({
         closeDropdown();
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isDropdownOpen]);
 
   const baseClassNames = twMerge(
-    clsx('flex-col justify-center items-center relative inline-block text-nowrap space-y-2', className)
+    clsx('rounded flex w-full justify-between items-center relative inline-block text-nowrap', className)
   );
 
   const dropdownClassNames = twMerge(
@@ -105,29 +161,42 @@ const DropdownMenu = ({
   );
 
   return (
-    <div className={baseClassNames}>
-      <button
-        ref={iconButtonRef}
-        type='button'
-        onClick={toggleDropdown}
-        onMouseOut={handleMouseOut}
-        className={twMerge(`rounded focus:outline-none flex w-full justify-between items-center`, buttonClassName)}
-      >
-        {Icon ? <Icon width={24} height={24} className={iconClassName} /> : <div>{text}</div>}
-        {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}
-      </button>
+    <button
+      ref={iconButtonRef}
+      type='button'
+      tabIndex={0}
+      onClick={toggleDropdown}
+      onKeyDown={handleButtonKeyDown}
+      className={baseClassNames}
+      title={tooltipText}
+      aria-labelledby={labelledById}
+      aria-haspopup='menu'
+      aria-expanded={isDropdownOpen}
+      aria-controls='dropdown-menu'
+    >
+      {Icon ? (
+        <Icon width={24} height={24} className={iconClassName}>
+          <title id={labelledById}>{tooltipText}</title>
+        </Icon>
+      ) : (
+        <span>{text}</span>
+      )}
+      {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}
 
       {isDropdownOpen && (
-        <div ref={dropdownRef} className={dropdownClassNames}>
+        <div ref={dropdownRef} id='dropdown-menu' className={dropdownClassNames}>
           <ul className={dropdownMenuListClassNames}>
             {dropdownList.map((listItem, idx) => (
               <li
                 key={idx}
+                role='menuitem'
+                tabIndex={0}
                 className={dropdownMenuItemClassNames}
                 onClick={() => {
                   onItemClick(listItem);
                   closeDropdown();
                 }}
+                onKeyDown={handleListKeyDown}
               >
                 {listItem}
               </li>
@@ -135,7 +204,7 @@ const DropdownMenu = ({
           </ul>
         </div>
       )}
-    </div>
+    </button>
   );
 };
 

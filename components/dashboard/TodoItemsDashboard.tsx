@@ -69,10 +69,10 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
           <Button
             onClick={handleMoreClick}
             className='flex border-none gap-[2px] bg-white text-slate-700 hover:bg-blue-100
-            text-sm font-semibold rounded-2xl w-[120px] h-8 justify-center items-center'
+            text-sm font-semibold rounded-2xl w-[120px] h-8 justify-center items-center focus:outline focus:outline-2'
           >
             <span>더보기</span>
-            <IconArrowDown2 />
+            <IconArrowDown2 aria-hidden='true' />
           </Button>
         </div>
       )}

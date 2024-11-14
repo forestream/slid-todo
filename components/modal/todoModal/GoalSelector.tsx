@@ -61,6 +61,8 @@ const GoalSelector = ({ label, placeholder, goals, onSelect, selectedGoalId }: G
         onItemClick={handleDropdownClick}
         className={goalClass}
         dropdownItemClassName='bg-gray-50 hover:bg-gray-200'
+        labelledById='new-todo-goal-selector'
+        tooltipText='목표 선택'
       />
       <input type='hidden' value={selectedGoal ? selectedGoal.id : ''} />
     </div>
