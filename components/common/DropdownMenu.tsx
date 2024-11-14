@@ -13,7 +13,6 @@ interface DropdownProps {
   onItemClick: (item: string) => void;
   className?: string;
   iconClassName?: string;
-  buttonClassName?: string;
   dropdownListClassName?: string;
   dropdownItemClassName?: string;
   labelledById?: string;
@@ -30,7 +29,6 @@ const DropdownMenu = ({
   onItemClick,
   className,
   iconClassName,
-  buttonClassName,
   dropdownListClassName,
   dropdownItemClassName,
   labelledById,
@@ -138,7 +136,9 @@ const DropdownMenu = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
 
-  const baseClassNames = twMerge(clsx('relative inline-block text-nowrap', className));
+  const baseClassNames = twMerge(
+    clsx('rounded flex w-full justify-between items-center relative inline-block text-nowrap', className)
+  );
 
   const dropdownClassNames = twMerge(
     clsx(
@@ -167,7 +167,7 @@ const DropdownMenu = ({
       tabIndex={0}
       onClick={toggleDropdown}
       onKeyDown={handleButtonKeyDown}
-      className={`rounded flex w-full justify-between items-center ${baseClassNames} ${buttonClassName}`}
+      className={baseClassNames}
       title={tooltipText}
       aria-labelledby={labelledById}
       aria-haspopup='menu'

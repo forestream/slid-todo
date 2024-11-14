@@ -139,12 +139,12 @@ const NoteDetail = ({ id, goalTitle, todoTitle }: NoteDetailProps) => {
             <IconFlag />
           </div>
           <p className='font-medium text-base text-slate-800'>{goalTitle}</p>
-          <div className='grow flex justify-end w-10'>
+          <div className='flex justify-end ml-auto'>
             <DropdownMenu
               icon={IconKebabWithCircle}
               dropdownList={['수정하기', '삭제하기']}
               onItemClick={handleDropdownMenuClick}
-              buttonClassName='focus:outline focus:outline-2'
+              className='focus:outline focus:outline-2'
             />
           </div>
         </div>
