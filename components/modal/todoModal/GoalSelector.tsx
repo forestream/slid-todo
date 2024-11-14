@@ -63,8 +63,9 @@ const GoalSelector = ({ label, placeholder, goals, onSelect, selectedGoalId }: G
         dropdownItemClassName='bg-gray-50 hover:bg-gray-200'
         labelledById='new-todo-goal-selector'
         tooltipText='목표 선택'
+        aria-expanded={selectedGoal !== null}
       />
-      <input type='hidden' value={selectedGoal ? selectedGoal.id : ''} />
+      <input type='hidden' value={selectedGoal ? selectedGoal.id : ''} aria-hidden='true' />
     </div>
   );
 };
