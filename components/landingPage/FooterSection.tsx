@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import ZeppelinAd from './ZeppelinAd';
 
 interface FooterSectionProps {
   index: number;
@@ -8,6 +9,7 @@ interface FooterSectionProps {
 const FooterSection: React.FC<FooterSectionProps> = ({ index }) => {
   return (
     <footer style={{ top: `${index * 100}vh` }} className='w-full absolute h-full bg-gray-100'>
+      <ZeppelinAd />
       <div className=' mx-auto lg:max-w-[1024px] px-10 py-20 h-full'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 h-full'>
           <section className='space-y-6' aria-labelledby='project-information'>
@@ -40,6 +42,9 @@ const FooterSection: React.FC<FooterSectionProps> = ({ index }) => {
                 <p className='text-gray-600'>효율적인 일정 관리를 위한 최적의 솔루션</p>
                 <p className='text-gray-600'>코드잇 부트캠프에서 탄생한 프로젝트입니다.</p>
               </div>
+              <Link href='/signup' className='text-blue-500 hover:underline'>
+                무료로 시작하기
+              </Link>
             </div>
             <div className='space-y-4'>
               <nav aria-labelledby='project-links'>
