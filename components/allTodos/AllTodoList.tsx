@@ -36,10 +36,10 @@ const AllTodoList: React.FC = () => {
   return (
     <>
       <article>
-        <ul className='flex flex-col gap-y-2' role='list' aria-label='할 일 목록'>
+        <ul className='flex flex-col gap-y-8' role='list' aria-label='할 일 목록'>
           {todos.map((todo) => (
             <li key={todo.id} role='listitem'>
-              <TodoItem data={todo} viewGoal />
+              <TodoItem data={todo} viewGoal variant='detailed' />
             </li>
           ))}
         </ul>

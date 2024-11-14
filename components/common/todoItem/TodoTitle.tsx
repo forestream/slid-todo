@@ -10,9 +10,10 @@ import { twMerge } from 'tailwind-merge';
 
 interface TodoTitleProps {
   data: Todo;
+  variant?: 'default' | 'detailed';
 }
 
-const TodoTitle: React.FC<TodoTitleProps> = ({ data }) => {
+const TodoTitle: React.FC<TodoTitleProps> = ({ data, variant }) => {
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const [isNoteViewOpen, setIsNoteViewOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -38,7 +39,13 @@ const TodoTitle: React.FC<TodoTitleProps> = ({ data }) => {
     <>
       <button
         onClick={handleTitleClick}
-        className={twMerge(clsx('truncate hover:text-link text-left', data.done && 'line-through'))}
+        className={twMerge(
+          clsx(
+            'line-clamp-1 hover:text-link text-left',
+            data.done && 'line-through',
+            variant === 'detailed' && 'text-xl line-clamp-2'
+          )
+        )}
         aria-label={`${data.title} ${data.done ? '(완료됨)' : ''}`}
         aria-expanded={isOpenDrawer || isNoteViewOpen}
       >

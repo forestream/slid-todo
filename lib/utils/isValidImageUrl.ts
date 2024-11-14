@@ -1,6 +1,6 @@
 import { ACCEPTED_IMAGE_EXTENSIONS } from '@/constants';
 
-const isValidImageUrl = (url: string | undefined): boolean => {
+const isValidImageUrl = (url: string | undefined | null): boolean => {
   try {
     if (!url) return false;
     // URL이 유효한지 확인
