@@ -7,9 +7,28 @@ const baseFields = {
   linkUrl: z
     .string()
     .optional()
-    .transform((value) => (value === '' ? null : value))
-    .refine((value) => !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value), {
-      message: '유효한 URL을 입력해주세요',
+    .refine((url) => {
+      // url이 undefined이거나 빈 문자열이면 true 반환
+      if (!url) return true;
+
+      try {
+        const urlToTest = url.startsWith('http://') || url.startsWith('https://') ? url : 'https://' + url;
+
+        const urlObject = new URL(urlToTest);
+        return (
+          urlObject.hostname.includes('.') &&
+          urlObject.hostname.length > urlObject.hostname.indexOf('.') + 1 &&
+          /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(urlObject.hostname)
+        );
+      } catch {
+        return false;
+      }
+    }, '유효한 URL을 입력해주세요')
+    .transform((url) => {
+      // url이 undefined이거나 빈 문자열이면 빈 문자열 반환
+      if (!url) return '';
+
+      return url.startsWith('http://') || url.startsWith('https://') ? url : 'https://' + url;
     }),
   goalId: z
     .preprocess((value) => {
