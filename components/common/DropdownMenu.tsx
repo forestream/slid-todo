@@ -39,19 +39,19 @@ const DropdownMenu = ({
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
     if (!isDropdownOpen) {
-      iconButtonRef.current?.focus();
-    } else {
-      iconButtonRef.current?.blur();
+      setTimeout(() => {
+        const firstItem = dropdownRef.current?.querySelector('li');
+        if (firstItem) {
+          (firstItem as HTMLLIElement).focus();
+        }
+      }, 0);
     }
   };
 
-  const handleMouseOut = () => {
-    if (!isDropdownOpen) {
-      closeDropdown();
-    }
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+    iconButtonRef.current?.focus();
   };
-
-  const closeDropdown = () => setDropdownOpen(false);
 
   useEffect(() => {
     if (isDropdownOpen && dropdownRef.current) {
@@ -63,6 +63,53 @@ const DropdownMenu = ({
       });
     }
   }, [isDropdownOpen]);
+
+  const handleButtonKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      toggleDropdown();
+      event.preventDefault();
+    } else if (event.key === 'Escape') {
+      closeDropdown();
+      event.preventDefault();
+    }
+  };
+
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
+    const target = event.target as HTMLLIElement;
+
+    if (event.key === 'ArrowDown') {
+      const nextElement = target.nextElementSibling as HTMLLIElement | null;
+      if (nextElement) {
+        nextElement.focus();
+        event.preventDefault();
+      } else {
+        const firstElement = dropdownRef.current?.querySelector('li');
+        if (firstElement) {
+          (firstElement as HTMLLIElement).focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === 'ArrowUp') {
+      const prevElement = target.previousElementSibling as HTMLLIElement | null;
+      if (prevElement) {
+        prevElement.focus();
+        event.preventDefault();
+      } else {
+        const lastElement = dropdownRef.current?.querySelector('li:last-of-type');
+        if (lastElement) {
+          (lastElement as HTMLLIElement).focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === 'Escape') {
+      closeDropdown();
+      event.preventDefault();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      onItemClick(target.textContent || '');
+      closeDropdown();
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,9 +127,7 @@ const DropdownMenu = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const baseClassNames = twMerge(
-    clsx('flex-col justify-center items-center relative inline-block text-nowrap space-y-2', className)
-  );
+  const baseClassNames = twMerge(clsx('relative inline-block text-nowrap', className));
 
   const dropdownClassNames = twMerge(
     clsx(
@@ -105,29 +150,34 @@ const DropdownMenu = ({
   );
 
   return (
-    <div className={baseClassNames}>
-      <button
-        ref={iconButtonRef}
-        type='button'
-        onClick={toggleDropdown}
-        onMouseOut={handleMouseOut}
-        className={`rounded focus:outline-none flex w-full justify-between items-center ${buttonClassName}`}
-      >
-        {Icon ? <Icon width={24} height={24} className={iconClassName} /> : <div>{text}</div>}
-        {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}
-      </button>
+    <button
+      ref={iconButtonRef}
+      type='button'
+      tabIndex={0}
+      onClick={toggleDropdown}
+      onKeyDown={handleButtonKeyDown}
+      className={`rounded flex w-full justify-between items-center ${baseClassNames} ${buttonClassName}`}
+      aria-haspopup='menu'
+      aria-expanded={isDropdownOpen}
+      aria-controls='dropdown-menu'
+    >
+      {Icon ? <Icon width={24} height={24} className={iconClassName} /> : <span>{text}</span>}
+      {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}
 
       {isDropdownOpen && (
-        <div ref={dropdownRef} className={dropdownClassNames}>
+        <div ref={dropdownRef} id='dropdown-menu' className={dropdownClassNames}>
           <ul className={dropdownMenuListClassNames}>
             {dropdownList.map((listItem, idx) => (
               <li
                 key={idx}
+                role='menuitem'
+                tabIndex={0}
                 className={dropdownMenuItemClassNames}
                 onClick={() => {
                   onItemClick(listItem);
                   closeDropdown();
                 }}
+                onKeyDown={handleListKeyDown}
               >
                 {listItem}
               </li>
@@ -135,7 +185,7 @@ const DropdownMenu = ({
           </ul>
         </div>
       )}
-    </div>
+    </button>
   );
 };
 
