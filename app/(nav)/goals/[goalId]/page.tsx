@@ -31,11 +31,11 @@ export default async function GoalDetailPage({ params }: { params: { goalId: str
       </article>
       <div className='bg-blue-100 rounded-xl hover:shadow-lg transition-all duration-200'>
         <Link href={`/notes/${params.goalId}`} className='flex px-6 py-4 gap-2 items-center'>
-          <div className='flex-shrink-0'>
+          <div className='flex-shrink-0' aria-hidden='true'>
             <IconNoteAll />
           </div>
-          <span className='text-lg font-bold text-slate-800'>노트 모아보기</span>
-          <div className='ml-auto'>
+          <h2 className='text-lg font-bold text-slate-800'>노트 모아보기</h2>
+          <div className='ml-auto' aria-hidden='true'>
             <IconArrowRight />
           </div>
         </Link>

@@ -47,7 +47,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
   const contentClass = (isEmpty: boolean) =>
     clsx(
       'w-full flex overflow-y-auto min-h-[200px] max-h-[228px] lg:max-h-[456px]',
-      isEmpty ? 'h-full flex-col sm:flex-col lg:flex-row justify-center items-center' : 'h-auto flex-col gap-2'
+      isEmpty ? 'h-full flex flex-col sm:flex-col lg:flex-row justify-center items-center' : 'h-auto flex-col gap-2'
     );
 
   const todoLists = TODO_SECTIONS.map((section, index) => {
@@ -56,19 +56,19 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
     const isEmpty = data?.pages[0]?.todos.length === 0;
 
     return (
-      <div
+      <section
         key={section.title}
         className={clsx(baseContainerClasses, section.containerClass)}
         role='region'
         aria-labelledby={`${section.title}-header`}
       >
         <div className='flex w-full justify-between'>
-          <p id={`${section.title}-header`} className='bold text-sm font-semibold'>
+          <h4 id={`${section.title}-header`} className='bold text-sm font-semibold'>
             {section.title}
-          </p>
+          </h4>
           {section.showAddTodo && (
             <button onClick={() => setIsModalOpen(true)} className='flex gap-1 items-center text-blue-500'>
-              <IconPlusSmall stroke='#3b82f6' />
+              <IconPlusSmall stroke='#3b82f6' aria-hidden='true' />
               <span>할일 추가</span>
             </button>
           )}
@@ -79,7 +79,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
             <span className='text-sm text-center font-normal text-slate-500'>{section.emptyMessage}</span>
           ) : (
             data?.pages.map((page, idx) => (
-              <ul key={page.nextCursor || idx} className='space-y-2'>
+              <ul key={page.nextCursor || idx} className='flex flex-col gap-2'>
                 {page.todos.map((todo: Todo) => (
                   <li key={todo.id}>
                     <TodoItem data={todo} />
@@ -90,7 +90,7 @@ const TodoItemsGoal = ({ goalId }: { goalId: number }) => {
           )}
           <div ref={ref}></div>
         </div>
-      </div>
+      </section>
     );
   });
 

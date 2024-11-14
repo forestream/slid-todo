@@ -61,7 +61,10 @@ const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initia
     <>
       <div className='w-full bg-white rounded-xl px-6 py-4'>
         <div className='w-full flex items-center gap-2'>
-          <div className='w-10 h-10 flex-shrink-0 bg-slate-900 rounded-[15px] grid place-content-center'>
+          <div
+            className='w-10 h-10 flex-shrink-0 bg-slate-900 rounded-[15px] grid place-content-center'
+            aria-hidden='true'
+          >
             <IconFlag />
           </div>
           {isEditClicked ? (
@@ -76,7 +79,7 @@ const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initia
               />
             </form>
           ) : (
-            <span className='text-lg font-semibold'>{goalInputValue || goal?.title}</span>
+            <h2 className='text-lg font-semibold'>{goalInputValue || goal?.title}</h2>
           )}
           <div className='ml-auto'>
             <DropdownMenu
