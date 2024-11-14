@@ -41,16 +41,13 @@ const TodoItemsDashboard = ({ goalId }: { goalId: number }) => {
 
     return (
       <div key={section.title} className={containerClass}>
-        <div className='flex w-full justify-between'>
-          <p className='bold text-sm font-semibold'>{section.title}</p>
-        </div>
-
+        <h4 className='bold text-sm font-semibold'>{section.title}</h4>
         <div className={contentClass(isEmpty)}>
           {isEmpty ? (
             <span className='text-sm text-center font-normal text-slate-500'>{section.emptyMessage}</span>
           ) : (
             data?.pages.map((page) => (
-              <ul key={page.nextCursor} className='space-y-2'>
+              <ul key={page.nextCursor} className='flex flex-col gap-2'>
                 {page.todos.map((todo: Todo) => (
                   <li key={todo.id}>
                     <TodoItem data={todo} />
