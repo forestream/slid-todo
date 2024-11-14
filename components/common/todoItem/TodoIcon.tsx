@@ -101,7 +101,8 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           dropdownList={['수정하기', '삭제하기']}
           onItemClick={handleDropdownMenuClick}
           iconClassName='sm:hover:stroke-blue-200 cursor-pointer w-0 sm:w-auto'
-          aria-label='할 일 관리 메뉴'
+          labelledById='todo-menu-options'
+          tooltipText='더보기'
         />
       </div>
       <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />

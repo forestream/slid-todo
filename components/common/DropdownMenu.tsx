@@ -16,6 +16,8 @@ interface DropdownProps {
   buttonClassName?: string;
   dropdownListClassName?: string;
   dropdownItemClassName?: string;
+  labelledById?: string;
+  tooltipText?: string;
 }
 
 const DropdownMenu = ({
@@ -31,6 +33,8 @@ const DropdownMenu = ({
   buttonClassName,
   dropdownListClassName,
   dropdownItemClassName,
+  labelledById,
+  tooltipText = '메뉴',
 }: DropdownProps) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -164,11 +168,19 @@ const DropdownMenu = ({
       onClick={toggleDropdown}
       onKeyDown={handleButtonKeyDown}
       className={`rounded flex w-full justify-between items-center ${baseClassNames} ${buttonClassName}`}
+      title={tooltipText}
+      aria-labelledby={labelledById}
       aria-haspopup='menu'
       aria-expanded={isDropdownOpen}
       aria-controls='dropdown-menu'
     >
-      {Icon ? <Icon width={24} height={24} className={iconClassName} /> : <span>{text}</span>}
+      {Icon ? (
+        <Icon width={24} height={24} className={iconClassName}>
+          <title id={labelledById}>{tooltipText}</title>
+        </Icon>
+      ) : (
+        <span>{text}</span>
+      )}
       {SideIcon && <SideIcon width={24} height={24} className={iconClassName} />}
 
       {isDropdownOpen && (

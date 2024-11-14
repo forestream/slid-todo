@@ -83,6 +83,8 @@ const GoalTitleWithProgress = ({ goalId, initialGoal }: { goalId: number; initia
               icon={IconKebab}
               dropdownList={['수정하기', '삭제하기']}
               onItemClick={handleDropdownMenuClick}
+              labelledById='goal-menu-options'
+              tooltipText='더보기'
             />
           </div>
         </div>
