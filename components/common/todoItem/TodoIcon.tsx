@@ -6,13 +6,26 @@ import DropdownMenu from '../DropdownMenu';
 import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteTodoMutation } from '@/lib/hooks/useDeleteTodoMutation';
 import { Todo } from '@/lib/types/todo';
-import { useState } from 'react';
-import TodoEditModal from '@/components/modal/todoModal/TodoEditModal';
+import { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MOBILE_BREAKPOINT } from '@/constants';
-import NoteViewSheet from '@/components/sheet/NoteViewSheet';
-import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import openExternalSite from '@/lib/utils/openExternalSite';
+import dynamic from 'next/dynamic';
+
+const TodoEditModal = dynamic(() => import('@/components/modal/todoModal/TodoEditModal'), {
+  loading: () => null,
+  ssr: false,
+});
+
+const NoteViewSheet = dynamic(() => import('@/components/sheet/NoteViewSheet'), {
+  loading: () => null,
+  ssr: false,
+});
+
+const ConfirmationModal = dynamic(() => import('@/components/modal/ConfirmationModal'), {
+  loading: () => null,
+  ssr: false,
+});
 
 interface TodoIconProps {
   data: Todo;
@@ -106,20 +119,26 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
           tooltipText='더보기'
         />
       </div>
-      <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />
-      <NoteViewSheet
-        isSheetOpen={isSheetOpen}
-        handleSheetOpen={handleSheetOpen}
-        noteId={data.noteId}
-        goal={data.goal}
-        todoTitle={data.title}
-      />
-      <ConfirmationModal
-        isOpen={isDeleteModalOpen}
-        onChangeIsOpen={setIsDeleteModalOpen}
-        itemType='todo'
-        onConfirm={handleDelete}
-      />
+      <Suspense fallback={null}>
+        {isOpen && <TodoEditModal isOpen={isOpen} onChangeIsOpen={onChangeIsOpen} data={data} />}
+        {isSheetOpen && (
+          <NoteViewSheet
+            isSheetOpen={isSheetOpen}
+            handleSheetOpen={handleSheetOpen}
+            noteId={data.noteId}
+            goal={data.goal}
+            todoTitle={data.title}
+          />
+        )}
+        {isDeleteModalOpen && (
+          <ConfirmationModal
+            isOpen={isDeleteModalOpen}
+            onChangeIsOpen={setIsDeleteModalOpen}
+            itemType='todo'
+            onConfirm={handleDelete}
+          />
+        )}
+      </Suspense>
     </>
   );
 };
