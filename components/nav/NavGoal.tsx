@@ -1,7 +1,7 @@
 'use client';
 import { IconFlagSmall } from '@/public/icons/IconFlagSmall';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Goal } from '@/lib/types/todo';
 import Link from 'next/link';
@@ -35,11 +35,27 @@ const NavGoal = ({ className }: { className?: string }) => {
   const { ref, inView } = useInView({ threshold: 0.1 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
+  const newGoalInputRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (newGoalInputRef.current && !newGoalInputRef.current.contains(event.target as Node)) {
+        setIsNewGoalInputVisible(false);
+        setNewGoalInputValue(DEFAULT_INPUT_VALUE);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // 목표 추가
   // 새 목표 input change handler
@@ -189,7 +205,7 @@ const NavGoal = ({ className }: { className?: string }) => {
 
         {/* 새 목표 클릭시 생성되는 인풋 */}
         {isNewGoalInputVisible && (
-          <div className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
+          <div ref={newGoalInputRef} className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
             <form onSubmit={handleGoalSubmit} className='w-full h-auto m-0'>
               <InputSlid
                 type='text'
