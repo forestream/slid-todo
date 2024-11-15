@@ -46,7 +46,11 @@ const Nav = () => {
   return (
     <nav aria-label='사이드바 네비게이션 메뉴'>
       {/* 모바일/태블릿용 sheet nav */}
-      <section className={clsx('flex sm:flex lg:hidden flex-col border-r-[1px] flex-shrink-0 divide-slate-200')}>
+      <section
+        className={clsx(
+          'flex sm:flex lg:hidden flex-col h-auto sm:h-screen border-r-[1px] flex-shrink-0 divide-slate-200'
+        )}
+      >
         <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={setIsSheetOpen}>
           <SheetTrigger>
             <NavHeader
