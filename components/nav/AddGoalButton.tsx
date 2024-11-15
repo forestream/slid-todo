@@ -5,16 +5,21 @@ import clsx from 'clsx';
 
 interface addGoalButton {
   className: string;
+  isNewGoalInputVisible: boolean;
   currentInputValue: string;
   onClick?: () => void;
 }
 
-const AddGoalButton = ({ className, currentInputValue, onClick }: addGoalButton) => {
+const AddGoalButton = ({ className, isNewGoalInputVisible, currentInputValue, onClick }: addGoalButton) => {
   const buttonClass = twMerge(clsx('text-nowrap', className));
+  const isInputEmpty = currentInputValue === '';
   return (
-    <ButtonSlid className={buttonClass} variant={currentInputValue === '' ? 'outlined' : 'filled'} onClick={onClick}>
-      <IconPlusSmall stroke={currentInputValue === '' ? '#3B82F6' : undefined} />
-      <span>새 목표</span>
+    <ButtonSlid className={buttonClass} variant={isInputEmpty ? 'outlined' : 'filled'} onClick={onClick}>
+      {/* 내용이 있을때 */}
+      {isNewGoalInputVisible && !isInputEmpty && <IconPlusSmall stroke='#fff' />}
+      {/* 버튼이 안눌렸을때 */}
+      {!isNewGoalInputVisible && <IconPlusSmall stroke='#3B82F6' />}
+      <span>{isNewGoalInputVisible && isInputEmpty ? '취소' : '새 목표'}</span>
     </ButtonSlid>
   );
 };

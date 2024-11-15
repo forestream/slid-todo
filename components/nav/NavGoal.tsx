@@ -1,7 +1,7 @@
 'use client';
 import { IconFlagSmall } from '@/public/icons/IconFlagSmall';
 import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Goal } from '@/lib/types/todo';
 import Link from 'next/link';
@@ -35,11 +35,27 @@ const NavGoal = ({ className }: { className?: string }) => {
   const { ref, inView } = useInView({ threshold: 0.1 });
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
+  const newGoalInputRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (newGoalInputRef.current && !newGoalInputRef.current.contains(event.target as Node)) {
+        setIsNewGoalInputVisible(false);
+        setNewGoalInputValue(DEFAULT_INPUT_VALUE);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // 목표 추가
   // 새 목표 input change handler
@@ -66,7 +82,7 @@ const NavGoal = ({ className }: { className?: string }) => {
   const handleGoalSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     const trimmedGoalValue = newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
-    addGoal.mutate({ updates: { title: trimmedGoalValue } });
+    if (trimmedGoalValue.length > 0) addGoal.mutate({ updates: { title: trimmedGoalValue } });
     setIsNewGoalInputVisible(false);
     setNewGoalInputValue('· ');
   };
@@ -116,28 +132,25 @@ const NavGoal = ({ className }: { className?: string }) => {
   return (
     <>
       <div className={twMerge(clsx('flex flex-wrap px-4 py-6 gap-4', className))}>
-        <div className='flex items-center gap-2 order-1 sm:order-1 lg:order-1'>
-          <div className='w-6 h-6 flex justify-center items-center'>
+        <div className='flex flex-grow items-center gap-2 order-1 sm:order-1 lg:order-1'>
+          <div className='w-6 h-6 flex justify-center items-center' aria-hidden='true'>
             <IconFlagSmall />
           </div>
-          <div className='text-lg font-medium text-slate-800'>목표</div>
+          <span className='text-lg font-medium text-slate-800'>목표</span>
         </div>
-
-        {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
-        <AddGoalButton
-          className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:p-3 lg:p-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
-          currentInputValue={newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim()}
-          onClick={handleAddGoalButtonClick}
-        />
 
         <div className='order-3 sm:order-2 lg:order-2 w-full max-h-72 overflow-y-auto h-auto'>
           {data?.pages.map((page, idx) => (
-            <div key={page.nextCursor || idx} className='flex-col'>
+            <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1'>
               {page.goals.map((goal: Goal) => (
-                <div className='flex items-center group rounded-lg  hover:bg-slate-50 ' key={goal.id}>
+                <li className='flex items-center group rounded-lg  hover:bg-slate-50 ' key={goal.id}>
                   {/* kebab에서 수정하기를 클릭하면 Input, 그 외에는 일반 Link로 goal list */}
                   {isEditFocused && editingGoalId === goal.id ? (
-                    <form onSubmit={handleGoalEditSubmit} className='w-full h-auto m-0'>
+                    <form
+                      onSubmit={handleGoalEditSubmit}
+                      className='w-full h-auto m-0'
+                      aria-label={`${goal.title} 수정 입력창`}
+                    >
                       {/* 목표 수정 클릭시 생성되는 input */}
                       <InputSlid
                         type='text'
@@ -160,7 +173,7 @@ const NavGoal = ({ className }: { className?: string }) => {
                         href={`/goals/${goal.id}`}
                         key={goal.id}
                         className={clsx(
-                          'flex flex-grow text-slate-700 text-sm font-medium group-hover:bg-slate-50 p-2 hover-trigger',
+                          'flex flex-grow text-slate-700 text-sm font-medium group-hover:bg-slate-50 px-2 py-1.5 hover-trigger',
                           goal.id === selectedGoalId ? 'bg-slate-50' : 'bg-white'
                         )}
                         onClick={() => handleGoalClick(goal.id)}
@@ -170,6 +183,8 @@ const NavGoal = ({ className }: { className?: string }) => {
                       <div
                         className='items-center justify-center ml-auto flex lg:hidden group-hover:flex'
                         onClick={() => handleNavGoalKebabClick(goal)}
+                        role='button'
+                        aria-label='목표 관리 메뉴 열기'
                       >
                         <DropdownMenu
                           icon={IconKebabWithCircle}
@@ -181,16 +196,16 @@ const NavGoal = ({ className }: { className?: string }) => {
                       </div>
                     </>
                   )}
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           ))}
           <div ref={ref}></div>
         </div>
 
         {/* 새 목표 클릭시 생성되는 인풋 */}
         {isNewGoalInputVisible && (
-          <div className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
+          <div ref={newGoalInputRef} className='order-4 sm:order-3 lg:order-3 w-full flex items-center'>
             <form onSubmit={handleGoalSubmit} className='w-full h-auto m-0'>
               <InputSlid
                 type='text'
@@ -203,6 +218,19 @@ const NavGoal = ({ className }: { className?: string }) => {
             </form>
           </div>
         )}
+
+        {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
+        <div
+          tabIndex={0}
+          className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm sm:w-full lg:w-full'
+        >
+          <AddGoalButton
+            className='w-[84px] sm:w-full lg:w-full px-3 py-2 sm:px-6 sm:py-4 lg:px-6 lg:py-4'
+            isNewGoalInputVisible={isNewGoalInputVisible}
+            currentInputValue={newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim()}
+            onClick={handleAddGoalButtonClick}
+          />
+        </div>
       </div>
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
