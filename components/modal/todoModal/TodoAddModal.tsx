@@ -7,11 +7,11 @@ import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
 import { useAddTodoMutation } from '@/lib/hooks/useAddTodoMutation';
 import { TodoAddFormData, todoAddSchema } from '@/lib/schemas/todosSchemas';
-import cleanedFormData from '@/lib/utils/cleanedFormData';
 import GoalSelector from './GoalSelector';
 import { useEffect, useState } from 'react';
 import isValidImageUrl from '@/lib/utils/isValidImageUrl';
 import Image from 'next/image';
+import { filterEmptyFields } from '@/lib/utils/cleanedFormData';
 
 interface TodoAddModalProps {
   goalId?: number;
@@ -45,8 +45,8 @@ const Content = ({ goalId }: { goalId?: number }) => {
     setFocus('title');
   }, [setFocus]);
   const onSubmit = (data: TodoAddFormData) => {
-    const cleanedData = cleanedFormData(data);
-    addTodo.mutate({ updates: cleanedData });
+    const filterData = filterEmptyFields(data);
+    addTodo.mutate({ updates: filterData });
     reset();
     handleClose();
   };
