@@ -1,12 +1,25 @@
-import TodoContentsDrawer from '@/components/drawer/TodoContentsDrawer/TodoContentsDrawer';
-import ConfirmationModal from '@/components/modal/ConfirmationModal';
-import NoteViewSheet from '@/components/sheet/NoteViewSheet';
 import { MOBILE_BREAKPOINT } from '@/constants';
 import { Todo } from '@/lib/types/todo';
 import clsx from 'clsx';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+const NoteViewSheet = dynamic(() => import('@/components/sheet/NoteViewSheet'), {
+  loading: () => null,
+  ssr: false,
+});
+
+const TodoContentsDrawer = dynamic(() => import('@/components/drawer/TodoContentsDrawer/TodoContentsDrawer'), {
+  loading: () => null,
+  ssr: false,
+});
+
+const ConfirmationModal = dynamic(() => import('@/components/modal/ConfirmationModal'), {
+  loading: () => null,
+  ssr: false,
+});
 
 interface TodoTitleProps {
   data: Todo;
