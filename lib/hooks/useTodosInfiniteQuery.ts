@@ -8,25 +8,22 @@ interface TodosSearchParams {
   size?: number;
 }
 
-export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}) => {
+export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}, options = {}) => {
   return useInfiniteQuery<GetTodosResponse>({
     queryKey: ['todos', searchParams],
     queryFn: ({ pageParam }) => {
       // 기본 파라미터 설정
       const stringifiedParams: Record<string, string> = {
         size: String(searchParams.size || 20),
+        ...(pageParam !== null && { cursor: String(pageParam) }),
         ...(searchParams.goalId !== undefined && { goalId: String(searchParams.goalId) }),
         ...(searchParams.done !== undefined && { done: String(searchParams.done) }),
       };
-      // pageParam이 초기값(1)이 아닐 때만 cursor 추가
-      if (pageParam !== 1) {
-        stringifiedParams.cursor = String(pageParam);
-      }
 
       const params = new URLSearchParams(stringifiedParams);
       return baseFetch(`/4-4-dev/todos?${params.toString()}`);
     },
-    initialPageParam: 1,
+    initialPageParam: null,
     getNextPageParam: (lastPage) => {
       if (lastPage.nextCursor) {
         return lastPage.nextCursor;
@@ -34,5 +31,6 @@ export const useTodosInfiniteQuery = (searchParams: TodosSearchParams = {}) => {
       return undefined;
     },
     staleTime: Infinity,
+    ...options,
   });
 };

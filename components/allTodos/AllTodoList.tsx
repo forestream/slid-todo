@@ -7,19 +7,32 @@ import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useEffect } from 'react';
 import { useTodosInfiniteQuery } from '@/lib/hooks/useTodosInfiniteQuery';
 import Loading from '@/app/loading';
+import { GetTodosResponse } from '@/lib/types/todo';
 
-const AllTodoList: React.FC = () => {
+interface AllTodoListProps {
+  TodosInitialData: GetTodosResponse;
+}
+
+const AllTodoList: React.FC<AllTodoListProps> = ({ TodosInitialData }) => {
   const { setTotalCount } = useTodoContext();
   const params = useSearchParams();
   const status = params.get('status');
-  const { data, fetchNextPage, hasNextPage, isFetching } = useTodosInfiniteQuery({
-    size: 40,
-    done: status === 'completed' ? true : status === 'in-progress' ? false : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetching } = useTodosInfiniteQuery(
+    {
+      size: 20,
+      done: status === 'completed' ? true : status === 'in-progress' ? false : undefined,
+    },
+    {
+      initialData: {
+        pages: [TodosInitialData],
+        pageParams: [null],
+      },
+    }
+  );
   const loadMoreRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: !!hasNextPage && !isFetching,
-    threshold: 0.5,
+    threshold: 0.1,
     rootMargin: '100px',
   });
   const todos = data?.pages.flatMap((page) => page.todos) ?? [];
@@ -30,7 +43,9 @@ const AllTodoList: React.FC = () => {
   }, [data?.pages, setTotalCount]);
 
   if (!todos.length && !isFetching) {
-    return <div className='flex justify-center items-center text-sm text-slate-500'>등록한 일이 없어요</div>;
+    return (
+      <div className='flex justify-center items-center text-sm text-slate-500 min-h-[50px]'>등록한 일이 없어요</div>
+    );
   }
 
   return (
