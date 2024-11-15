@@ -6,9 +6,15 @@ import baseFetch from '@/lib/api/baseFetch';
 import { GetTodosResponse } from '@/lib/types/todo';
 import { cookies } from 'next/headers';
 
-export default async function Alltodos() {
+export default async function Alltodos({ searchParams }: { searchParams: { status?: string } }) {
+  const done = searchParams.status === 'completed' ? true : searchParams.status === 'in-progress' ? false : undefined;
   const accessToken = cookies().get('accessToken');
-  const TodosInitialData: GetTodosResponse = await baseFetch(`${process.env.NEXT_PUBLIC_BASE_URL}/todos`, {
+  const apiUrl = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/todos`);
+  if (done !== undefined) {
+    apiUrl.searchParams.set('done', done.toString());
+  }
+
+  const TodosInitialData: GetTodosResponse = await baseFetch(apiUrl.toString(), {
     headers: { Authorization: `Bearer ${accessToken?.value}` },
     cache: 'no-store',
   });

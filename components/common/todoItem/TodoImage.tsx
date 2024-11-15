@@ -15,6 +15,7 @@ const TodoImage = ({ imageUrl, className }: TodoImageProps) => {
       height={400}
       className={twMerge('w-full h-auto rounded-lg object-cover', className)}
       priority={true}
+      unoptimized={true}
     />
   );
 };
