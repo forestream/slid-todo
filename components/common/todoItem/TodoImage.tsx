@@ -8,17 +8,14 @@ interface TodoImageProps {
 
 const TodoImage = ({ imageUrl, className }: TodoImageProps) => {
   return (
-    console.log('imageUrl', imageUrl),
-    (
-      <Image
-        src={imageUrl}
-        alt='todo-image'
-        width={400}
-        height={400}
-        className={twMerge('w-full h-auto rounded-lg object-cover', className)}
-        priority={true}
-      />
-    )
+    <Image
+      src={imageUrl}
+      alt='todo-image'
+      width={400}
+      height={400}
+      className={twMerge('w-full h-auto rounded-lg object-cover', className)}
+      priority={true}
+    />
   );
 };
 
