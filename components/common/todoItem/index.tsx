@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Todo } from '@/lib/types/todo';
 import CheckIcon from './CheckIcon';
 import TodoIcon from './TodoIcon';
@@ -32,16 +32,6 @@ const areEqual = (prevProps: TodoItemProps, nextProps: TodoItemProps) => {
 };
 
 const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'default' }) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (variant === 'detailed' && isValidImageUrl(data.fileUrl)) {
-      setImageUrl(data.fileUrl);
-    } else {
-      setImageUrl(null);
-    }
-  }, [data.fileUrl, variant]);
-
   const layoutClasses = {
     article: twMerge(
       'text-sm grid gap-x-2 items-center',
@@ -70,9 +60,9 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
       <div className={layoutClasses.todoIcon}>
         <TodoIcon data={data} />
       </div>
-      {imageUrl && variant === 'detailed' && (
+      {isValidImageUrl(data.fileUrl) && variant === 'detailed' && (
         <div className={layoutClasses.image}>
-          <TodoImage imageUrl={imageUrl} />
+          <TodoImage imageUrl={data.fileUrl!} />
         </div>
       )}
     </article>
