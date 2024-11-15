@@ -13,10 +13,10 @@ const TodoImage = ({ imageUrl, className }: TodoImageProps) => {
       <Image
         src={imageUrl}
         alt='todo-image'
-        width={0}
-        height={0}
-        className={twMerge('w-full h-auto rounded-lg', className)}
-        unoptimized
+        width={400}
+        height={300}
+        className={twMerge('w-full h-auto rounded-lg object-cover', className)}
+        priority={true}
       />
     )
   );
