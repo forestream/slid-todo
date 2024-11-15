@@ -2,7 +2,15 @@ import React from 'react';
 
 export const ImageProfile = () => {
   return (
-    <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64' fill='none'>
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='64'
+      height='64'
+      viewBox='0 0 64 64'
+      fill='none'
+      role='img'
+      aria-label='유저 이미지'
+    >
       <rect width='64' height='64' rx='12' fill='#EFF6FF' />
       <path
         fillRule='evenodd'
