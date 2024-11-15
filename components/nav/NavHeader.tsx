@@ -30,6 +30,9 @@ type NavButtonProps = {
 // hydration error를 방지하기위해 button이 아닌 div 태그 사용
 const NavButton = ({ onClick, icon, className }: NavButtonProps) => (
   <div
+    role='button'
+    aria-label='사이드바 네비게이션 열기/닫기'
+    tabIndex={0}
     className={twMerge(
       clsx(
         'grid place-content-center hover:cursor-pointer w-6 h-6 p-1 bg-white hover:bg-slate-100 active:bg-slate-300 rounded-lg border-[1.5px] border-slate-400',
@@ -89,14 +92,17 @@ const NavHeader = ({
       <NavSection className='flex sm:hidden lg:hidden flex-row px-[14px] py-4 justify-normal'>
         {isSheetOpen ? (
           <>
-            <IconHamburger />
+            <IconHamburger aria-hidden='true' />
             <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
             <div className='ml-auto flex justify-center items-center'>{children}</div>
           </>
         ) : (
           <>
-            <IconHamburger onClick={() => handleNavToggleButtonClick('mobile')} className='hover:cursor-pointer' />
-
+            <IconHamburger
+              onClick={() => handleNavToggleButtonClick('mobile')}
+              className='hover:cursor-pointer'
+              aria-label='모바일 메뉴 열기'
+            />
             <h1 className='text-base font-semibold text-slate-900'>{currentPageLabel}</h1>
           </>
         )}

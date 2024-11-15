@@ -4,6 +4,7 @@ import NavAllTodos from './NavAllTodos';
 import NavDashBoard from './NavDashBoard';
 import AddTodoButton from './AddTodoButton';
 import Profile from './NavProfile';
+import clsx from 'clsx';
 
 const NavContent = ({ handleTodoModalOpen }: { handleTodoModalOpen: () => void }) => {
   return (
@@ -20,11 +21,15 @@ const NavContent = ({ handleTodoModalOpen }: { handleTodoModalOpen: () => void }
         {/* 대시보드 바로가기 및 새 할일 버튼 */}
         <div className='flex flex-row sm:flex-col lg:flex-col divide-y divide-slate-200 sm:border-none lg:border-none'>
           {/* 새 할 일 버튼 */}
-          <div className='flex sm:justify-center items-center border-none px-4 py-6 order-2 sm:order-1 lg:order-1 ml-auto sm:w-full lg:w-full'>
+          <div
+            className={clsx(
+              'px-4 py-6 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm sm:w-full lg:w-full',
+              'order-2 sm:order-1 lg:order-1'
+            )}
+            tabIndex={0}
+          >
             <AddTodoButton
-              className={
-                'sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm px-3 py-2 sm:py-3 lg:py-3 sm:px-6 lg:px-6 mt-0 w-[84px] sm:w-full lg:w-full'
-              }
+              className={'w-[84px] sm:w-full lg:w-full px-3 py-2 sm:px-6 sm:py-4 lg:px-6 lg:py-4'}
               onClick={handleTodoModalOpen}
             />
           </div>
