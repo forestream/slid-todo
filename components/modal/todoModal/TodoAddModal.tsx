@@ -28,6 +28,7 @@ const Content = ({ goalId }: { goalId?: number }) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setFocus,
     watch,
     reset,
     getValues,
@@ -40,7 +41,9 @@ const Content = ({ goalId }: { goalId?: number }) => {
       goalId: goalId || null,
     },
   });
-
+  useEffect(() => {
+    setFocus('title');
+  }, [setFocus]);
   const onSubmit = (data: TodoAddFormData) => {
     const cleanedData = cleanedFormData(data);
     addTodo.mutate({ updates: cleanedData });
@@ -104,6 +107,9 @@ const Content = ({ goalId }: { goalId?: number }) => {
 };
 
 const TodoAddModal: React.FC<TodoAddModalProps> = ({ goalId, isOpen, onChangeIsOpen }) => {
+  // isOpen이 false일 때는 아무것도 렌더링하지 않음
+  if (!isOpen) return null;
+
   return (
     <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
       <Content goalId={goalId} />
