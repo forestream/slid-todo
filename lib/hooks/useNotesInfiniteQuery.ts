@@ -13,7 +13,7 @@ export const useNotesInfiniteQuery = (searchParams: NotesSearchParams = {}, opti
     queryFn: ({ pageParam }) => {
       const stringifiedParams: Record<string, string> = {
         size: String(searchParams.size),
-        cursor: String(pageParam),
+        ...(pageParam !== null && { cursor: String(pageParam) }),
         ...(searchParams.goalId !== undefined && { goalId: String(searchParams.goalId) }),
       };
 
