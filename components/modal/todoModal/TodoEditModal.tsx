@@ -30,6 +30,7 @@ const Content = ({ data }: { data: Todo }) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setFocus,
     watch,
     getValues,
   } = useForm<TodoEditFormData>({
@@ -42,7 +43,9 @@ const Content = ({ data }: { data: Todo }) => {
       done: data.done,
     },
   });
-
+  useEffect(() => {
+    setFocus('title');
+  }, [setFocus]);
   const onSubmit = (update: TodoEditFormData) => {
     const cleanedData = cleanedFormData(update);
     editTodo.mutate({ id: Number(data.id), updates: cleanedData });
@@ -108,6 +111,8 @@ const Content = ({ data }: { data: Todo }) => {
 };
 
 const TodoEditModal: React.FC<TodoEditModalProps> = ({ data, isOpen, onChangeIsOpen }) => {
+  if (!isOpen) return null;
+
   return (
     <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
       <Content data={data} />

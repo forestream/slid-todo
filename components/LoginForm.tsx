@@ -11,12 +11,14 @@ import { parseAuthError } from '@/lib/utils/parseError';
 import { HttpError } from '@/lib/api/errorHandlers';
 import { useRouter } from 'next/navigation';
 import useToast from './common/toast/useToast';
+import { useEffect } from 'react';
 
 const LoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     setError,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -24,6 +26,10 @@ const LoginForm: React.FC = () => {
   });
   const router = useRouter();
   const toast = useToast();
+  useEffect(() => {
+    setFocus('email');
+  }, [setFocus]);
+
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       const response = await login(data);

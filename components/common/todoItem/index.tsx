@@ -7,8 +7,8 @@ import TodoIcon from './TodoIcon';
 import GoalTitle from './GoalTitle';
 import TodoTitle from './TodoTitle';
 import isValidImageUrl from '@/lib/utils/isValidImageUrl';
-import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
+import TodoImage from './TodoImage';
 
 interface TodoItemProps {
   data: Todo;
@@ -35,11 +35,12 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    setImageUrl(null);
-    if (isValidImageUrl(data.fileUrl)) {
+    if (variant === 'detailed' && isValidImageUrl(data.fileUrl)) {
       setImageUrl(data.fileUrl);
+    } else {
+      setImageUrl(null);
     }
-  }, [data.fileUrl]);
+  }, [data.fileUrl, variant]);
 
   const layoutClasses = {
     article: twMerge(
@@ -71,15 +72,7 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
       </div>
       {imageUrl && variant === 'detailed' && (
         <div className={layoutClasses.image}>
-          <Image
-            src={imageUrl}
-            alt='todo-image'
-            width={0}
-            height={0}
-            sizes='100vw'
-            className='w-full h-auto rounded-lg'
-            unoptimized
-          />
+          <TodoImage imageUrl={imageUrl} />
         </div>
       )}
     </article>

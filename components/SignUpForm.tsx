@@ -6,7 +6,7 @@ import InputSlid from './common/InputSlid';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signUp } from '@/lib/api/signUp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconCheck from '@/public/icons/IconCheck';
 import SignupSuccessModal from './modal/SignupSuccessModal';
 import { useEmailValidation } from '@/lib/hooks/useEmailValidation';
@@ -21,6 +21,7 @@ const SignUpForm: React.FC = () => {
     register,
     handleSubmit,
     setError,
+    setFocus,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormData>({
@@ -30,7 +31,9 @@ const SignUpForm: React.FC = () => {
 
   const email = watch('email');
   const { isEmailAvailable } = useEmailValidation(email, setError);
-
+  useEffect(() => {
+    setFocus('name');
+  }, [setFocus]);
   const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
     const signupData: SignupFormRequest = {
       name: data.name,
