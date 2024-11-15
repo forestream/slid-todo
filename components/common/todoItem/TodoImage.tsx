@@ -14,7 +14,7 @@ const TodoImage = ({ imageUrl, className }: TodoImageProps) => {
         src={imageUrl}
         alt='todo-image'
         width={400}
-        height={300}
+        height={400}
         className={twMerge('w-full h-auto rounded-lg object-cover', className)}
         priority={true}
       />

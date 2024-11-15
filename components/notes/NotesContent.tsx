@@ -4,17 +4,24 @@ import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { useNotesInfiniteQuery } from '@/lib/hooks/useNotesInfiniteQuery';
 import NoteGoalTitle from './NoteGoalTitle';
 import NotesList from './NotesList';
-import { Goal } from '@/lib/types/todo';
+import { GetNotesResponse, Goal } from '@/lib/types/todo';
 
 interface NotesContentProps {
   goalId: string;
   goalData: Goal;
+  notesInitialData: GetNotesResponse;
 }
 
-const NotesContent: React.FC<NotesContentProps> = ({ goalId, goalData }) => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useNotesInfiniteQuery({
-    goalId: Number(goalId),
-  });
+const NotesContent: React.FC<NotesContentProps> = ({ goalId, goalData, notesInitialData }) => {
+  const { data, fetchNextPage, hasNextPage, isFetching } = useNotesInfiniteQuery(
+    { goalId: Number(goalId), size: 10 },
+    {
+      initialData: {
+        pages: [notesInitialData],
+        pageParams: [null],
+      },
+    }
+  );
 
   const loadMoreRef = useIntersectionObserver({
     onIntersect: fetchNextPage,

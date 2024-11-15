@@ -7,23 +7,20 @@ interface NotesSearchParams {
   size?: number;
 }
 
-export const useNotesInfiniteQuery = (searchParams: NotesSearchParams = {}) => {
+export const useNotesInfiniteQuery = (searchParams: NotesSearchParams = {}, options = {}) => {
   return useInfiniteQuery<GetNotesResponse>({
     queryKey: ['notes', searchParams],
     queryFn: ({ pageParam }) => {
       const stringifiedParams: Record<string, string> = {
-        size: String(searchParams.size || 20),
+        size: String(searchParams.size),
+        cursor: String(pageParam),
         ...(searchParams.goalId !== undefined && { goalId: String(searchParams.goalId) }),
       };
-
-      if (pageParam !== 1) {
-        stringifiedParams.cursor = String(pageParam);
-      }
 
       const params = new URLSearchParams(stringifiedParams);
       return baseFetch(`/4-4-dev/notes?${params.toString()}`);
     },
-    initialPageParam: 1,
+    initialPageParam: null,
     getNextPageParam: (lastPage) => {
       if (lastPage.nextCursor) {
         return lastPage.nextCursor;
@@ -31,5 +28,6 @@ export const useNotesInfiniteQuery = (searchParams: NotesSearchParams = {}) => {
       return undefined;
     },
     staleTime: Infinity,
+    ...options,
   });
 };
