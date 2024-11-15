@@ -66,7 +66,7 @@ const NavGoal = ({ className }: { className?: string }) => {
   const handleGoalSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     const trimmedGoalValue = newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
-    addGoal.mutate({ updates: { title: trimmedGoalValue } });
+    if (trimmedGoalValue.length > 0) addGoal.mutate({ updates: { title: trimmedGoalValue } });
     setIsNewGoalInputVisible(false);
     setNewGoalInputValue('· ');
   };
@@ -209,7 +209,8 @@ const NavGoal = ({ className }: { className?: string }) => {
           className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm sm:w-full lg:w-full'
         >
           <AddGoalButton
-            className='w-[84px] sm:w-full lg:w-full px-3 py-2 sm:px-6 sm:py-4 lg:px-6 lg:py-4 '
+            className='w-[84px] sm:w-full lg:w-full px-3 py-2 sm:px-6 sm:py-4 lg:px-6 lg:py-4'
+            isNewGoalInputVisible={isNewGoalInputVisible}
             currentInputValue={newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim()}
             onClick={handleAddGoalButtonClick}
           />
