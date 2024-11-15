@@ -9,11 +9,11 @@ import useInfiniteGoalsQuery from '@/lib/hooks/useInfiniteGoalsQuery';
 import Button from '@/components/common/ButtonSlid';
 import { TodoEditFormData, todoEditSchema } from '@/lib/schemas/todosSchemas';
 import { useUpdateTodoMutation } from '@/lib/hooks/useUpdateTodoMutation';
-import cleanedFormData from '@/lib/utils/cleanedFormData';
 import GoalSelector from './GoalSelector';
 import isValidImageUrl from '@/lib/utils/isValidImageUrl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { normalizeFormData } from '@/lib/utils/cleanedFormData';
 
 interface TodoEditModalProps {
   data: Todo;
@@ -47,7 +47,7 @@ const Content = ({ data }: { data: Todo }) => {
     setFocus('title');
   }, [setFocus]);
   const onSubmit = (update: TodoEditFormData) => {
-    const cleanedData = cleanedFormData(update);
+    const cleanedData = normalizeFormData(update);
     editTodo.mutate({ id: Number(data.id), updates: cleanedData });
     handleClose();
   };
