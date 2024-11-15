@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { UseFormRegister, UseFormSetValue, UseFormWatch, FieldValues, Path, PathValue } from 'react-hook-form';
 import IconClose from '@/public/icons/IconClose';
 import { IconStateActiveWhite } from '@/public/icons/IconStateActiveWhite';
+import baseFetch from '@/lib/api/baseFetch';
 
 interface FileUploadProps<T extends FieldValues> {
   register: UseFormRegister<T>;
@@ -45,17 +46,11 @@ const FileUpload = <T extends FieldValues>({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`/4-4-dev/files`, {
+      const response = await baseFetch(`/4-4-dev/files`, {
         method: 'POST',
         body: formData,
       });
-
-      if (!response.ok) {
-        throw new Error('파일 업로드에 실패했습니다.');
-      }
-
-      const data = await response.json();
-      setValue('fileUrl' as Path<T>, data.url, {
+      setValue('fileUrl' as Path<T>, response.url, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,

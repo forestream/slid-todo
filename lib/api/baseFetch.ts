@@ -1,8 +1,11 @@
 import { handleHttpError, HttpError } from './errorHandlers';
 
-const baseFetch = async (URL: string = '', options?: RequestInit) => {
+const baseFetch = async (URL: string = '', options: RequestInit = {}) => {
   try {
-    const response = await fetch(URL, { headers: { 'Content-Type': 'application/json' }, ...options });
+    const headers =
+      options.body instanceof FormData ? options.headers : { 'Content-Type': 'application/json', ...options.headers };
+
+    const response = await fetch(URL, { ...options, headers });
     if (response.status === 204) return; // 기존에 있던 건 그대로 두었습니다.
     const data = await response.json();
 
