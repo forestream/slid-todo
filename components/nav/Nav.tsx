@@ -27,7 +27,7 @@ const Nav = () => {
   }, [pathname]);
 
   return (
-    <nav aria-label='사이드바 네비게이션 메뉴' className='sticky top-0'>
+    <nav aria-label='사이드바 네비게이션 메뉴' className='sticky top-0 z-30'>
       {/* 왼쪽 네브 (데스크탑, 테블릿) */}
       <motion.section
         initial='open'
