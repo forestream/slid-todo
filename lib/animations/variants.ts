@@ -35,3 +35,46 @@ export const staggerChildren = {
     },
   },
 };
+
+export const navVariants = {
+  open: {
+    width: '280px',
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 30,
+      mass: 1.2,
+    },
+  },
+  closed: {
+    width: '64px',
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 30,
+      mass: 1.2,
+    },
+  },
+};
+
+export const navContentVariants = {
+  open: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 24,
+      delay: 0.1,
+    },
+  },
+  closed: {
+    opacity: 0,
+    x: -20,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 24,
+    },
+  },
+};

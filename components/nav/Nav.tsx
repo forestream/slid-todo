@@ -1,48 +1,56 @@
 'use client';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import { usePathname } from 'next/navigation';
 import TodoAddModal from '../modal/todoModal/TodoAddModal';
 import NavHeader from './NavHeader';
 import NavContent from './NavContent';
 import NavMobileHeader from './NavMobileHeader';
+import { useWindowResize } from '@/lib/hooks/useWindowResize';
+import { navContentVariants, navVariants } from '@/lib/animations/variants';
 
 const Nav = () => {
-  const [isLeftNavOpen, setIsLeftNavOpen] = useState(true); // 왼쪽 nav 열림 여부
-  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false); // 할 일 모달 열림 여부
+  const [isLeftNavOpen, setIsLeftNavOpen] = useState(true);
+  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
   const [currentPageLabel, setCurrentPageLabel] = useState('대시보드');
   const pathname = usePathname();
+  useWindowResize({ setIsLeftNavOpen });
 
   const handleTodoModalOpen = () => {
     setIsTodoModalOpen(true);
   };
 
-  // 페이지 이동 시
   useEffect(() => {
     setCurrentPageLabel(document.title.split('|')[0].trim());
   }, [pathname]);
 
   return (
     <nav aria-label='사이드바 네비게이션 메뉴'>
-      {/* 데스크탑 */}
+      {/* 왼쪽 네브 (데스크탑, 테블릿) */}
       <motion.section
-        initial={{ width: '280px' }}
-        animate={{ width: isLeftNavOpen ? '280px' : '64px' }}
-        transition={{ duration: 0.1 }}
+        initial='open'
+        animate={isLeftNavOpen ? 'open' : 'closed'}
+        variants={navVariants}
         className={twMerge(
           clsx(
-            'hidden sm:flex sm:sticky sm:top-0 sm:left-0 flex-col border-r-[1px] min-h-screen flex-shrink-0 divide-slate-200'
+            'hidden sm:flex sm:sticky sm:top-0 sm:left-0 flex-col border-r-[1px] min-h-screen flex-shrink-0 divide-slate-200 overflow-hidden'
           )
         )}
       >
-        {/* 윗부분: 로고 및 열기/닫기 버튼 */}
         <NavHeader isLeftNavOpen={isLeftNavOpen} handleNavToggleButtonClick={() => setIsLeftNavOpen(!isLeftNavOpen)} />
-        {isLeftNavOpen && <NavContent handleTodoModalOpen={handleTodoModalOpen} />}
+        <AnimatePresence mode='wait'>
+          {isLeftNavOpen && (
+            <motion.div key='nav-content' variants={navContentVariants} initial='closed' animate='open' exit='closed'>
+              <NavContent handleTodoModalOpen={handleTodoModalOpen} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.section>
-      {/* 모바일 헤더 */}
+      {/* 위쪽네브 (모바일) */}
       <NavMobileHeader currentPageLabel={currentPageLabel} handleTodoModalOpen={handleTodoModalOpen} />
+      {/* 할일 추가 모달 */}
       <TodoAddModal isOpen={isTodoModalOpen} onChangeIsOpen={setIsTodoModalOpen} />
     </nav>
   );
