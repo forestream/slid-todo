@@ -27,32 +27,37 @@ const Nav = () => {
   }, [pathname]);
 
   return (
-    <nav aria-label='사이드바 네비게이션 메뉴' className='sticky top-0 z-10'>
-      {/* 왼쪽 네브 (데스크탑, 테블릿) */}
-      <motion.section
-        initial='open'
-        animate={isLeftNavOpen ? 'open' : 'closed'}
-        variants={navVariants}
-        className={twMerge(
-          clsx(
-            'hidden sm:flex sm:sticky sm:top-0 sm:left-0 flex-col border-r-[1px] min-h-screen flex-shrink-0 divide-slate-200 overflow-hidden'
-          )
-        )}
-      >
-        <NavHeader isLeftNavOpen={isLeftNavOpen} handleNavToggleButtonClick={() => setIsLeftNavOpen(!isLeftNavOpen)} />
-        <AnimatePresence mode='wait'>
-          {isLeftNavOpen && (
-            <motion.div key='nav-content' variants={navContentVariants} initial='closed' animate='open' exit='closed'>
-              <NavContent handleTodoModalOpen={handleTodoModalOpen} />
-            </motion.div>
+    <>
+      <nav aria-label='사이드바 네비게이션 메뉴'>
+        {/* 왼쪽 네브 (데스크탑, 테블릿) */}
+        <motion.section
+          initial='open'
+          animate={isLeftNavOpen ? 'open' : 'closed'}
+          variants={navVariants}
+          className={twMerge(
+            clsx(
+              'hidden sm:flex sticky top-0 left-0 flex-col border-r-[1px] min-h-screen flex-shrink-0 divide-slate-200 overflow-hidden'
+            )
           )}
-        </AnimatePresence>
-      </motion.section>
+        >
+          <NavHeader
+            isLeftNavOpen={isLeftNavOpen}
+            handleNavToggleButtonClick={() => setIsLeftNavOpen(!isLeftNavOpen)}
+          />
+          <AnimatePresence mode='wait'>
+            {isLeftNavOpen && (
+              <motion.div key='nav-content' variants={navContentVariants} initial='closed' animate='open' exit='closed'>
+                <NavContent handleTodoModalOpen={handleTodoModalOpen} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.section>
+      </nav>
       {/* 위쪽네브 (모바일) */}
       <NavMobileHeader currentPageLabel={currentPageLabel} handleTodoModalOpen={handleTodoModalOpen} />
       {/* 할일 추가 모달 */}
       <TodoAddModal isOpen={isTodoModalOpen} onChangeIsOpen={setIsTodoModalOpen} />
-    </nav>
+    </>
   );
 };
 
