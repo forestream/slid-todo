@@ -6,9 +6,9 @@ export default function NavLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='flex flex-col h-screen sm:flex-row lg:flex-row'>
+    <div className='flex flex-col min-h-screen sm:flex-row lg:flex-row'>
       <Nav />
-      <div className='flex-1'>{children}</div>
+      <div className='flex-1 min-h-screen'>{children}</div>
     </div>
   );
 }
