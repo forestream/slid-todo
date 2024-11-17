@@ -11,7 +11,7 @@ interface NavMobileSheetProps {
 const NavMobileSheet: React.FC<NavMobileSheetProps> = ({ isSheetOpen, setIsSheetOpen, handleTodoModalOpen }) => {
   return (
     <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={setIsSheetOpen}>
-      <SheetContent position={'top'} className={'sm:w-[280px] p-0'}>
+      <SheetContent position={'top'} dialogClassName={'sm:hidden'}>
         <div className='flex items-center justify-between pt-3 px-4 pb-4'>
           <ImageLogoWithText />
           <SheetClose />
