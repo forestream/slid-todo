@@ -4,6 +4,7 @@ import { ImageLogoWithText } from '@/public/images/ImageLogoWithText';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import Link from 'next/link';
+import NavSection from './NavSection';
 
 type NavHeaderProps = {
   isLeftNavOpen?: boolean;
@@ -11,11 +12,6 @@ type NavHeaderProps = {
   handleNavToggleButtonClick?: () => void;
   currentPageLabel?: string;
   children?: React.ReactNode;
-};
-
-type NavSectionProps = {
-  children: React.ReactNode;
-  className?: string;
 };
 
 type NavButtonProps = {
@@ -40,10 +36,6 @@ const NavButton = ({ onClick, icon, className }: NavButtonProps) => (
   >
     {icon}
   </div>
-);
-
-const NavSection = ({ children, className }: NavSectionProps) => (
-  <div className={twMerge('w-full justify-center items-center gap-4', className)}>{children}</div>
 );
 
 const NavHeader = ({ isLeftNavOpen, handleNavToggleButtonClick }: NavHeaderProps) => {

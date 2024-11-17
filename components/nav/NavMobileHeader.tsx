@@ -1,22 +1,13 @@
 import { IconHamburger } from '@/public/icons/IconHamburger';
 import { useEffect, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 import NavMobileSheet from './NavMobileSheet';
 import { usePathname } from 'next/navigation';
-
-type NavSectionProps = {
-  children: React.ReactNode;
-  className?: string;
-};
+import NavSection from './NavSection';
 
 type NavMobileHeader = {
   currentPageLabel?: string;
   handleTodoModalOpen: () => void;
 };
-
-const NavSection = ({ children, className }: NavSectionProps) => (
-  <div className={twMerge('w-full justify-center items-center gap-4', className)}>{children}</div>
-);
 
 const NavMobileHeader: React.FC<NavMobileHeader> = ({ currentPageLabel, handleTodoModalOpen }) => {
   const pathname = usePathname();
@@ -26,7 +17,7 @@ const NavMobileHeader: React.FC<NavMobileHeader> = ({ currentPageLabel, handleTo
   }, [pathname]);
   return (
     <>
-      <NavSection className='flex sm:hidden lg:hidden flex-row px-[14px] py-4 justify-normal'>
+      <NavSection className='flex sm:hidden flex-row px-[14px] py-4 justify-normal backdrop-saturate-180 backdrop-blur-sm'>
         <IconHamburger
           onClick={() => setIsSheetOpen(true)}
           className='hover:cursor-pointer'
