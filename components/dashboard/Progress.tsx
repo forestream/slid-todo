@@ -9,7 +9,7 @@ import useTodoProgressQuery from '@/lib/hooks/useTodoProgressQuery';
 const Progress = () => {
   const { data } = useTodoProgressQuery();
   return (
-    <section className='relative flex flex-1 min-w-80 min-h-[250px] bg-blue-500 rounded-xl'>
+    <section className='relative flex flex-1 min-w-72 min-h-[250px] bg-blue-500 rounded-xl'>
       <div className='flex-col pl-6 pt-4'>
         <div className='w-10 h-10 bg-slate-900 rounded-[15px] grid place-content-center' aria-hidden='true'>
           <IconProgress />

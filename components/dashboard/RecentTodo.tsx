@@ -11,7 +11,7 @@ const RecentTodo = () => {
   const recentTodos = data?.pages[0];
   return (
     <section
-      className='flex flex-1 flex-col min-w-80 min-h-[250px] bg-white rounded-xl border border-slate-100 gap-4
+      className='flex flex-1 flex-col min-w-72 min-h-[250px] bg-white rounded-xl border border-slate-100 gap-4
       px-4 pb-6 pt-4 sm:px-6 sm:pb-6 sm:pt-4
     '
     >
