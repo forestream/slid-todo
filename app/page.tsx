@@ -19,32 +19,68 @@ export default function Home() {
   const pageCount = 5;
   const throttleDelay = 500;
   const lastScrollTime = useRef(0);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
+  const minSwipeDistance = 50;
 
   const handleScroll = useCallback(
     (direction: number) => {
-      setCurrentPage((prevPage) => {
-        if (direction > 0) {
-          return Math.min(prevPage + 1, pageCount - 1);
-        } else {
-          return Math.max(prevPage - 1, 0);
-        }
-      });
+      const currentTime = new Date().getTime();
+      if (currentTime - lastScrollTime.current >= throttleDelay) {
+        lastScrollTime.current = currentTime;
+        setCurrentPage((prevPage) => {
+          if (direction > 0) {
+            return Math.min(prevPage + 1, pageCount - 1);
+          } else {
+            return Math.max(prevPage - 1, 0);
+          }
+        });
+      }
     },
     [pageCount]
   );
 
   useEffect(() => {
     const onWheel = (event: WheelEvent) => {
-      const currentTime = new Date().getTime();
-      if (currentTime - lastScrollTime.current >= throttleDelay) {
-        lastScrollTime.current = currentTime;
-        handleScroll(event.deltaY);
+      event.preventDefault();
+      handleScroll(event.deltaY);
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartY.current = event.touches[0].clientY;
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      // 스크롤 중에 기본 터치 동작 방지
+      event.preventDefault();
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      touchEndY.current = event.changedTouches[0].clientY;
+      const swipeDistance = touchStartY.current - touchEndY.current;
+
+      if (Math.abs(swipeDistance) >= minSwipeDistance) {
+        handleScroll(swipeDistance);
       }
     };
 
-    window.addEventListener('wheel', onWheel);
-    return () => window.removeEventListener('wheel', onWheel);
-  }, [handleScroll, throttleDelay]);
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      mainElement.addEventListener('wheel', onWheel, { passive: false });
+      mainElement.addEventListener('touchstart', onTouchStart);
+      mainElement.addEventListener('touchmove', onTouchMove, { passive: false });
+      mainElement.addEventListener('touchend', onTouchEnd);
+    }
+
+    return () => {
+      if (mainElement) {
+        mainElement.removeEventListener('wheel', onWheel);
+        mainElement.removeEventListener('touchstart', onTouchStart);
+        mainElement.removeEventListener('touchmove', onTouchMove);
+        mainElement.removeEventListener('touchend', onTouchEnd);
+      }
+    };
+  }, [handleScroll]);
 
   return (
     <main className='relative h-screen w-full overflow-hidden'>
