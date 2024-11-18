@@ -28,17 +28,16 @@ const Nav = () => {
 
   return (
     <>
-      <nav aria-label='사이드바 네비게이션 메뉴'>
+      <nav
+        aria-label='사이드바 네비게이션 메뉴'
+        className='hidden sm:block h-screen sticky top-0 left-0 overflow-hidden'
+      >
         {/* 왼쪽 네브 (데스크탑, 테블릿) */}
         <motion.section
           initial='open'
           animate={isLeftNavOpen ? 'open' : 'closed'}
           variants={navVariants}
-          className={twMerge(
-            clsx(
-              'hidden sm:flex sticky top-0 left-0 flex-col border-r-[1px] min-h-screen flex-shrink-0 divide-slate-200 overflow-hidden'
-            )
-          )}
+          className={twMerge(clsx('hidden h-full sm:flex flex-col flex-shrink-0 divide-slate-200'))}
         >
           <NavHeader
             isLeftNavOpen={isLeftNavOpen}
@@ -46,7 +45,14 @@ const Nav = () => {
           />
           <AnimatePresence mode='wait'>
             {isLeftNavOpen && (
-              <motion.div key='nav-content' variants={navContentVariants} initial='closed' animate='open' exit='closed'>
+              <motion.div
+                key='nav-content'
+                variants={navContentVariants}
+                initial='closed'
+                animate='open'
+                exit='closed'
+                className='h-full overflow-auto scroll-container'
+              >
                 <NavContent handleTodoModalOpen={handleTodoModalOpen} />
               </motion.div>
             )}
