@@ -87,12 +87,14 @@ SheetTrigger.displayName = 'SheetTrigger';
 const SheetContent = ({
   position,
   className,
+  dialogClassName,
   closeOnClickOverlay = true,
   children,
   ...props
 }: ComponentPropsWithoutRef<'div'> & {
   position: 'top' | 'bottom' | 'right' | 'left';
   closeOnClickOverlay?: boolean;
+  dialogClassName?: string;
 }) => {
   const { isOpen, handleClose, willBeClosed } = useSheetContext();
 
@@ -159,7 +161,12 @@ const SheetContent = ({
     <>
       {isOpen &&
         createPortal(
-          <div role='dialog' aria-modal='true' className='fixed inset-0' onClick={(e) => e.stopPropagation()}>
+          <div
+            role='dialog'
+            aria-modal='true'
+            className={twMerge('fixed inset-0 z-20', dialogClassName)}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div
               className='absolute inset-0 bg-black opacity-0 transition-opacity duration-300'
               onClick={handleClickOverlay}
@@ -167,7 +174,7 @@ const SheetContent = ({
             ></div>
             <div
               className={twMerge(
-                'absolute p-6 bg-white z-10 transition-transform duration-150',
+                'absolute p-6 bg-white z-20 transition-transform duration-150',
                 variants[position],
                 className
               )}

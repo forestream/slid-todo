@@ -111,7 +111,7 @@ const ModalContent = ({
           <div
             role='dialog'
             aria-modal='true'
-            className={twMerge('fixed inset-0 flex justify-center items-center', overlayClassName)}
+            className={twMerge('fixed inset-0 flex justify-center items-center z-20', overlayClassName)}
             onClick={(e) => e.stopPropagation()}
           >
             <div className='absolute inset-0 bg-black opacity-50' onClick={handleClickOverlay}></div>
