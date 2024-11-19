@@ -1,3 +1,4 @@
+import useScrollStore from '@/lib/bear/scrollStore';
 import IconModalClose from '@/public/icons/IconModalClose';
 import {
   Children,
@@ -29,34 +30,37 @@ const SheetContext = createContext<
 >(undefined);
 
 const SheetProvider = ({
-  isOpen: initIsOpen,
+  isOpen: open,
   onChangeIsOpen,
-  beforeClose,
   children,
 }: PropsWithChildren<{ isOpen?: boolean; onChangeIsOpen?: (isOpen: boolean) => void; beforeClose?: () => void }>) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const isControlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = isControlled ? open : internalOpen;
+  const handleOpenChange = (newState: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(newState);
+    }
+    onChangeIsOpen?.(newState);
+  };
+
   const [willBeClosed, setWillBeClosed] = useState(false);
 
   const handleOpen = () => {
-    setIsOpen(true);
-    onChangeIsOpen?.(true);
+    handleOpenChange(true);
   };
 
   const handleClose = () => {
     setWillBeClosed(true);
 
     setTimeout(() => {
-      beforeClose?.();
-      onChangeIsOpen?.(false);
-      setIsOpen(false);
+      handleOpenChange(false);
       setWillBeClosed(false);
     }, 300);
   };
 
   return (
-    <SheetContext.Provider value={{ isOpen: initIsOpen ?? isOpen, handleOpen, handleClose, willBeClosed }}>
-      {children}
-    </SheetContext.Provider>
+    <SheetContext.Provider value={{ isOpen, handleOpen, handleClose, willBeClosed }}>{children}</SheetContext.Provider>
   );
 };
 
@@ -122,11 +126,18 @@ const SheetContent = ({
     if (!closeOnClickOverlay) return;
     handleClose();
   };
+  const { incrementModalCount, decrementModalCount } = useScrollStore();
+  useEffect(() => {
+    if (isOpen) {
+      incrementModalCount();
+    } else {
+      decrementModalCount();
+    }
 
-  if (globalThis.window) {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
-  }
+    return () => {
+      decrementModalCount();
+    };
+  }, [isOpen, incrementModalCount, decrementModalCount]);
 
   useEffect(() => {
     if (!ref.current || !overlayRef.current) return;
