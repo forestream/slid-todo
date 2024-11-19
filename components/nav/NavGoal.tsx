@@ -21,7 +21,7 @@ const DEFAULT_INPUT_VALUE = '· ';
 
 const NavGoal = ({ className }: { className?: string }) => {
   const [isNewGoalInputVisible, setIsNewGoalInputVisible] = useState(false);
-  const [newGoalInputValue, setNewGoalInputValue] = useState(''); // 새롭게 생성할 목표의 input값
+  const [newGoalInputValue, setNewGoalInputValue] = useState(DEFAULT_INPUT_VALUE); // 새롭게 생성할 목표의 input값
   const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
   const [existingGoalInputValue, setExistingGoalInputValue] = useState(''); // 기존에 있던 목표의 input값
   const [kebabClickedGoal, setKebabClickedGoal] = useState<Goal>(); // 케밥 아이콘을 클릭한 목표 정보 저장
@@ -37,6 +37,8 @@ const NavGoal = ({ className }: { className?: string }) => {
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
   const newGoalInputRef = useRef<HTMLDivElement | null>(null);
+  const newGoalButtonRef = useRef<HTMLDivElement | null>(null);
+
   const path = usePathname();
   const route = useRouter();
 
@@ -48,7 +50,12 @@ const NavGoal = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (newGoalInputRef.current && !newGoalInputRef.current.contains(event.target as Node)) {
+      if (
+        newGoalInputRef.current &&
+        !newGoalInputRef.current.contains(event.target as Node) &&
+        newGoalButtonRef.current &&
+        !newGoalButtonRef.current.contains(event.target as Node)
+      ) {
         setIsNewGoalInputVisible(false);
         setNewGoalInputValue(DEFAULT_INPUT_VALUE);
       }
@@ -73,7 +80,7 @@ const NavGoal = ({ className }: { className?: string }) => {
   };
 
   const handleAddGoalButtonClick = () => {
-    // 펼쳐진 상태 && 내용이 입력된 상태에서 추가 한 번 더 누르면 제출되도록 하기
+    // Input이 열려 있고, 내용이 입력된 상태라면 폼 제출
     if (isNewGoalInputVisible && newGoalInputValue !== DEFAULT_INPUT_VALUE) {
       handleGoalSubmit();
     }
@@ -87,7 +94,7 @@ const NavGoal = ({ className }: { className?: string }) => {
     const trimmedGoalValue = newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
     if (trimmedGoalValue.length > 0) addGoal.mutate({ updates: { title: trimmedGoalValue } });
     setIsNewGoalInputVisible(false);
-    setNewGoalInputValue('· ');
+    setNewGoalInputValue(DEFAULT_INPUT_VALUE);
   };
 
   // 목표 수정 및 삭제
@@ -228,6 +235,7 @@ const NavGoal = ({ className }: { className?: string }) => {
 
         {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
         <div
+          ref={newGoalButtonRef}
           tabIndex={0}
           className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm sm:w-full lg:w-full'
         >
