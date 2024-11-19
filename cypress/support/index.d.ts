@@ -8,3 +8,17 @@ declare namespace Cypress {
     login(email: string, password: string): Chainable<Element>;
   }
 }
+
+declare namespace Cypress {
+  interface Chainable {
+    /**
+     * 페이지 최상단으로 스크롤
+     */
+    scrollToTop(): Chainable<Window>;
+
+    /**
+     * 페이지 최하단으로 스크롤
+     */
+    scrollToBottom(): Chainable<Window>;
+  }
+}
