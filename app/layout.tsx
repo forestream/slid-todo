@@ -3,6 +3,13 @@ import type { Metadata } from 'next';
 import './globals.css';
 import QueryClientProviderWrapper from './_view/QueryClientProvider';
 import Toaster from '@/components/common/toast/toaster';
+import localFont from 'next/font/local';
+
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko'>
+    <html lang='ko' className={pretendard.className}>
       <body>
         <QueryClientProviderWrapper>
           {children}
