@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 interface TodoActionButtonsProps {
   data: Todo;
   onNoteView: () => void;
+  onChangeIsOpen: (isOpen: boolean) => void;
 }
 
 interface ActionButton {
@@ -18,7 +19,7 @@ interface ActionButton {
   condition?: boolean;
 }
 
-const ActionButtons = ({ data, onNoteView }: TodoActionButtonsProps) => {
+const ActionButtons = ({ data, onNoteView, onChangeIsOpen }: TodoActionButtonsProps) => {
   const router = useRouter();
 
   const handleExternalLink = (url: string | null) => {
@@ -57,13 +58,19 @@ const ActionButtons = ({ data, onNoteView }: TodoActionButtonsProps) => {
     {
       icon: <IconNoteWrite />,
       label: '노트 수정하기',
-      onClick: () => router.push(handleGetNoteUrl('edit')),
+      onClick: () => {
+        onChangeIsOpen(false);
+        setTimeout(() => router.push(handleGetNoteUrl('edit')), 300);
+      },
       condition: !!data.noteId,
     },
     {
       icon: <IconNoteWrite />,
       label: '노트 추가하기',
-      onClick: () => router.push(handleGetNoteUrl('create')),
+      onClick: () => {
+        onChangeIsOpen(false);
+        router.push(handleGetNoteUrl('create'));
+      },
       condition: !data.noteId,
     },
   ];

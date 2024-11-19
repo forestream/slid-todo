@@ -21,7 +21,7 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
   const [isEditTodoModalOpen, setIsEditTodoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
-
+  if (!isOpen) return null;
   return (
     <>
       <SheetProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
@@ -44,7 +44,7 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
                 삭제하기
               </Button>
             </div>
-            <ActionButtons data={data} onNoteView={() => setIsNoteViewOpen(true)} />
+            <ActionButtons data={data} onNoteView={() => setIsNoteViewOpen(true)} onChangeIsOpen={onChangeIsOpen} />
           </div>
         </SheetContent>
       </SheetProvider>
