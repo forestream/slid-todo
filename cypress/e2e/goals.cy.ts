@@ -20,8 +20,7 @@ describe('목표 E2E 테스트', () => {
   });
 
   context('목표 생성', () => {
-
-    it('목표를 등록하고 모든 페이지에서 확인할 수 있어야 합니다.', () => {
+    it('목표를 작성하고 엔터로 제춣하여 모든 페이지에서 확인할 수 있어야 합니다.', () => {
 
       // 네비게이션에서 할 일 등록하기
       cy.contains('새 목표').click();
@@ -54,6 +53,40 @@ describe('목표 E2E 테스트', () => {
       cy.contains('h2', '새로운 목표 테스트').should('be.visible');
     });
 
+    it('목표를 작성하고 추가하기 버튼을 클릭하여 할 일 추가가 가능해야합니다.', () => {
+
+      // 네비게이션에서 할 일 등록하기
+      cy.contains('새 목표').click();
+      cy.get('input').should('have.value', '· ').type('새로운 목표 클릭 제출 테스트');
+      cy.contains('새 목표').click();
+
+      // 등록한 후, nav에 등록된 할 일이 있는지 확인
+      cy.contains('a', '새로운 목표 클릭 제출 테스트').scrollIntoView().should('be.visible');
+
+      cy.scrollToTop();
+
+      cy.wait(500)
+
+      cy.wrap(Array(10))  // 무한 스크롤로 대시보드 하단에 목표를 모두 불러올때까지 반복
+        .each(() => {
+          cy.scrollToBottom();
+          cy.wait(500);
+        });
+
+      // 이후 목표를 찾고 스크롤하여 보이게 하기
+      cy.contains('h3', '새로운 목표 클릭 제출 테스트').scrollIntoView().should('be.visible');
+
+
+      // 새로 등록한 목표 페이지로 이동하여 등록된 목표가 있는지 확인
+      cy.contains('a', '새로운 목표 클릭 제출 테스트').click();
+
+      cy.wait(1000);
+      cy.url().should('include', 'goals');
+
+      cy.contains('h2', '새로운 목표 클릭 제출 테스트').should('be.visible');
+
+
+    });
   })
 
 
