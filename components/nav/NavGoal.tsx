@@ -15,6 +15,7 @@ import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteGoalMutation } from '@/lib/hooks/useDeleteGoalMutation';
 import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import ConfirmationModal from '../modal/ConfirmationModal';
+import { usePathname, useRouter } from 'next/navigation';
 
 const DEFAULT_INPUT_VALUE = '· ';
 
@@ -36,6 +37,8 @@ const NavGoal = ({ className }: { className?: string }) => {
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
   const newGoalInputRef = useRef<HTMLDivElement | null>(null);
+  const path = usePathname();
+  const route = useRouter();
 
   useEffect(() => {
     if (inView) {
@@ -127,6 +130,10 @@ const NavGoal = ({ className }: { className?: string }) => {
   const handleGoalDelete = () => {
     deleteGoal.mutate({ goalId: kebabClickedGoal?.id ?? -1 });
     setIsDeleteModalOpen(false);
+    // 현재 페이지가 해당 goal의 id인 페이지라면 대시보드로 페이지 이동
+    if (path === `/goals/${kebabClickedGoal?.id}`) {
+      route.push('/dashboard');
+    }
   };
 
   return (
@@ -141,7 +148,7 @@ const NavGoal = ({ className }: { className?: string }) => {
 
         <div className='order-3 sm:order-2 lg:order-2 w-full max-h-72 overflow-auto scroll-container h-auto'>
           {data?.pages.map((page, idx) => (
-            <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1'>
+            <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1' aria-label='목표 전체 리스트'>
               {page.goals.map((goal: Goal) => (
                 <li className='flex items-center group rounded-lg  hover:bg-slate-50 ' key={goal.id}>
                   {/* kebab에서 수정하기를 클릭하면 Input, 그 외에는 일반 Link로 goal list */}
