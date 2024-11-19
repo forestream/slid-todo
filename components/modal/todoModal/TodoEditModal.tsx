@@ -1,4 +1,4 @@
-import { ModalClose, ModalContent, ModalProvider, useModalContext } from '../../common/Modal';
+import { ModalClose, ModalContent, ModalProvider } from '../../common/Modal';
 import { Todo } from '@/lib/types/todo';
 import InputSlid from '../../common/InputSlid';
 import { useForm } from 'react-hook-form';
@@ -21,9 +21,8 @@ interface TodoEditModalProps {
   onChangeIsOpen: (isOpen: boolean) => void;
 }
 
-const Content = ({ data }: { data: Todo }) => {
+const Content = ({ data, onChangeIsOpen }: { data: Todo; onChangeIsOpen: (value: boolean) => void }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { handleClose } = useModalContext();
   const editTodo = useUpdateTodoMutation();
   const {
     register,
@@ -49,7 +48,7 @@ const Content = ({ data }: { data: Todo }) => {
   const onSubmit = (update: TodoEditFormData) => {
     const cleanedData = normalizeFormData(update);
     editTodo.mutate({ id: Number(data.id), updates: cleanedData });
-    handleClose();
+    onChangeIsOpen(false);
   };
   const fileUrl = getValues('fileUrl');
   useEffect(() => {
@@ -115,7 +114,7 @@ const TodoEditModal: React.FC<TodoEditModalProps> = ({ data, isOpen, onChangeIsO
 
   return (
     <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
-      <Content data={data} />
+      <Content data={data} onChangeIsOpen={onChangeIsOpen} />
     </ModalProvider>
   );
 };

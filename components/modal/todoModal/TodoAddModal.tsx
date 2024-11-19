@@ -1,4 +1,4 @@
-import { ModalClose, ModalContent, ModalProvider, useModalContext } from '../../common/Modal';
+import { ModalClose, ModalContent, ModalProvider } from '../../common/Modal';
 import InputSlid from '../../common/InputSlid';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +8,7 @@ import Button from '@/components/common/ButtonSlid';
 import { useAddTodoMutation } from '@/lib/hooks/useAddTodoMutation';
 import { TodoAddFormData, todoAddSchema } from '@/lib/schemas/todosSchemas';
 import GoalSelector from './GoalSelector';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import isValidImageUrl from '@/lib/utils/isValidImageUrl';
 import Image from 'next/image';
 import { filterEmptyFields } from '@/lib/utils/cleanedFormData';
@@ -19,9 +19,8 @@ interface TodoAddModalProps {
   onChangeIsOpen: (isOpen: boolean) => void;
 }
 
-const Content = ({ goalId }: { goalId?: number }) => {
+const Content = ({ goalId, onChangeIsOpen }: { goalId?: number; onChangeIsOpen: (value: boolean) => void }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { handleClose } = useModalContext();
   const addTodo = useAddTodoMutation();
   const {
     register,
@@ -48,7 +47,7 @@ const Content = ({ goalId }: { goalId?: number }) => {
     const filterData = filterEmptyFields(data);
     addTodo.mutate({ updates: filterData });
     reset();
-    handleClose();
+    onChangeIsOpen(false);
   };
   const fileUrl = getValues('fileUrl');
   useEffect(() => {
@@ -106,15 +105,15 @@ const Content = ({ goalId }: { goalId?: number }) => {
   );
 };
 
-const TodoAddModal: React.FC<TodoAddModalProps> = ({ goalId, isOpen, onChangeIsOpen }) => {
-  // isOpen이 false일 때는 아무것도 렌더링하지 않음
+const TodoAddModal = React.memo(({ goalId, isOpen, onChangeIsOpen }: TodoAddModalProps) => {
   if (!isOpen) return null;
 
   return (
     <ModalProvider isOpen={isOpen} onChangeIsOpen={onChangeIsOpen}>
-      <Content goalId={goalId} />
+      <Content goalId={goalId} onChangeIsOpen={onChangeIsOpen} />
     </ModalProvider>
   );
-};
+});
+TodoAddModal.displayName = 'TodoAddModal';
 
 export default TodoAddModal;
