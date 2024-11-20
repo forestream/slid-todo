@@ -153,7 +153,7 @@ const NavGoal = ({ className }: { className?: string }) => {
           <span className='text-lg font-medium text-slate-800'>목표</span>
         </div>
 
-        <div className='order-3 sm:order-2 lg:order-2 w-full max-h-72 overflow-auto scroll-container h-auto'>
+        <div className='order-3 sm:order-2 lg:order-2 w-full max-h-60 sm:max-h-72 lg:max-h-72 overflow-auto scroll-container h-auto'>
           {data?.pages.map((page, idx) => (
             <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1' aria-label='목표 전체 리스트'>
               {page.goals.map((goal: Goal) => (
