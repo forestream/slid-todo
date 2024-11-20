@@ -1,22 +1,11 @@
 import 'cypress-real-events';
 
-describe('목표 E2E 테스트', () => {
+describe('목표 E2E 테스트 - 태블릿', () => {
 
   beforeEach(() => {
-    cy.get('[aria-label="사이드바 네비게이션 열기/닫기"]')
-      .invoke('attr', 'aria-expanded')
-      .then((expandedValue) => {
-        if (expandedValue === 'false') {
-          // 사이드바가 닫혀 있는 경우 클릭
-          cy.get('[aria-label="사이드바 네비게이션 열기/닫기"]').click();
+    cy.viewport(768, 1024);
+    cy.openNav();
 
-          cy.wait(500);
-
-          // 사이드바가 열렸는지 확인
-          cy.get('[aria-label="사이드바 네비게이션 열기/닫기"]')
-            .should('have.attr', 'aria-expanded', 'true');
-        }
-      });
   });
 
   context('목표 생성', () => {
@@ -109,30 +98,23 @@ describe('목표 E2E 테스트', () => {
     })
 
     it('nav에서 목표를 수정 할 수 있어야 합니다.', () => {
-      cy.wait(1000);
 
-      // '새로운 목표 테스트'라는 텍스트를 가진 <a> 태그의 부모 <li>에 마우스를 오버
-      cy.contains('a', '새로운 목표 테스트 수정')
-        .closest('li')
-        .scrollIntoView()
-        .should('be.visible')
-        .realHover();
+      // 호버하지 않아도 버튼이 있어 클릭하기만 하면 된다.
 
       // 동일한 <li> 내의 <div> 버튼을 클릭
       cy.contains('a', '새로운 목표 테스트 수정')
         .closest('li')
         .find('div[aria-label="목표 관리 메뉴 열기"]')
-        .invoke('css', 'display', 'block')
-        .should('be.visible').click();
+        .click();
 
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.contains('li', '수정하기').should('be.visible').click();
 
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.get('input[placeholder="새로운 목표 테스트 수정"]').type('새로운 목표 테스트 수정2').type('{enter}');
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.contains('a', '새로운 목표 테스트 수정2').should('be.visible');
 
@@ -153,6 +135,8 @@ describe('목표 E2E 테스트', () => {
       // nav 에서 해당 목표를 찾을 수 없어야함.
 
       cy.visit('/dashboard');
+      cy.get('div[aria-label="사이드바 네비게이션 열기/닫기"][aria-expanded="false"]').click();
+      cy.contains('로그아웃').should('be.visible');
 
       cy.wait(1000)
 
@@ -169,6 +153,8 @@ describe('목표 E2E 테스트', () => {
     it('nav에서 목표를 삭제할 수 있어야 합니다.', () => {
 
       cy.visit('/dashboard');
+      cy.get('div[aria-label="사이드바 네비게이션 열기/닫기"][aria-expanded="false"]').click();
+      cy.contains('로그아웃').should('be.visible');
 
       // 네비게이션에서 할 일 등록하기
       cy.contains('새 목표').click();
@@ -179,21 +165,11 @@ describe('목표 E2E 테스트', () => {
       cy.contains('a', 'nav 목표 삭제 테스트').click();
       cy.wait(1000)
 
-      // newNavGoal텍스트를 가진 <a> 태그의 부모 <li>에 마우스를 오버
-      cy.contains('a', 'nav 목표 삭제 테스트')
-        .closest('li')
-        .scrollIntoView()
-        .should('be.visible')
-        .realHover();
-
-      cy.wait(1000);
-
-      // 동일한 <li> 내의 <div> 버튼을 클릭
+      // 해당 목표의 메뉴 클릭
       cy.contains('a', 'nav 목표 삭제 테스트')
         .closest('li')
         .find('div[aria-label="목표 관리 메뉴 열기"]')
-        .invoke('css', 'display', 'block')
-        .should('be.visible').click();
+        .click();
 
       cy.wait(1000);
 

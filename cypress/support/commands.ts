@@ -20,3 +20,24 @@ Cypress.Commands.add('scrollToBottom', () => {
     win.scrollTo(0, win.document.body.scrollHeight);
   });
 });
+
+Cypress.Commands.add('openNav', () => {
+  cy.get('div[aria-label="사이드바 네비게이션 열기/닫기"][aria-expanded="false"]').click();
+  cy.contains('로그아웃').should('be.visible');
+});
+
+Cypress.Commands.add('closeNav', () => {
+  cy.get('div[aria-label="사이드바 네비게이션 열기/닫기"][aria-expanded="true"]').click();
+  cy.contains('로그아웃').should('not.be.visible');
+});
+
+Cypress.Commands.add('openMobileNav', () => {
+  cy.get('div[aria-label="모바일 네비게이션 열기/닫기"][aria-expanded="false"]').click();
+  cy.contains('로그아웃').should('be.visible');
+});
+
+
+Cypress.Commands.add('closeMobileNav', () => {
+  cy.get('button[aria-label="모바일 네비게이션 열기/닫기"][aria-expanded="true"]').click({ force: true });
+  cy.contains('로그아웃').should('not.be.visible');
+});
