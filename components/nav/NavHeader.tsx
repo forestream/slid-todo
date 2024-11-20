@@ -18,13 +18,15 @@ type NavButtonProps = {
   onClick: () => void;
   icon: React.ReactNode;
   className?: string;
+  isLeftNavOpen?: boolean;
 };
 
 // hydration error를 방지하기위해 button이 아닌 div 태그 사용
-const NavButton = ({ onClick, icon, className }: NavButtonProps) => (
+const NavButton = ({ onClick, icon, className, isLeftNavOpen }: NavButtonProps) => (
   <div
     role='button'
     aria-label='사이드바 네비게이션 열기/닫기'
+    aria-expanded={isLeftNavOpen}
     tabIndex={0}
     className={twMerge(
       clsx(
@@ -45,7 +47,11 @@ const NavHeader = ({ isLeftNavOpen, handleNavToggleButtonClick }: NavHeaderProps
     >
       <Link href='/dashboard'>{isLeftNavOpen ? <ImageLogoWithText /> : <ImageLogo />}</Link>
       {handleNavToggleButtonClick && (
-        <NavButton onClick={handleNavToggleButtonClick} icon={<IconFold isFold={!isLeftNavOpen} />} />
+        <NavButton
+          onClick={handleNavToggleButtonClick}
+          icon={<IconFold isFold={!isLeftNavOpen} />}
+          isLeftNavOpen={isLeftNavOpen}
+        />
       )}
     </NavSection>
   );

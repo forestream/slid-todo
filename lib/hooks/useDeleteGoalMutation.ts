@@ -22,6 +22,7 @@ export const useDeleteGoalMutation = () => {
         variant: 'success',
       });
       queryClient.invalidateQueries({ queryKey: ['goals'] });
+      queryClient.refetchQueries({ queryKey: ['goals'] });
     },
     onError: (error) => {
       toast.toast({

@@ -15,12 +15,13 @@ import { IconKebabWithCircle } from '@/public/icons/IconKebabWithCircle';
 import { useDeleteGoalMutation } from '@/lib/hooks/useDeleteGoalMutation';
 import { useUpdateGoalMutation } from '@/lib/hooks/useUpdateGoalMutation';
 import ConfirmationModal from '../modal/ConfirmationModal';
+import { usePathname, useRouter } from 'next/navigation';
 
 const DEFAULT_INPUT_VALUE = '· ';
 
 const NavGoal = ({ className }: { className?: string }) => {
   const [isNewGoalInputVisible, setIsNewGoalInputVisible] = useState(false);
-  const [newGoalInputValue, setNewGoalInputValue] = useState(''); // 새롭게 생성할 목표의 input값
+  const [newGoalInputValue, setNewGoalInputValue] = useState(DEFAULT_INPUT_VALUE); // 새롭게 생성할 목표의 input값
   const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
   const [existingGoalInputValue, setExistingGoalInputValue] = useState(''); // 기존에 있던 목표의 input값
   const [kebabClickedGoal, setKebabClickedGoal] = useState<Goal>(); // 케밥 아이콘을 클릭한 목표 정보 저장
@@ -36,6 +37,10 @@ const NavGoal = ({ className }: { className?: string }) => {
   const { data, fetchNextPage } = useInfiniteGoalsQuery(20);
 
   const newGoalInputRef = useRef<HTMLDivElement | null>(null);
+  const newGoalButtonRef = useRef<HTMLDivElement | null>(null);
+
+  const path = usePathname();
+  const route = useRouter();
 
   useEffect(() => {
     if (inView) {
@@ -45,7 +50,12 @@ const NavGoal = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (newGoalInputRef.current && !newGoalInputRef.current.contains(event.target as Node)) {
+      if (
+        newGoalInputRef.current &&
+        !newGoalInputRef.current.contains(event.target as Node) &&
+        newGoalButtonRef.current &&
+        !newGoalButtonRef.current.contains(event.target as Node)
+      ) {
         setIsNewGoalInputVisible(false);
         setNewGoalInputValue(DEFAULT_INPUT_VALUE);
       }
@@ -70,7 +80,7 @@ const NavGoal = ({ className }: { className?: string }) => {
   };
 
   const handleAddGoalButtonClick = () => {
-    // 펼쳐진 상태 && 내용이 입력된 상태에서 추가 한 번 더 누르면 제출되도록 하기
+    // Input이 열려 있고, 내용이 입력된 상태라면 폼 제출
     if (isNewGoalInputVisible && newGoalInputValue !== DEFAULT_INPUT_VALUE) {
       handleGoalSubmit();
     }
@@ -84,7 +94,7 @@ const NavGoal = ({ className }: { className?: string }) => {
     const trimmedGoalValue = newGoalInputValue.replace(DEFAULT_INPUT_VALUE, '').trim();
     if (trimmedGoalValue.length > 0) addGoal.mutate({ updates: { title: trimmedGoalValue } });
     setIsNewGoalInputVisible(false);
-    setNewGoalInputValue('· ');
+    setNewGoalInputValue(DEFAULT_INPUT_VALUE);
   };
 
   // 목표 수정 및 삭제
@@ -127,6 +137,10 @@ const NavGoal = ({ className }: { className?: string }) => {
   const handleGoalDelete = () => {
     deleteGoal.mutate({ goalId: kebabClickedGoal?.id ?? -1 });
     setIsDeleteModalOpen(false);
+    // 현재 페이지가 해당 goal의 id인 페이지라면 대시보드로 페이지 이동
+    if (path === `/goals/${kebabClickedGoal?.id}`) {
+      route.push('/dashboard');
+    }
   };
 
   return (
@@ -139,9 +153,9 @@ const NavGoal = ({ className }: { className?: string }) => {
           <span className='text-lg font-medium text-slate-800'>목표</span>
         </div>
 
-        <div className='order-3 sm:order-2 lg:order-2 w-full max-h-72 overflow-auto scroll-container h-auto'>
+        <div className='order-3 sm:order-2 lg:order-2 w-full max-h-60 sm:max-h-72 lg:max-h-72 overflow-auto scroll-container h-auto'>
           {data?.pages.map((page, idx) => (
-            <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1'>
+            <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1' aria-label='목표 전체 리스트'>
               {page.goals.map((goal: Goal) => (
                 <li className='flex items-center group rounded-lg  hover:bg-slate-50 ' key={goal.id}>
                   {/* kebab에서 수정하기를 클릭하면 Input, 그 외에는 일반 Link로 goal list */}
@@ -221,6 +235,7 @@ const NavGoal = ({ className }: { className?: string }) => {
 
         {/* 새 목표 버튼 (모바일에서는 타이틀 옆, 태블릿과 데스크탑에서는 맨 아래로) */}
         <div
+          ref={newGoalButtonRef}
           tabIndex={0}
           className='order-2 sm:order-4 lg:order-4 ml-auto sm:mx-0 lg:mx-0 gap-[2px] rounded-xl text-sm sm:w-full lg:w-full'
         >
