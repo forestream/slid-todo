@@ -9,12 +9,12 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
   context('목표 생성', () => {
     it('목표를 작성하고 엔터로 제춣하여 모든 페이지에서 확인할 수 있어야 합니다.', () => {
 
-      // 네비게이션에서 할 일 등록하기
+      // 네비게이션에서 목표 등록하기
       cy.contains('새 목표').click();
       cy.get('input').should('have.value', '· ').type('새로운 목표 테스트');
       cy.contains('새 목표').click();
 
-      // 등록한 후, nav에 등록된 할 일이 있는지 확인
+      // 등록한 후, nav에 등록된 목표가 있는지 확인
       cy.contains('a', '새로운 목표 테스트').scrollIntoView().should('be.visible');
 
       cy.scrollToTop();
@@ -40,14 +40,14 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
       cy.contains('h2', '새로운 목표 테스트').should('be.visible');
     });
 
-    it('목표를 작성하고 추가하기 버튼을 클릭하여 할 일 추가가 가능해야합니다.', () => {
+    it('목표를 작성하고 추가하기 버튼을 클릭하여 목표 추가가 가능해야합니다.', () => {
 
-      // 네비게이션에서 할 일 등록하기
+      // 네비게이션에서 목표 등록하기
       cy.contains('새 목표').click();
       cy.get('input').should('have.value', '· ').type('새로운 목표 클릭 제출 테스트');
       cy.contains('새 목표').click();
 
-      // 등록한 후, nav에 등록된 할 일이 있는지 확인
+      // 등록한 후, nav에 등록된 목표가 있는지 확인
       cy.contains('a', '새로운 목표 클릭 제출 테스트').scrollIntoView().should('be.visible');
 
       cy.scrollToTop();
@@ -91,8 +91,6 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
       // 기존 목표 수정 후 엔터 클릭
       cy.get('input[placeholder="새로운 목표 테스트"]').type('새로운 목표 테스트 수정').type('{enter}');
       cy.contains('h2', '새로운 목표 테스트 수정').should('be.visible');
-
-
     })
 
     it('nav에서 목표를 수정 할 수 있어야 합니다.', () => {
@@ -122,9 +120,7 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
       cy.wait(1000);
 
       cy.contains('a', '새로운 목표 테스트 수정2').should('be.visible');
-
     })
-
   })
 
 
@@ -157,17 +153,12 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
 
       cy.visit('/dashboard');
 
-      // 네비게이션에서 할 일 등록하기
-      cy.contains('새 목표').click();
-      cy.get('input').should('have.value', '· ').type('nav 목표 삭제 테스트');
-      cy.contains('새 목표').click();
-
       // nav에서 하나 클릭
-      cy.contains('a', 'nav 목표 삭제 테스트').click();
+      cy.contains('a', '새로운 목표 클릭 제출 테스트').click();
       cy.wait(1000)
 
       // 텍스트를 가진 <a> 태그의 부모 <li>에 마우스를 오버
-      cy.contains('a', 'nav 목표 삭제 테스트')
+      cy.contains('a', '새로운 목표 클릭 제출 테스트')
         .closest('li')
         .scrollIntoView()
         .should('be.visible')
@@ -176,7 +167,7 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
       cy.wait(1000);
 
       // 동일한 <li> 내의 <div> 버튼을 클릭
-      cy.contains('a', 'nav 목표 삭제 테스트')
+      cy.contains('a', '새로운 목표 클릭 제출 테스트')
         .closest('li')
         .find('div[aria-label="목표 관리 메뉴 열기"]')
         .invoke('css', 'display', 'block')
@@ -198,7 +189,7 @@ describe('목표 E2E 테스트 - 데스크탑', () => {
       cy.get('ul[aria-label="목표 전체 리스트"]')
         .find('li')
         .each(($li) => {
-          cy.wrap($li).find('a').should('not.contain', 'nav 목표 삭제 테스트');
+          cy.wrap($li).find('a').should('not.contain', '새로운 목표 클릭 제출 테스트');
         });
 
     })
