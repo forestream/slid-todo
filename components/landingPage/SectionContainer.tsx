@@ -18,7 +18,7 @@ const SectionContainer: React.FC<SectionContainerProps> = ({ children, className
       <div
         className={twMerge(
           clsx(
-            'max-w-[400px] sm:max-w-[600px] lg:max-w-[800px] lg:mx-auto mx-auto sm:flex-row flex-col flex h-full gap-4',
+            'max-w-[300px] sm:max-w-[600px] lg:max-w-[800px] lg:mx-auto mx-auto sm:flex-row flex-col flex h-full gap-4',
             classNameDiv
           )
         )}

@@ -9,6 +9,7 @@ interface NavMobileSheetProps {
 }
 
 const NavMobileSheet: React.FC<NavMobileSheetProps> = ({ isSheetOpen, setIsSheetOpen, handleTodoModalOpen }) => {
+  if (!isSheetOpen) return null;
   return (
     <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={setIsSheetOpen}>
       <SheetContent position={'top'} dialogClassName={'sm:hidden'} className='p-0'>

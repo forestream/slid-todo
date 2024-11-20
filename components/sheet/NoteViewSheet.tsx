@@ -10,6 +10,7 @@ interface NoteViewSheetProps {
 }
 
 const NoteViewSheet: React.FC<NoteViewSheetProps> = ({ isSheetOpen, handleSheetOpen, noteId, goal, todoTitle }) => {
+  if (!isSheetOpen) return null;
   return (
     <SheetProvider isOpen={isSheetOpen} onChangeIsOpen={handleSheetOpen}>
       <SheetContent position='right'>
