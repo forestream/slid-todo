@@ -11,11 +11,6 @@ const NoteViewSheet = dynamic(() => import('@/components/sheet/NoteViewSheet'), 
   ssr: false,
 });
 
-const TodoContentsDrawer = dynamic(() => import('@/components/drawer/TodoContentsDrawer/TodoContentsDrawer'), {
-  loading: () => null,
-  ssr: false,
-});
-
 const ConfirmationModal = dynamic(() => import('@/components/modal/ConfirmationModal'), {
   loading: () => null,
   ssr: false,
@@ -24,10 +19,10 @@ const ConfirmationModal = dynamic(() => import('@/components/modal/ConfirmationM
 interface TodoTitleProps {
   data: Todo;
   variant?: 'default' | 'detailed';
+  setIsOpenDrawer: (value: boolean) => void;
 }
 
-const TodoTitle: React.FC<TodoTitleProps> = ({ data, variant }) => {
-  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+const TodoTitle: React.FC<TodoTitleProps> = ({ data, variant, setIsOpenDrawer }) => {
   const [isNoteViewOpen, setIsNoteViewOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const router = useRouter();
@@ -60,11 +55,10 @@ const TodoTitle: React.FC<TodoTitleProps> = ({ data, variant }) => {
           )
         )}
         aria-label={`${data.title} ${data.done ? '(완료됨)' : ''}`}
-        aria-expanded={isOpenDrawer || isNoteViewOpen}
       >
         {data.title}
       </button>
-      <TodoContentsDrawer isOpen={isOpenDrawer} onChangeIsOpen={setIsOpenDrawer} data={data} />
+
       <NoteViewSheet
         isSheetOpen={isNoteViewOpen}
         handleSheetOpen={setIsNoteViewOpen}

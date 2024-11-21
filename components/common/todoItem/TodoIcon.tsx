@@ -29,9 +29,10 @@ const ConfirmationModal = dynamic(() => import('@/components/modal/ConfirmationM
 
 interface TodoIconProps {
   data: Todo;
+  setIsOpenDrawer: (value: boolean) => void;
 }
 
-const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
+const TodoIcon: React.FC<TodoIconProps> = ({ data, setIsOpenDrawer }) => {
   const [isOpen, onChangeIsOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
   const router = useRouter();
@@ -47,7 +48,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   };
 
   const handleDropdownMenuClick = (item: string) => {
-    if (isMobile()) return;
+    if (isMobile()) return setIsOpenDrawer(true);
     if (item === '수정하기') {
       onChangeIsOpen(true);
     } else if (item === '삭제하기') {
@@ -56,19 +57,19 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   };
 
   const handleDownloadFile = (fileUrl: string | null) => {
-    if (isMobile()) return;
+    if (isMobile()) return setIsOpenDrawer(true);
     if (!fileUrl) return;
     openExternalSite(fileUrl, '_blank');
   };
 
   const handleOpenLink = (linkUrl: string | null) => {
-    if (isMobile()) return;
+    if (isMobile()) return setIsOpenDrawer(true);
     if (!linkUrl) return;
     openExternalSite(linkUrl);
   };
 
   const handleClickMutateNote = () => {
-    if (isMobile()) return;
+    if (isMobile()) return setIsOpenDrawer(true);
     router.push(
       `/todos/${data.id}/${data.noteId ? 'note/' + data.noteId : 'create'}?todo=${data.title}&goal=${
         data.goal?.title ?? '목표 없음'
@@ -77,7 +78,7 @@ const TodoIcon: React.FC<TodoIconProps> = ({ data }) => {
   };
 
   const handleSheet = () => {
-    if (isMobile()) return;
+    if (isMobile()) return setIsOpenDrawer(true);
     setIsSheetOpen(true);
   };
 
