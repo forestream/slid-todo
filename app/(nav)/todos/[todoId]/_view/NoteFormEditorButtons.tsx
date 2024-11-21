@@ -32,42 +32,47 @@ const NoteFormEditorButtons = () => {
   return (
     <>
       <div className='flex md:gap-1'>
-        <button type='button' onClick={handleBold}>
+        <button type='button' onClick={handleBold} aria-label='bold'>
           <IconTextBold className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button type='button' onClick={handleItalics}>
+        <button type='button' onClick={handleItalics} aria-label='italics'>
           <IconTextItalics className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button type='button' onClick={handleUnderline}>
+        <button type='button' onClick={handleUnderline} aria-label='underline'>
           <IconTextUnderline className='cursor- hover:bg-slate-100' />
         </button>
       </div>
       <div className='flex md:gap-1'>
-        <button type='button' onClick={handleAlignLeft}>
+        <button type='button' onClick={handleAlignLeft} aria-label='align left'>
           <IconTextAlignLeft className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button type='button' onClick={handleAlignCenter}>
+        <button type='button' onClick={handleAlignCenter} aria-label='align center'>
           <IconTextAlignMiddle className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button type='button' onClick={handleAlignRight}>
+        <button type='button' onClick={handleAlignRight} aria-label='align right'>
           <IconTextAlignRight className='cursor-pointer hover:bg-slate-100' />
         </button>
       </div>
       <div className='flex md:gap-1'>
-        <button type='button' onClick={handleBulletList}>
+        <button type='button' onClick={handleBulletList} aria-label='unordered list'>
           <IconTextBulletPoint className='cursor-pointer hover:bg-slate-100' />
         </button>
-        <button type='button' onClick={handleOrderedList}>
+        <button type='button' onClick={handleOrderedList} aria-label='ordered list'>
           <IconTextNumberPoint className='cursor-pointer hover:bg-slate-100' />
         </button>
         <label
           htmlFor='textHighlight'
           className='relative focus-within:outline focus-within:outline-2 -outline-offset-1'
+          aria-label='text highlight'
         >
           <input id='textHighlight' type='color' className='w-0 h-0 absolute' onChange={handleChangeHighlight} />
           <IconTextHighlight className='cursor-pointer hover:bg-slate-100' />
         </label>
-        <label htmlFor='textColor' className='relative focus-within:outline focus-within:outline-2 -outline-offset-1'>
+        <label
+          htmlFor='textColor'
+          className='relative focus-within:outline focus-within:outline-2 -outline-offset-1'
+          aria-label='text color'
+        >
           <input id='textColor' type='color' className='w-0 h-0 absolute' onChange={handleChangeColor} />
           <IconTextColor className='cursor-pointer hover:bg-slate-100' />
         </label>
