@@ -38,7 +38,10 @@ const LoginForm: React.FC = () => {
         title: '로그인 성공',
         variant: 'success',
       });
-      router.refresh();
+      window.history.replaceState(null, '', '/dashboard');
+      setTimeout(() => {
+        router.refresh();
+      }, 0);
     } catch (error) {
       if (error instanceof HttpError) {
         const { field, message } = parseAuthError(error);
