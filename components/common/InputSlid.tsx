@@ -75,6 +75,8 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
               ref={ref as React.Ref<HTMLSelectElement>}
               className={`${baseInputClass} appearance-none pr-10 `}
               {...props}
+              aria-label={label}
+              aria-describedby={error ? `${props.id || label}-error` : undefined}
             >
               <option value=''>{placeholder || '선택하세요'}</option>
               {options.map((option) => (
@@ -91,6 +93,8 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
               className={baseInputClass}
               placeholder={placeholder}
               {...props}
+              aria-label={label}
+              aria-describedby={error ? `${props.id || label}-error` : undefined}
             />
           )}
 
@@ -99,6 +103,7 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
               type='button'
               onClick={togglePasswordVisibility}
               className='absolute inset-y-0 right-0 pr-3 flex items-center'
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? <IconVisibilityOn /> : <IconVisibilityOff />}
             </button>
@@ -110,7 +115,11 @@ const InputSlid = forwardRef<HTMLInputElement | HTMLSelectElement, InputSlidProp
             </div>
           )}
         </div>
-        {error && <p className={errorClass}>{error}</p>}
+        {error && (
+          <p id={`${props.id || label}-error`} className={errorClass}>
+            {error}
+          </p>
+        )}
       </div>
     );
   }
