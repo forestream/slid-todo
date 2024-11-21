@@ -49,20 +49,26 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
         </SheetContent>
       </SheetProvider>
 
-      <TodoEditModal isOpen={isEditTodoModalOpen} onChangeIsOpen={setIsEditTodoModalOpen} data={data} />
-      <NoteViewSheet
-        isSheetOpen={isNoteViewOpen}
-        handleSheetOpen={setIsNoteViewOpen}
-        noteId={data.noteId}
-        goal={data.goal}
-        todoTitle={data.title}
-      />
-      <ConfirmationModal
-        isOpen={isConfirmationModalOpen}
-        onChangeIsOpen={setIsConfirmationModalOpen}
-        onConfirm={() => deleteTodo.mutate({ todoId: data.id })}
-        itemType='todo'
-      />
+      {isEditTodoModalOpen && (
+        <TodoEditModal isOpen={isEditTodoModalOpen} onChangeIsOpen={setIsEditTodoModalOpen} data={data} />
+      )}
+      {isNoteViewOpen && (
+        <NoteViewSheet
+          isSheetOpen={isNoteViewOpen}
+          handleSheetOpen={setIsNoteViewOpen}
+          noteId={data.noteId}
+          goal={data.goal}
+          todoTitle={data.title}
+        />
+      )}
+      {isConfirmationModalOpen && (
+        <ConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          onChangeIsOpen={setIsConfirmationModalOpen}
+          onConfirm={() => deleteTodo.mutate({ todoId: data.id })}
+          itemType='todo'
+        />
+      )}
     </>
   );
 };

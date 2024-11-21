@@ -25,6 +25,7 @@ export const useUpdateGoalMutation = () => {
       });
       queryClient.invalidateQueries({ queryKey: ['goals'], refetchType: 'all' });
       queryClient.invalidateQueries({ queryKey: ['goal'] });
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
     onError: (error) => {
       toast.toast({
