@@ -21,7 +21,6 @@ const TodoContentsDrawer: React.FC<TodoContentsDrawerProps> = ({ isOpen, onChang
   const [isEditTodoModalOpen, setIsEditTodoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const deleteTodo = useDeleteTodoMutation();
-  console.log('으앜');
   if (!isOpen) return null;
   return (
     <>
