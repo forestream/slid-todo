@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Todo } from '@/lib/types/todo';
 import CheckIcon from './CheckIcon';
 import TodoIcon from './TodoIcon';
@@ -9,6 +9,12 @@ import TodoTitle from './TodoTitle';
 import isValidImageUrl from '@/lib/utils/isValidImageUrl';
 import { twMerge } from 'tailwind-merge';
 import TodoImage from './TodoImage';
+import dynamic from 'next/dynamic';
+
+const TodoContentsDrawer = dynamic(() => import('@/components/drawer/TodoContentsDrawer/TodoContentsDrawer'), {
+  loading: () => null,
+  ssr: false,
+});
 
 interface TodoItemProps {
   data: Todo;
@@ -44,31 +50,34 @@ const TodoItem: React.FC<TodoItemProps> = memo(({ data, viewGoal, variant = 'def
     todoIcon: twMerge('row-start-1 col-start-3', variant === 'detailed' && 'col-start-4'),
     image: 'row-start-3 col-span-full w-full mt-2',
   };
-
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   return (
-    <article className={layoutClasses.article} aria-label={`todo-${data.title}`}>
-      <div className={layoutClasses.checkIcon}>
-        <CheckIcon done={data.done} id={data.id} />
-      </div>
-      <div className={layoutClasses.content}>
-        <div className={layoutClasses.title}>
-          <TodoTitle data={data} variant={variant} />
+    <>
+      <article className={layoutClasses.article} aria-label={`todo-${data.title}`}>
+        <div className={layoutClasses.checkIcon}>
+          <CheckIcon done={data.done} id={data.id} />
         </div>
-        {viewGoal && data.goal?.id && (
-          <div className={layoutClasses.goal}>
-            <GoalTitle goal={data.goal} />
+        <div className={layoutClasses.content}>
+          <div className={layoutClasses.title}>
+            <TodoTitle data={data} variant={variant} setIsOpenDrawer={setIsOpenDrawer} />
+          </div>
+          {viewGoal && data.goal?.id && (
+            <div className={layoutClasses.goal}>
+              <GoalTitle goal={data.goal} />
+            </div>
+          )}
+        </div>
+        <div className={layoutClasses.todoIcon}>
+          <TodoIcon data={data} setIsOpenDrawer={setIsOpenDrawer} />
+        </div>
+        {isValidImageUrl(data.fileUrl) && variant === 'detailed' && (
+          <div className={layoutClasses.image}>
+            <TodoImage imageUrl={data.fileUrl!} />
           </div>
         )}
-      </div>
-      <div className={layoutClasses.todoIcon}>
-        <TodoIcon data={data} />
-      </div>
-      {isValidImageUrl(data.fileUrl) && variant === 'detailed' && (
-        <div className={layoutClasses.image}>
-          <TodoImage imageUrl={data.fileUrl!} />
-        </div>
-      )}
-    </article>
+      </article>
+      {isOpenDrawer && <TodoContentsDrawer isOpen={isOpenDrawer} onChangeIsOpen={setIsOpenDrawer} data={data} />}
+    </>
   );
 }, areEqual);
 
