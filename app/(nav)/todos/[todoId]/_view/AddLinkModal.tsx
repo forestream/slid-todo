@@ -37,7 +37,6 @@ const AddLinkModal = ({ linkUrl, onSave }: AddLinkModalProps) => {
     setIsOpen(false);
     e.stopPropagation();
   };
-  if (!isOpen) return null;
   return (
     <ModalProvider isOpen={isOpen} onChangeIsOpen={setIsOpen}>
       <ModalTrigger type='button'>
