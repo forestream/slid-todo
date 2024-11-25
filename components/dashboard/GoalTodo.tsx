@@ -17,7 +17,7 @@ const GoalTodo = () => {
   }, [inView, fetchNextPage]);
 
   return (
-    <section className='flex mt-6 w-full pb-16 flex-grow' aria-labelledby='goal-todo-heading' role='region'>
+    <section className='flex mt-6 w-full pb-16 flex-grow' aria-labelledby='goal-todo-heading'>
       <div className='flex-col px-6 py-4 w-full h-auto bg-white rounded-xl border border-slate-100 relative'>
         <div className='flex items-center gap-2'>
           <div
@@ -26,7 +26,9 @@ const GoalTodo = () => {
           >
             <IconDashboardFlag />
           </div>
-          <h2 className='text-slate-800 text-lg font-semibold'>목표 별 할 일</h2>
+          <h2 id='goal-todo-heading' className='text-slate-800 text-lg font-semibold'>
+            목표 별 할 일
+          </h2>
         </div>
         {data?.pages[0].totalCount === 0 && (
           <span
