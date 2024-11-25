@@ -26,7 +26,10 @@ export default function Error() {
         <h1 id='error-heading' className='text-2xl font-semibold text-gray-800 mb-4'>
           오류가 발생했어요!
         </h1>
-        <p className='text-gray-600 mb-8'>예기치 않은 문제가 발생했어요. 홈으로 돌아가거나 다시 시도해 주세요.</p>
+        <p className='text-gray-600 mb-8 break-keep'>
+          예기치 않은 문제가 발생했어요. <br />
+          홈으로 돌아가거나 다시 시도해 주세요.
+        </p>
         <div className='flex flex-col sm:flex-row justify-center gap-4'>
           <Button onClick={handleGoBack} className='flex items-center justify-center'>
             다시 시도

@@ -26,7 +26,7 @@ const GoalTodoCard = ({ goal }: { goal: Goal }) => {
               className='flex items-center text-lg font-bold rounded-lg group'
               href={`/goals/${goal.id.toString()}`}
             >
-              <h3>{goal.title || '목표이름'}</h3>
+              <h3 className='break-keep'>{goal.title || '목표이름'}</h3>
               <div className='group-hover:translate-x-1 transition-all' aria-hidden='true'>
                 <IconArrowRight />
               </div>

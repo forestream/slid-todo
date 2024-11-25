@@ -19,7 +19,7 @@ const SecondSection = ({ isVisible }: SectionProps) => {
         <motion.h2 variants={fadeInUp} className='text-4xl font-bold'>
           할 일 기능
         </motion.h2>
-        <motion.p variants={fadeInUp} className='mt-4 lg:text-xl'>
+        <motion.p variants={fadeInUp} className='mt-4 lg:text-xl break-keep'>
           각 할 일에는 관련 링크와 파일을 저장할 수 있으며, 필요한 노트를 추가해 더 자세한 내용을 기록할 수 있습니다.
           업무에 필요한 모든 자료를 한 곳에 정리해보세요.
         </motion.p>
