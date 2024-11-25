@@ -38,10 +38,10 @@ const Profile = ({ className }: { className?: string }) => {
       </div>
       <div className=' w-full flex sm:flex-col lg:flex-col justify-between gap-2'>
         <div className='flex-grow flex-col '>
-          <div className='text-xs sm:text-sm lg:text-sm font-semibold text-slate-800'>
+          <div className='text-xs sm:text-sm lg:text-sm font-semibold text-slate-800 break-all overflow-wrap break-word whitespace-normal'>
             {user?.name ?? '불러오는 중...'}
           </div>
-          <div className='text-xs sm:text-sm lg:text-sm font-medium text-slate-600'>
+          <div className='text-xs sm:text-sm lg:text-sm font-medium text-slate-600 break-all overflow-wrap break-word whitespace-normal'>
             {user?.email ?? '불러오는 중...'}
           </div>
         </div>

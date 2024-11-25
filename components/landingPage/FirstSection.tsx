@@ -21,7 +21,7 @@ const FirstSection = ({ isVisible }: SectionProps) => {
         <motion.h2 variants={fadeInUp} className='lg:text-4xl text-2xl font-bold mb-10'>
           효율적인 목표 관리와 체계적인 할 일 관리
         </motion.h2>
-        <motion.p variants={fadeInUp} className='lg:text-2xl mb-10'>
+        <motion.p variants={fadeInUp} className='lg:text-2xl mb-10 break-keep'>
           SlidToDo는 목표 설정과 할 일 관리에 필요한 모든 기능을 제공합니다. 목표부터 세부적인 할 일과 노트까지
           체계적으로 관리하여 효율적인 작업 흐름을 만들어 보세요.
         </motion.p>

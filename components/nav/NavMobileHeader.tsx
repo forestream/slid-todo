@@ -20,6 +20,7 @@ const NavMobileHeader: React.FC<NavMobileHeader> = ({ currentPageLabel, handleTo
       <nav aria-label='모바일 헤더' className=' sticky top-0 left-0 right-0 z-10'>
         <NavSection className='flex sm:hidden flex-row px-[14px] py-4 justify-normal backdrop-saturate-180 backdrop-blur-sm'>
           <div
+            role='button'
             onClick={() => setIsSheetOpen(true)}
             className='hover:cursor-pointer'
             aria-label='모바일 네비게이션 열기/닫기'

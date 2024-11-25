@@ -157,7 +157,7 @@ const NavGoal = ({ className }: { className?: string }) => {
           {data?.pages.map((page, idx) => (
             <ul key={page.nextCursor || idx} className='flex flex-col gap-1 p-1' aria-label='목표 전체 리스트'>
               {page.goals.map((goal: Goal) => (
-                <li className='flex items-center group rounded-lg  hover:bg-slate-50 ' key={goal.id}>
+                <li className='flex items-center group rounded-lg hover:bg-slate-50 break-keep' key={goal.id}>
                   {/* kebab에서 수정하기를 클릭하면 Input, 그 외에는 일반 Link로 goal list */}
                   {isEditFocused && editingGoalId === goal.id ? (
                     <form
