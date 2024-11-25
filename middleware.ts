@@ -28,8 +28,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // /todos 하위 경로 접근 시 액세스토큰이 만료되었을 때
-  if (pathname.startsWith('/todos') && !accessToken && refreshToken) {
+  // /todos 나 /goals 하위 경로 접근 시 액세스토큰이 만료되었을 때
+  if ((pathname.startsWith('/todos') || pathname.startsWith('/goals')) && !accessToken && refreshToken) {
     const data = await fetchNewAccessToken(refreshToken, API_BASE_URL!);
 
     const response = setAuthCookies(new NextResponse(), data.accessToken, data.refreshToken);
