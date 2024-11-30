@@ -18,7 +18,7 @@ export const useAddGoalMutation = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      queryClient.refetchQueries({ queryKey: ['goals'] });
       toast.toast({
         title: '목표가 생성되었습니다.',
         variant: 'success',
