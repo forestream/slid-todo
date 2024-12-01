@@ -21,8 +21,8 @@ export const useDeleteGoalMutation = () => {
         title: '목표가 삭제되었습니다.',
         variant: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
       queryClient.refetchQueries({ queryKey: ['goals'] });
+      queryClient.refetchQueries({ queryKey: ['todos'] });
     },
     onError: (error) => {
       toast.toast({
