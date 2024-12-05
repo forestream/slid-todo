@@ -1,5 +1,4 @@
 import GoalTitleProgress from '@/components/goals/GoalTitleWithProgress';
-import PageContainer from '@/components/common/pageLayout/PageContainer';
 import PageHeader from '@/components/common/pageLayout/PageHeader';
 import TodoItemsGoal from '@/components/goals/TodoItemsGoal';
 import baseFetch from '@/lib/api/baseFetch';
@@ -22,7 +21,7 @@ export default async function GoalDetailPage({ params }: { params: { goalId: str
   }
 
   return (
-    <PageContainer className={'max-w-[1200px] flex flex-col gap-4'}>
+    <div className='flex flex-col gap-4'>
       <div className='hidden sm:block lg:block'>
         <PageHeader title='목표' />
       </div>
@@ -43,6 +42,6 @@ export default async function GoalDetailPage({ params }: { params: { goalId: str
       <div className='flex flex-col'>
         <TodoItemsGoal goalId={+params.goalId} />
       </div>
-    </PageContainer>
+    </div>
   );
 }

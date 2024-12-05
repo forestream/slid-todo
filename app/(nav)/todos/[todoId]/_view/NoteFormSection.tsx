@@ -136,7 +136,7 @@ const NoteFormSection = ({
       noteId={noteId}
       saveButtonRef={saveButtonRef}
       onChangeSavedToast={onChangeSavedToast}
-      className='flex flex-col h-full'
+      className='flex flex-col grow h-full'
     >
       <div className='flex w-full items-center mb-4'>
         <h1 className='grow text-slate-900 font-semibold text-lg'>노트 작성</h1>
