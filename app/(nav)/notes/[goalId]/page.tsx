@@ -1,4 +1,3 @@
-import PageContainer from '@/components/common/pageLayout/PageContainer';
 import PageHeader from '@/components/common/pageLayout/PageHeader';
 import NotesContent from '@/components/notes/NotesContent';
 import baseFetch from '@/lib/api/baseFetch';
@@ -24,9 +23,9 @@ export default async function Notes({ params }: { params: { goalId: string } }) 
   );
 
   return (
-    <PageContainer>
+    <>
       <PageHeader title='노트 모아보기' />
       <NotesContent goalData={goalData} goalId={params.goalId} notesInitialData={notesInitialData} />
-    </PageContainer>
+    </>
   );
 }

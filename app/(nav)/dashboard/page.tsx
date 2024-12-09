@@ -1,4 +1,3 @@
-import PageContainer from '@/components/common/pageLayout/PageContainer';
 import PageHeader from '@/components/common/pageLayout/PageHeader';
 import GoalTodo from '@/components/dashboard/GoalTodo';
 import Progress from '@/components/dashboard/Progress';
@@ -6,7 +5,7 @@ import RecentTodo from '@/components/dashboard/RecentTodo';
 
 export default function DashboardPage() {
   return (
-    <PageContainer className={'max-w-[1200px] gap-4 flex flex-col'}>
+    <>
       <div className='hidden sm:block lg:block'>
         <PageHeader title='대시보드' />
       </div>
@@ -15,6 +14,6 @@ export default function DashboardPage() {
         <Progress />
       </div>
       <GoalTodo />
-    </PageContainer>
+    </>
   );
 }

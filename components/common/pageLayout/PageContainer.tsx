@@ -1,19 +1,51 @@
+'use client';
+
 import { type ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { usePathname } from 'next/navigation';
 
 interface PageContainerProps {
   children: ReactNode;
-  className?: string;
-  containerClassName?: string;
+  pageUrl?: string;
 }
 
-const PageContainer = ({ children, className = '', containerClassName = '' }: PageContainerProps) => {
+const PageContainer = ({ children }: PageContainerProps) => {
+  const pageUrl = usePathname();
+  function getTransformedUrl(pathname: string) {
+    if (pathname.includes('/todos') && pathname.includes('/note')) {
+      return '/note-edit';
+    } else if (pathname.includes('/todos') && pathname.includes('/create')) {
+      return '/note-create';
+    } else if (pathname.includes('/dashboard')) {
+      return '/dashboard';
+    } else if (pathname.includes('/goals')) {
+      return '/goals';
+    }
+    return 'default';
+  }
+
+  const transformedUrl = getTransformedUrl(pageUrl);
+
+  const containerStyle = {
+    default: 'bg-slate-100',
+    '/note-create': 'bg-white flex',
+    '/note-edit': 'bg-white flex',
+    '/dashboard': 'bg-slate-100',
+    '/goals': 'bg-slate-100',
+  };
+
+  const sectionStyle = {
+    default: 'max-w-[800px]',
+    '/dashboard': 'max-w-[1200px]',
+    '/note-create': 'max-w-[800px] grow',
+    '/note-edit': 'max-w-[800px] grow',
+    '/goals': 'max-w-[1200px]',
+  };
+
   return (
-    <main
-      className={twMerge(clsx('bg-slate-100 w-full min-h-[calc(100vh-3.5rem)] sm:min-h-screen', containerClassName))}
-    >
-      <section className={twMerge(clsx('lg:px-20 sm:px-6 px-4 py-6 max-w-[792px] h-full', className))}>
+    <main className={twMerge(clsx('w-full h-screen pt-[3.5rem] sm:pt-0', containerStyle[transformedUrl]))}>
+      <section className={twMerge(clsx('h-full lg:px-20 sm:px-6 px-4 py-6', sectionStyle[transformedUrl]))}>
         {children}
       </section>
     </main>

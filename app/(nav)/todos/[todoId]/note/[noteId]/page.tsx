@@ -18,9 +18,5 @@ export default async function Page({ params }: { params: { noteId: string } }) {
   }
 
   const { title, content, linkUrl } = response;
-  return (
-    <main className='lg:flex h-[calc(100vh-3.5rem)] sm:h-screen overflow-auto'>
-      <NoteFormSections title={title} content={content} linkUrl={linkUrl ?? ''} method='PATCH' noteId={noteId} />
-    </main>
-  );
+  return <NoteFormSections title={title} content={content} linkUrl={linkUrl ?? ''} method='PATCH' noteId={noteId} />;
 }
